@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useEffect } from "react";
+import React, { useState, forwardRef } from "react";
 import {
     Box,
     Grid,
@@ -8,116 +8,49 @@ import {
     Container,
     Snackbar,
     Stack,
-
+    Alert as MuiAlert,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import VideoFile from "../assets/images/Splash.mp4";
-import OtpModal from "../modals/OtpModal";
-import CustomAlert from "../components/Alert";
-import { BaseUrl } from "../config/apiEndPoints";
-import axios from "axios";
-import { toast } from "react-toastify";
 
+const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const darkTheme = createTheme({
     palette: {
         mode: "dark",
     },
 });
-
-const Login = () => {
-    const [open, setOpen] = useState({ isOpen: false, message: "" });
-    const [loading, setLoading] = useState(false);
-    const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
-    const [otpModal, setotpModal] = useState({data: "" });
-    const [formData, setformData] = useState({
-        email: "",
-        password: "",
-        remember: true
-    });
+function ResetPassword() {
+    const [open, setOpen] = useState(false);
+    const [remember, setRemember] = useState(false);
     const navigate = useNavigate();
-    useEffect(()=>{
-        if(details.token){
-            navigate(-1) 
-        }
-    },[])
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        if (formData.email == "" || formData.password == "") {
-            setOpen(((pre) => ({
-                ...pre,
-                isOpen: true,
-                message: "Fill all required fields",
-                errortype: "warning"
-            })));
-        } else {
-            setLoading(true)
-            let config = {
-                method: 'post',
-                url: `${BaseUrl}/superadmin/login`,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: formData
-            };
 
-            await axios.request(config)
-                .then((response) => {
-                    if(response.data?.status){
-                        setOpen(((pre) => ({
-                            ...pre,
-                            isOpen: true,
-                            message: response.data?.message,
-                            errortype: "success"
-                        })));
-                        setotpModal({data:formData})
-                    }
-                    setLoading(false)
-                })
-                .catch((error) => {
-                    setLoading(false)
-                    if (error) {
-                        setOpen(((pre) => ({
-                            ...pre,
-                            isOpen: true,
-                            message: error.response.data?.message || error.message,
-                            errortype: "error"
-                        })));
-                        // toast.error(error.response.data?.message || error.message)
-                    }
-                    // console.log(error.response.data?.message);
-                });
-        }
-    };
-    const onChange = (e) => {
-        const { name, value } = e.target
-        setformData((pre) => ({
-            ...pre,
-            [name]: value
-        }))
+    const handleSubmit = (event) => {
+        setOpen(true);
+        event.preventDefault();
     };
 
     const handleClose = (_, reason) => {
         if (reason === "clickaway") return;
-        setOpen(((pre) => ({
-            ...pre,
-            isOpen: false
-        })));
+        setOpen(false);
     };
 
     return (
         <React.Fragment>
             {/* Snackbar for Error Message */}
             <Snackbar
-                open={open.isOpen}
+                open={open}
                 autoHideDuration={3000}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
-                <CustomAlert onClose={handleClose} severity={open.errortype || "error"} sx={{ width: "100%" }}>
-                    {open.message || "Failed! Enter correct username and password."}
-                </CustomAlert>
+                <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+                    Failed! Enter correct username and password.
+                </Alert>
             </Snackbar>
+
             {/* Background Image Container */}
             <Box
                 sx={{
@@ -191,45 +124,49 @@ const Login = () => {
                                                 color="white"
                                                 fontWeight={"600"}
                                             >
-                                                LOGIN
+                                                Reset-password
                                             </Typography>
                                         </Box>
 
                                         <Box
                                             component="form"
-                                            // noValidate
-                                            onSubmit={(e)=>{
-                                                if(!loading){
-                                                    handleSubmit(e)
-                                                }
-                                            }}
+                                            noValidate
+                                            onSubmit={handleSubmit}
                                             sx={{ mt: 2 }}
                                         >
                                             <TextField
                                                 required
                                                 fullWidth
                                                 id="email"
-                                                label="Username"
-                                                name="email"
-                                                type="email"
-                                                onChange={onChange}
-                                                // autoComplete="email"
-                                                sx={{ mb: 2, color: "#fff" }}
+                                                label="New Password"
+                                                name="npassword"
+                                                autoComplete="email"
+                                                sx={{ mb: 2 }}
                                             />
                                             <TextField
                                                 required
                                                 fullWidth
-                                                name="password"
-                                                label="Password"
+                                                label="Confirm New Password"
+                                                name="c_npassword"
                                                 type="password"
                                                 id="password"
-                                                onChange={onChange}
-                                                // autoComplete="new-password"
-                                                sx={{
-                                                    mb: 2,
-                                                }}
+                                                autoComplete="new-password"
+                                                sx={{ mb: 2 }}
                                             />
 
+                                            <Stack
+                                                direction="row"
+                                                justifyContent="space-between"
+                                                alignItems="center"
+                                            >
+                                                <Typography
+                                                    variant="body2"
+                                                    sx={{ cursor: "pointer", color: "lightblue" }}
+                                                    onClick={() => navigate("/login")}
+                                                >
+                                                    Login
+                                                </Typography>
+                                            </Stack>
 
                                             <Box sx={{ display: "flex", justifyContent: "center" }}>
                                                 <Button
@@ -237,17 +174,15 @@ const Login = () => {
                                                     variant="contained"
                                                     sx={{
                                                         mt: 2,
-                                                        borderRadius: 28,
+                                                        borderRadius: 27,
                                                         color: "#ffffff",
                                                         fontWeight: '600',
-                                                        fontSize: 18,
+                                                        fontSize: 17,
                                                         backgroundColor: "#FF9A01",
                                                         "&:hover": { backgroundColor: "#e68a00" },
                                                     }}
                                                 >
-                                                    {
-                                                        loading ? "Loading...":"Login"
-                                                    }
+                                                    Submit
                                                 </Button>
                                             </Box>
                                         </Box>
@@ -258,13 +193,8 @@ const Login = () => {
                     </Grid>
                 </Box>
             </Box>
-            {
-                otpModal.data &&
-                <OtpModal data={{data:otpModal.data,onClose:() => { setotpModal(false) }}}  />
-            }
-
         </React.Fragment>
     );
 };
 
-export default Login;
+export default ResetPassword
