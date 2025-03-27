@@ -1,13 +1,19 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.req-btn {
+  font-size: 13px;
+  border-radius: 55px;
+  padding: 7px 12px;
+  margin-right: 12px;
+  background-color: #3B7080;
+  border: 1px solid #3B7080;
+  color: #FFF;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.main-testimonial-slides{
+  background: url("./assets/essential-feature-bg.png");
+  background-color: #FEF1EB;
+}
+
+.banner-users .avatar {
+  margin-inline-end: -1.847rem !important;
+  transition: all 0.5s;
 }
