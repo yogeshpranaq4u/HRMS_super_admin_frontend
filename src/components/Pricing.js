@@ -41,7 +41,7 @@ function Pricing() {
                         <p class="pro-list">For individuals and small projects</p>
                     </div>
                     <div class="freeplan-btn">
-                        <a href="https://themeforest.net/item/smarthr-bootstrap-admin-panel-template/21153150" target="blank" class="btn btn-freeplanset">Get started for free</a>
+                        <a href="#" target="blank" class="btn btn-freeplanset">Get started for free</a>
                     </div>
                 </div>
             </div> 
@@ -53,7 +53,7 @@ function Pricing() {
                          <p class="pro-list">For individuals and small projects</p>
                     </div>
                     <div class="freeplan-btn">
-                        <a href="https://themeforest.net/item/smarthr-bootstrap-admin-panel-template/21153150" target="blank" class="btn btn-freeplanset">Get started for free</a>
+                        <a href="#" target="blank" class="btn btn-freeplanset">Get started for free</a>
                     </div>
                     <div class="bg-set">
                         <img src="assets/img/groupset.png" alt="img" class="bs-img1" />
@@ -69,7 +69,7 @@ function Pricing() {
                          <p class="pro-list">For individuals and small projects</p>
                     </div>
                     <div class="freeplan-btn">
-                        <a href="https://themeforest.net/item/smarthr-bootstrap-admin-panel-template/21153150" target="blank" class="btn btn-freeplanset">Get started for free</a>
+                        <a href="#" target="blank" class="btn btn-freeplanset">Get started for free</a>
                     </div>
                     <div class="bg-set">
                         <img src="assets/img/groupset.png" alt="img" class="bs-img1" />

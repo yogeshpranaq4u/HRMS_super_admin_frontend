@@ -6,7 +6,7 @@ function Testimonial() {
             <div class="container">
                 <div class="row" data-aos="fade-up" data-aos-duration="2000">
                     <div class="common-title-sections">
-                        <h3 className='text-dark m-0'>Essential Features for HRMS SaaS Solutions
+                        <h3 className='text-white m-0'>Essential Features for HRMS SaaS Solutions
                         </h3>
                     </div>
                 </div>
@@ -38,7 +38,7 @@ function Testimonial() {
                             <div class="tab-pane fade show active" id="client" role="tabpanel" aria-labelledby="client-tab">
                                 <div class="client-item">
                                     <div class="col-lg-12 client-img">
-                                        <img src="assets/img/features/feature-01.jpg" alt="img" />
+                                        <img src="assets/img/NewDashboard.png" alt="img" />
                                     </div>
                                 </div>
                             </div>
