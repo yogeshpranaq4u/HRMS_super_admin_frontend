@@ -1,0 +1,16 @@
+.landing-sec-1 {
+    background-image: url("../images/Herobackground.png");
+}
+
+
+.request-btn {
+    background: #36465a;
+    color: #fff;
+    border-radius: 5px;
+    border: 1px solid #FFFFFF33;
+}
+.watch-btn {
+    background: #02062f;
+    color: #fff;
+    border: 1px solid #FFFFFF33;
+}

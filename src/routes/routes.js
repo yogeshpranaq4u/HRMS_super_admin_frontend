@@ -1,6 +1,8 @@
-import Dashboard from "../pages/Dashboard";
+
+import Company from "../pages/company/Company";
+import Dashboard from "../pages/dashbord/Dashboard";
+import Landing from "../pages/Landing";
 import Login from "../pages/Login";
-import ResetPassword from "../pages/ResetPassword";
 
 
 const allRoutes = [
@@ -12,13 +14,19 @@ const allRoutes = [
     {
         element:<Dashboard/>,
         path:"/",
-        isPrivate:true
-    },
-    {
-        element:<ResetPassword/>,
-        path:"/reset-password",
         isPrivate:false
     },
+    {
+        element:<Company/>,
+        path:"/company",
+        isPrivate:false
+    },
+    {
+        element:<Landing/>,
+        path:"/landing",
+        isPrivate:false
+    },
+    
 ]
 
 export default allRoutes
