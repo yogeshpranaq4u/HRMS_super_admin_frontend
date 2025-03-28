@@ -1,0 +1,55 @@
+import { types } from "../constants/types";
+
+// reducers/postReducer.js
+const initialState = {
+  dashData: [],
+  profileData:{},
+  loading: false,
+  error: null,
+};
+
+const commenDataReducer = (state = initialState, action) => {
+  switch (action.type) {
+    // case types.ADD_PRODUCT_REQUEST:
+    //   return {
+    //     ...state,
+    //     loading: true
+    //   };
+    // case types.ADD_PRODUCT_SUCCESS:
+    //   const updatedData = [...state.productdata, action.payload.data]
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     productdata: updatedData
+    //   };
+    // case types.ADD_PRODUCT_FAILED:
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     error: action.error
+    //   };
+    case types.GET_DASHBOARDATA_REQUEST:
+      return {
+        ...state,
+        loading: true
+      };
+    case types.GET_DASHBOARDATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        dashData: action.payload
+      };
+    case types.GET_DASHBOARDATA_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.error
+      };
+
+
+    default:
+      return state;
+  }
+};
+
+export default commenDataReducer;
