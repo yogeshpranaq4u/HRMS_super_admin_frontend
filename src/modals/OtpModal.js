@@ -40,8 +40,8 @@ const OtpModal = ({ data }) => {
         setLoading(true);
         try {
             const response = await axios.post(
-                `${BaseUrl}/resend_otp`,
-                { formDataToSend: data.data },
+                `${BaseUrl}/resend-otp`,
+                { email: data.data.email },
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -50,6 +50,7 @@ const OtpModal = ({ data }) => {
                 }
             );
 
+            console.log("response" ,response)
             if (response?.data?.success) {
                 toast.success(response?.data?.message, {
                     position: "top-center",
