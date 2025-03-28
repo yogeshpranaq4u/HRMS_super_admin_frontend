@@ -1,21 +1,23 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 
 function SideBar() {
-    return (
-        <div className="sidebar" id="sidebar">
-            <div className="sidebar-logo">
-                <a href="index.html" className="logo logo-normal">
-                    <img src="assets/img/logo.svg" alt="Logo" />
-                </a>
-                <a href="index.html" className="logo-small">
-                    <img src="assets/img/logo-small.svg" alt="Logo" />
-                </a>
-                <a href="index.html" className="dark-logo">
-                    <img src="assets/img/logo-white.svg" alt="Logo" />
-                </a>
-            </div>
-            {/* <div className="modern-profile p-3 pb-0">
+  const [activeMenu, setActiveMenu] = useState("Dashboard");
+
+  return (
+    <div className="sidebar" id="sidebar">
+      <div className="sidebar-logo">
+        <a href="index.html" className="logo logo-normal">
+          {/* <img src="assets/img/logo192.png" alt="Logo" /> */}
+        </a>
+        <a href="index.html" className="logo-small">
+          <img src="assets/img/logo-small.svg" alt="Logo" />
+        </a>
+        <a href="index.html" className="dark-logo">
+          <img src="assets/img/logo-white.svg" alt="Logo" />
+        </a>
+      </div>
+      {/* <div className="modern-profile p-3 pb-0">
                 <div className="text-center rounded bg-light p-3 mb-4 user-profile">
                     <div className="avatar avatar-lg online mb-3">
                         <img src="assets/img/profiles/avatar-02.jpg" alt="Img" className="img-fluid rounded-circle" />
@@ -68,38 +70,183 @@ function SideBar() {
                     </div>
                 </div>
             </div> */}
-            <div className="sidebar-inner slimscroll">
-                <div id="sidebar-menu" className="sidebar-menu">
-                    <ul>
-                        <li className="menu-title"><span>Super Admin</span></li>
-                        <li>
-                            <ul>
-                                <li className="submenu">
-                                    <Link to="#">
-                                        <i className="ti ti-smart-home"></i><span>Dashboard</span>
-                                    </Link>
-                                </li>
-                                <li className="submenu">
-                                    <Link to="#">
-                                        <i className="ti ti-layout-grid-add"></i>
-                                        <span>Companies</span>
-                                        {/* <span className="menu-arrow"></span> */}
-                                    </Link>
-                                </li>
-                                <li className="submenu">
-                                    <Link to="#" className="active subdrop">
-                                        <i className="ti ti-user-star"></i>
-                                        <span>Subscriptions</span>
-                                    </Link>
-                                </li>
-                            </ul>
-                        </li>
+      <div className="sidebar-inner slimscroll">
+        <div id="sidebar-menu" className="sidebar-menu">
+          <ul>
+            <li className="menu-title">
+              <span>Super Admin</span>
+            </li>
+            <li>
+              <ul>
+                {/* <li className="submenu">
+            
+                  <Link
+                    to="#"
+                    className={({ isActive }) =>
+                      isActive ? "submenu active" : "submenu"
+                    }
+                  >
+                    <i className="ti ti-smart-home"></i>
+                    <span>Dashboard</span>
+                  </Link>
+                </li> */}
+                <li
+                  className="submenu"
+                  onClick={() => setActiveMenu("Dashboard")}
+                  style={
+                    activeMenu === "Dashboard"
+                      ? {
+                          backgroundColor: "#f0f0f0",
+                          color: "#007bff",
+                          borderRadius: "6px",
+                        }
+                      : {}
+                  }
+                >
+                  <Link
+                    to="/"
+                    style={
+                      activeMenu === "Dashboard" ? { color: "#007bff" } : {}
+                    }
+                  >
+                    <i className="ti ti-smart-home"></i>
+                    <span>Dashboard</span>
+                  </Link>
+                </li>
+                <li
+                  className="submenu"
+                  onClick={() => setActiveMenu("Companies")}
+                  style={
+                    activeMenu === "Companies"
+                      ? {
+                          backgroundColor: "#f0f0f0",
+                          color: "#007bff",
+                          borderRadius: "6px",
+                        }
+                      : {}
+                  }
+                >
+                  <Link
+                    to="/company"
+                    style={
+                      activeMenu === "Companies" ? { color: "#007bff" } : {}
+                    }
+                  >
+                    <i className="ti ti-layout-grid-add"></i>
+                    <span>Companies</span>
+                  </Link>
+                </li>
+                <li
+                  className="submenu"
+                  onClick={() => setActiveMenu("Tickets")}
+                  style={
+                    activeMenu === "Tickets"
+                      ? {
+                          backgroundColor: "#f0f0f0",
+                          color: "#007bff",
+                          borderRadius: "6px",
+                        }
+                      : {}
+                  }
+                >
+                  <Link
+                    to="#"
+                    style={activeMenu === "Tickets" ? { color: "#007bff" } : {}}
+                  >
+                    <i className="ti ti-smart-home"></i>
+                    <span>Tickets</span>
+                  </Link>
+                </li>
+                <li
+                  className="submenu"
+                  onClick={() => setActiveMenu("Demo")}
+                  style={
+                    activeMenu === "Demo"
+                      ? {
+                          backgroundColor: "#f0f0f0",
+                          color: "#007bff",
+                          borderRadius: "6px",
+                        }
+                      : {}
+                  }
+                >
+                  <Link
+                    to="#"
+                    style={
+                      activeMenu === "Demo" ? { color: "#007bff" } : {}
+                    }
+                  >
+                    <i className="ti ti-smart-home"></i>
+                    <span>Demo</span>
+                  </Link>
+                </li>
+                <li
+                  className="submenu"
+                  onClick={() => setActiveMenu("Payments")}
+                  style={
+                    activeMenu === "Payments"
+                      ? {
+                          backgroundColor: "#f0f0f0",
+                          color: "#007bff",
+                          borderRadius: "6px",
+                        }
+                      : {}
+                  }
+                >
+                  <Link
+                    to="#"
+                    style={
+                      activeMenu === "Payments" ? { color: "#007bff" } : {}
+                    }
+                  >
+                    <i className="ti ti-smart-home"></i>
+                    <span>Payments</span>
+                  </Link>
+                </li>
+                <li
+                  className="submenu"
+                  onClick={() => setActiveMenu("Manage Policy")}
+                  style={
+                    activeMenu === "Manage Policy"
+                      ? {
+                          backgroundColor: "#f0f0f0",
+                          color: "#007bff",
+                          borderRadius: "6px",
+                        }
+                      : {}
+                  }
+                >
+                  <Link
+                    to="#"
+                    style={
+                      activeMenu === "Manage Policy" ? { color: "#007bff" } : {}
+                    }
+                  >
+                    <i className="ti ti-smart-home"></i>
+                    <span>Manage Policy</span>
+                  </Link>
+                </li>
 
-                    </ul>
-                </div>
-            </div>
+                {/* <li className="submenu">
+                  <Link to="#">
+                    <i className="ti ti-layout-grid-add"></i>
+                    <span>Companies</span>
+                
+                  </Link>
+                </li> */}
+                {/* <li className="submenu">
+                  <Link to="#">
+                    <i className="ti ti-user-star"></i>
+                    <span>Subscriptions</span>
+                  </Link>
+                </li> */}
+              </ul>
+            </li>
+          </ul>
         </div>
-    )
+      </div>
+    </div>
+  );
 }
 
-export default SideBar
+export default SideBar;
