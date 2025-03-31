@@ -62,8 +62,8 @@ function SideBar() {
                   sideBarContent?.map((item, index) => {
                     return (
                       <li
-                       key={index}
-                        className={`submenu ${item?.pathname == window.location.pathname ? "active":""}  `}
+                        key={index}
+                        className={`submenu ${item?.pathname == window.location.pathname ? "active" : ""}  `}
                       >
                         <Link
                           to={item?.pathname}
