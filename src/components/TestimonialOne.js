@@ -82,7 +82,7 @@ const TestimonialOne = () => {
                 <div className="testimonial-section container">
                     <div className="row">
                         <div className="col-12 text-start">
-                            <h2 className="text-white">What our customers say about our company</h2>
+                            <h2 className="text-white px-sm-3">What our customers say about our company</h2>
                         </div>
                     </div>
                     <Slider {...settings} className="testimonial-slider">

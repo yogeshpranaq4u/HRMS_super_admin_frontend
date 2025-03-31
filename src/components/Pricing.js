@@ -13,7 +13,7 @@ function Pricing() {
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod  tempor incididunt ut labore et dolore magna aliqua ad minim veniam.</p>
                 </div>
             </div>
-            <div class="col-lg-6 col-12 ">
+            {/* <div class="col-lg-6 col-12 ">
                 <div class="pricing-monthly pricing-mon">
                     <div class="price-month">
                         <p>Monthly</p>
@@ -30,7 +30,7 @@ function Pricing() {
                         <p>Annually Save 30%</p>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-4 col-sm-6 col-12 d-flex">

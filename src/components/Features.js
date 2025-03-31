@@ -58,7 +58,7 @@ function Features({handleOpen}) {
                                     ))}
                                 </ul>
 
-                                <button onClick={()=>{handleOpen()}} className="req-btn">
+                                <button onClick={()=>{handleOpen()}} className="req-btn mb-2">
                                     Book a Demo →
                                 </button>
                             </div>

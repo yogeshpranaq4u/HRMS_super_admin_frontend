@@ -4,6 +4,7 @@ import axios from "axios"; // For API calls
 const baseUrl = "https://development-hrms-services.cvinfotechserver.com/hrms_backend/public/api"
 const DemoRequestModal = ({ show, handleClose }) => {
   // Form state
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -55,6 +56,7 @@ const DemoRequestModal = ({ show, handleClose }) => {
     if (!validateForm()) return;
 
     try {
+      setLoading(true)
       let data = JSON.stringify(formData);
       
       let config = {
@@ -66,11 +68,9 @@ const DemoRequestModal = ({ show, handleClose }) => {
         },
         data : data
       };
-      
       const response =await axios.request(config)
-      // const response = await axios.post("https://development-hrms-selection.cvinfotechserver.com/hrms_backend/public/api/request-demo", {...formData ,selection:JSON.stringify(formData.selection)});
       alert(response.data?.message||"Form submitted successfully!");
-      console.log(response.data);
+      // console.log(response.data);
       if(response.data?.success){
         setFormData({
           name: "",
@@ -82,17 +82,19 @@ const DemoRequestModal = ({ show, handleClose }) => {
           selection: [],
         })
       }
+      setLoading(false)
       handleClose(); // Close modal on success
     } catch (error) {
       console.error("Error submitting form", error);
       alert("Submission failed, please try again");
+      setLoading(false)
     }
   };
 
   return (
     <div className={`modal fade ${show ? "show d-block" : ""}`} tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered shadow">
-        <div className="modal-content shadow">
+        <div className="modal-content shadow" style={{zIndex:"2"}}>
           <div className="modal-header">
             <h5 className="modal-title fw-bold">Request a Demo</h5>
             <button type="button" className="btn-close" onClick={handleClose}></button>
@@ -101,7 +103,11 @@ const DemoRequestModal = ({ show, handleClose }) => {
           <div className="modal-body">
             <p className="text-muted text-start">Please fill the form for demo details</p>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e)=>{
+              if(!loading){
+                handleSubmit(e)
+              }}
+              }>
               {/* Name */}
               <div className="mb-3">
                 <label className="form-label">Your Name*</label>
@@ -168,7 +174,7 @@ const DemoRequestModal = ({ show, handleClose }) => {
 
               {/* Submit Button */}
               <button type="submit" className="btn btn-primary w-100">
-                Request Demo
+               {loading ? "Loading..." : "Request Demo"} 
               </button>
             </form>
           </div>

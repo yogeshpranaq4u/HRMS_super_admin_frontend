@@ -10,10 +10,10 @@ function Header({ handleOpen }) {
                     <div className="main-menu-wrapper">
                         <div className="menu-header">
                             <a href="index.html" className="menu-logo">
-                                <img src="assets/img/logo.svg" className="img-fluid" alt="Logo" />
+                                <img src="assets/img/logo.png" className="img-fluid" alt="Logo" />
                             </a>
-                            <a id="menu_close" className="menu-close" href="javascript:void(0);">
-                                <i className="fas fa-times"></i>
+                            <a id="menu_close" className="menu-close" >
+                                <i className="fas fa-times text-primary"></i>
                             </a>
                         </div>
                         <ul className="main-nav bg-trans">
@@ -36,9 +36,7 @@ function Header({ handleOpen }) {
                         <div className="try-free link mobile-head-menu">
                             <button
                                 onClick={() => {
-                                    console.log("clicked");
                                     handleOpen(true)
-
                                 }}
                                 type='button' className="req-btn"  >
                                 Request Demo →
@@ -50,7 +48,7 @@ function Header({ handleOpen }) {
                         <div className="res-center col-lg-3 col-sm-12 col-12">
                             <div className="site">
                                 <a id="mobile_btn" href="javascript:void(0);">
-                                    <span className="bar-icon-second">
+                                    <span className="bar-icon-second text-primary">
                                         <span></span>
                                         <span></span>
                                         <span></span>
