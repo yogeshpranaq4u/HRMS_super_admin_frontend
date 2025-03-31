@@ -1,8 +1,6 @@
 import React from 'react'
 
 function Header({ handleOpen }) {
-    // console.log("handleOpen" ,setShow);
-
     return (
         <header id="header" className="site-header home-header home-header-while header-land">
             <div className="container">
@@ -24,14 +22,9 @@ function Header({ handleOpen }) {
                                 <a href="#pricing">Pricing</a>
                             </li>
                             <li>
-                                <a href="#reviews">Reviews</a>
+                                <a href="#news">News</a>
                             </li>
-                            <li>
-                                <a href="#blog">Blog</a>
-                            </li>
-                            <li>
-                                <a href="#contact">Contact us</a>
-                            </li>
+                           
                         </ul>
                         <div className="try-free link mobile-head-menu">
                             <button
@@ -40,14 +33,13 @@ function Header({ handleOpen }) {
                                 }}
                                 type='button' className="req-btn"  >
                                 Request Demo →
-                                {/* <i class="fas fa-arrow-right"></i> */}
                             </button>
                         </div>
                     </div>
                     <div className="main-menu-head d-flex justify-content-between">
                         <div className="res-center col-lg-3 col-sm-12 col-12">
                             <div className="site">
-                                <a id="mobile_btn" href="javascript:void(0);">
+                                <a id="mobile_btn" >
                                     <span className="bar-icon-second text-primary">
                                         <span></span>
                                         <span></span>

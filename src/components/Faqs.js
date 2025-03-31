@@ -20,7 +20,7 @@ const FAQ = ({handleOpen}) => {
       <div className="faq-left">
         <h2>See Common Question and Answer</h2>
         <p>This FAQ section can help potential users better understand your SaaS HRMS and address their common concerns.</p>
-        <button onClick={()=>{handleOpen()}} className="btn btn-primary">Book a Demo →</button>
+        <button onClick={()=>{handleOpen()}} className="btn btn-primary mb-3">Book a Demo →</button>
       </div>
       <div className="faq-right">
         {faqData.map((item, index) => (
