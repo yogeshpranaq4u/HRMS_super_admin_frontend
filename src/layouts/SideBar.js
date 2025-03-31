@@ -171,7 +171,7 @@ function SideBar() {
                   }
                 >
                   <Link
-                    to="#"
+                    to="/demo-requests"
                     style={
                       activeMenu === "Demo" ? { color: "#007bff" } : {}
                     }
