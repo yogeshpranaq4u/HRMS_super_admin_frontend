@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Counter from "./Counter";
 
 
 const TestimonialOne = () => {
@@ -52,10 +53,10 @@ const TestimonialOne = () => {
     ];
 
     const statsData = [
-        { number: "32+", label: "Companies Globally" },
-        { number: "1832+", label: "Employee Database" },
-        { number: "39+", label: "Turnaround Time" },
-        { number: "19+", label: "Satisfied Clients" },
+        { number: "32", label: "Companies Globally" },
+        { number: "1832", label: "Employee Database" },
+        { number: "39", label: "Turnaround Time" },
+        { number: "19", label: "Satisfied Clients" },
     ];
 
 
@@ -69,7 +70,7 @@ const TestimonialOne = () => {
                                 className="col-md-3 col-sm-6"
                                 data-aos="fade-up"
                             >
-                                <h3 className="fw-bold text-white fs-28 m-0">{stat.number}</h3>
+                                <Counter target={Number(stat.number||100)} />
                                 <p className="fs-14 m-0">{stat.label}</p>
                             </div>
 

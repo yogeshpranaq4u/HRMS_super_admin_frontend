@@ -13,6 +13,7 @@ import Features from "./components/Features";
 function App() {
   const [show, setShow] = useState(false)
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     AOS.init({
@@ -31,13 +32,39 @@ function App() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  
+
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setPosition({ x: event.clientX, y: event.clientY });
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
   const handleOpen = (v) => {
     setShow(true)
   }
   return (
     <React.Fragment>
+      <div
+        style={{
+          position: "fixed",
+          top: position.y,
+          left: position.x,
+          width: "25px",
+          height: "25px",
+          backgroundColor: "rgb(87, 169, 255)",
+          borderRadius: "50%",
+          zIndex: 22,
+          pointerEvents: "none",
+          transform: "translate(-50%, -50%)",
+          transition: "transform 0.1s ease-out",
+        }}
+      />
       <div className="media-icons">
         <a href="https://wa.me/919600008844" className="whatsap-icon" target="_blank"><i className="fa-brands fa-whatsapp"></i></a>
         <a href="mailto:support@dreamstechnologies.com" className="mail-icon"><i className="fa-regular fa-envelope"></i></a>
@@ -172,7 +199,7 @@ function App() {
         <DemoRequestModal show={show} handleClose={() => { setShow(false) }} />
       </main>
       <div className="back-to-top">
-        <a className={`back-to-top-icon align-items-center justify-content-center d-flex ${showBackToTop ? "show" :""}`} href="#top"><i className="fa-solid fa-arrow-up"></i></a>
+        <a className={`back-to-top-icon align-items-center justify-content-center d-flex ${showBackToTop ? "show" : ""}`} href="#top"><i className="fa-solid fa-arrow-up"></i></a>
       </div>
     </React.Fragment>
   );
