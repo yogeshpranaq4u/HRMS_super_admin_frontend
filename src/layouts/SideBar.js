@@ -8,13 +8,13 @@ function SideBar() {
     <div className="sidebar" id="sidebar">
       <div className="sidebar-logo">
         <a href="index.html" className="logo logo-normal">
-          {/* <img src="assets/img/logo192.png" alt="Logo" /> */}
+          <img src="assets/img/logoNew.png" alt="Logo"  style={{width:200,height:50}}/>
         </a>
         <a href="index.html" className="logo-small">
-          <img src="assets/img/logo-small.svg" alt="Logo" />
+          <img src="assets/img/logoNew.png" alt="Logo" />
         </a>
         <a href="index.html" className="dark-logo">
-          <img src="assets/img/logo-white.svg" alt="Logo" />
+          <img src="assets/img/logoNew.png" alt="Logo" />
         </a>
       </div>
       {/* <div className="modern-profile p-3 pb-0">
@@ -70,7 +70,7 @@ function SideBar() {
                     </div>
                 </div>
             </div> */}
-      <div className="sidebar-inner slimscroll">
+      <div className="sidebar-inner slimscroll mt-3">
         <div id="sidebar-menu" className="sidebar-menu">
           <ul>
             <li className="menu-title">
