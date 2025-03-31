@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios"; // For API calls
 
+const baseUrl = "https://development-hrms-services.cvinfotechserver.com/hrms_backend/public/api"
 const DemoRequestModal = ({ show, handleClose }) => {
   // Form state
   const [formData, setFormData] = useState({
@@ -51,26 +52,15 @@ const DemoRequestModal = ({ show, handleClose }) => {
   // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (!validateForm()) return;
+    if (!validateForm()) return;
 
     try {
-      let data = JSON.stringify({
-        "name": "Prashant",
-        "email": "pk@gmail.com",
-        "phone_no": "9876543210",
-        "company_name": "Demo Company",
-        "company_domain": "democompany.com",
-        "company_size": "1-10",
-        "selection": [
-          "hrms",
-          "invoice"
-        ]
-      });
+      let data = JSON.stringify(formData);
       
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://development-hrms-services.cvinfotechserver.com/hrms_backend/public/api/request-demo',
+        url: `${baseUrl}/request-demo`,
         headers: { 
           'Content-Type': 'application/json'
         },
@@ -78,11 +68,20 @@ const DemoRequestModal = ({ show, handleClose }) => {
       };
       
       const response =await axios.request(config)
-      
-
       // const response = await axios.post("https://development-hrms-selection.cvinfotechserver.com/hrms_backend/public/api/request-demo", {...formData ,selection:JSON.stringify(formData.selection)});
-      alert("Form submitted successfully!");
+      alert(response.data?.message||"Form submitted successfully!");
       console.log(response.data);
+      if(response.data?.success){
+        setFormData({
+          name: "",
+          email: "",
+          phone_no: "",
+          company_name: "",
+          company_domain:"democompany.com",
+          company_size: "",
+          selection: [],
+        })
+      }
       handleClose(); // Close modal on success
     } catch (error) {
       console.error("Error submitting form", error);
@@ -100,7 +99,7 @@ const DemoRequestModal = ({ show, handleClose }) => {
           </div>
 
           <div className="modal-body">
-            <p className="text-muted text-center">Please fill the form for demo details</p>
+            <p className="text-muted text-start">Please fill the form for demo details</p>
 
             <form onSubmit={handleSubmit}>
               {/* Name */}
@@ -121,7 +120,7 @@ const DemoRequestModal = ({ show, handleClose }) => {
 
               {/* phone_no */}
               <div className="mb-3">
-                <label className="form-label">Your phone_no*</label>
+                <label className="form-label">Your Phone No *</label>
                 <div className="input-group">
                   <span className="input-group-text">🇮🇳 +91</span>
                   <input type="tel" name="phone_no" className="form-control" placeholder="Enter phone_no number"
