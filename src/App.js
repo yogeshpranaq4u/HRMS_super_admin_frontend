@@ -86,10 +86,10 @@ function App() {
                 <div className="col-lg-5 col-sm-5 col-12">
                   <div className="process-content">
 
-                    <h1 className="mb-2 text-white aos-init aos-animate" data-aos="fade-up" data-aos-duration="1500">
+                    <h1 className="mb-2 text-dark aos-init aos-animate" data-aos="fade-up" data-aos-duration="1500">
                       Future-Ready HR for a Dynamic Workplace.
                     </h1>
-                    <p data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300" data-aos-once="true" className="text-white">Prepare your HR department for the future with our adaptable HRMS, designed to meet the needs of a dynamic workplace and foster a culture of continuous improvement.</p>
+                    <p data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300" data-aos-once="true" className="text-gray">Prepare your HR department for the future with our adaptable HRMS, designed to meet the needs of a dynamic workplace and foster a culture of continuous improvement.</p>
 
                     {/* <a href="#" className="d-inline-flex align-items-center btn btn-primary aos-init aos-animate" data-aos="fade-up" data-aos-duration="1500" data-aos-delay="400" data-aos-once="true">Book a Demo <i className="ti ti-arrow-right ms-1"></i></a> */}
                     <button className="req-btn" onClick={handleOpen} data-aos="fade-up" data-aos-duration="1500" data-aos-delay="400" data-aos-once="true">Book a Demo →</button>

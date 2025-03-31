@@ -6,7 +6,7 @@ function Testimonial() {
             <div class="container">
                 <div class="row" data-aos="fade-up" data-aos-duration="2000">
                     <div class="common-title-sections">
-                        <h3 className='text-white m-0'>Essential Features for HRMS SaaS Solutions
+                        <h3 className='text-dark m-0'>Essential Features for HRMS SaaS Solutions
                         </h3>
                     </div>
                 </div>

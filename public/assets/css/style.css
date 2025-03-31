@@ -2075,9 +2075,11 @@ ul.nav.nav-tabs.clients {
 .nav-tabs .nav-link.active {
     border: unset;
     box-shadow: 0px 0px 80px 0px #0000001a;
-    background: linear-gradient(267deg, #ff9b44 0%, #047EFF 100%);
-    background: -webkit-linear-gradient(267deg, #ff9b44 0%, #047EFF 100%);
-    background: -moz-linear-gradient(267deg, #ff9b44 0%, #047EFF 100%);
+    /* background: linear-gradient(267deg, #ff9b44 0%, #047EFF 100%);
+    background: -webkit-linear-gradient(267deg, #ff9b44 0%, #047EFF 100%); */
+    background:#047EFF;
+    /* background: */
+     /* -moz-linear-gradient(267deg, #ff9b44 0%, #047EFF 100%); */
     color: #ffffff !important;
     line-height: 1.2;
     border-radius: 5px;
@@ -2909,17 +2911,14 @@ nav.land-menu.land3 ul li a {
 }
 nav.land-menu ul li a {
     line-height: 1.2;
-    color: #fff;
+    color: #000;
     font-weight: 600;
 }
 nav.land-menu ul li a:hover {
     color: #252c4b;
 }
 .header-land {
-    background: radial-gradient(56.9% 327.75% at 45.42% 59.81%, #3698ff 0%, rgb(54, 152, 255) 44.58%, rgba(172, 172, 172, 0.02) 100%);;
-
-    /* background: radial-gradient(56.9% 327.75% at 45.42% 59.81%, rgba(255, 155, 68, 0.11) 0%, rgba(249, 212, 215, 0.33) 44.58%, rgba(172, 172, 172, 0.02) 100%); */
-    /* padding: 15px auto; */
+    background: rgb(230, 242, 255)
 }
 .main-menu-head {
     align-items: center;
@@ -3113,7 +3112,10 @@ input.formcontrol {
     top: 0px;
     /* padding-top: 80px; */
     padding-bottom: 65px;
-    background: radial-gradient(56.9% 327.75% at 45.42% 59.81%, #3698ff 0%, rgb(54, 152, 255) 44.58%, rgba(172, 172, 172, 0.02) 100%);;
+    background:rgb(230, 242, 255)
+     /* radial-gradient(56.9% 327.75% at 45.42% 59.81%, #3698ff 0%, rgb(54, 152, 255) 44.58%, rgba(172, 172, 172, 0.02) 100%);; */
+
+
 }
 .home-section-vector-left-top {
     position: absolute;

@@ -9,9 +9,10 @@
 }
 
 .main-testimonial-slides {
-  background: url("./assets/essential-feature-bg.png");
   /* background-color: #FEF1EB; */
-  background: radial-gradient(56.9% 327.75% at 45.42% 59.81%, rgb(87, 169, 255) 0%, #57a9ff 44.58%, rgba(172, 172, 172, 0.02) 100%);
+  background: rgb(230, 242, 255);
+  background-image: url("./assets/essential-feature-bg.png");
+  /* radial-gradient(56.9% 327.75% at 45.42% 59.81%, rgb(87, 169, 255) 0%, #57a9ff 44.58%, rgba(172, 172, 172, 0.02) 100%); */
   ;
 
 }
@@ -301,7 +302,8 @@ h2 {
 
 .bg-plight {
   /* background: #FEF1EB; */
-  background: linear-gradient(275.55deg, #047eff 0%, rgb(4, 126, 255) 100%);
+  background:rgb(230, 242, 255);
+   /* linear-gradient(275.55deg, #047eff 0%, rgb(4, 126, 255) 100%); */
 }
 
 .testimonial-slider .slick-prev,
@@ -508,7 +510,9 @@ h2 {
   -ms-transition: all 0.5s ease;
   transition: all 0.5s ease;
 }
-
+.site-branding-logo img {
+  max-width: 110px;
+}
 .back-to-top-icon.show {
   opacity: 1;
   -webkit-transition: all 0.5s ease;
