@@ -1,22 +1,19 @@
 import React from 'react'
 
-function Header() {
+function Header({handleTogel}) {
     const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
 
     return (
         <div className="header">
             <div className="main-header">
-
-                <div className="header-left">
+                {/* <div className="header-left">
                     <a href="index.html" className="logo">
-                        <img src="assets/img/logo.svg" alt="Logo" />
+                        <img src="assets/img/logoNew.png" alt="Logo" />
                     </a>
-                    <a href="index.html" className="dark-logo">
-                        <img src="assets/img/logo-white.svg" alt="Logo" />
-                    </a>
-                </div>
+                   
+                </div> */}
 
-                <a id="mobile_btn" className="mobile_btn" href="#sidebar">
+                <a  className="mobile_btn" onClick={()=>{handleTogel()}}>
                     <span className="bar-icon">
                         <span></span>
                         <span></span>
