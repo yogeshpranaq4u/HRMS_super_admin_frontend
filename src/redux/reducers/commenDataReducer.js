@@ -2,7 +2,7 @@ import { types } from "../constants/types";
 
 // reducers/postReducer.js
 const initialState = {
-  dashData: [],
+  dashData: {},
   profileData:{},
   loading: false,
   error: null,
@@ -17,6 +17,9 @@ const commenDataReducer = (state = initialState, action) => {
         loading: true
       };
     case types.GET_DASHBOARDATA_SUCCESS:
+      console.log("action.payload", action.payload);
+      // console.log("state", state);
+      // console.log("state", state?.dashData); 
       return {
         ...state,
         loading: false,

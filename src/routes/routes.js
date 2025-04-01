@@ -14,7 +14,7 @@ const allRoutes = [
     {
         element:<Dashboard/>,
         path:"/",
-        isPrivate:false
+        isPrivate:true
     },
     {
         element:<Company/>,
