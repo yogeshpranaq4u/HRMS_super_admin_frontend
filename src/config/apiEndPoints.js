@@ -14,5 +14,6 @@ export const ImagePath =
 export const Api = {
     //Admin Api End   Points
     LOGIN: "login", //done
+    DASHBOARD_STATS:'dashboard/stats'
 
 };

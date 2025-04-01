@@ -2,7 +2,7 @@ import React from 'react'
 
 function Header() {
     const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
-    // console.log("details", details);
+
     return (
         <div className="header">
             <div className="main-header">
@@ -32,7 +32,7 @@ function Header() {
                                 <i className="ti ti-arrow-bar-to-left"></i>
                             </a>
                         </div>
-                        <div className="sidebar sidebar-horizontal" id="horizontal-single">
+                        {/* <div className="sidebar sidebar-horizontal" id="horizontal-single">
                             <div className="sidebar-menu">
                                 <div className="main-menu">
                                     <ul className="nav-menu">
@@ -888,7 +888,7 @@ function Header() {
                                     </ul>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
 
                         <div className="d-flex align-items-center">
@@ -900,7 +900,7 @@ function Header() {
                                 </a>
                                 <div className="dropdown-menu dropdown-menu-end notification-dropdown p-4">
                                     <div className="d-flex align-items-center justify-content-between border-bottom p-0 pb-3 mb-3">
-                                        <h4 className="notification-title">Notifications (2)</h4>
+                                        {/* <h4 className="notification-title">Notifications (2)</h4> */}
                                         <div className="d-flex align-items-center">
                                             <a href="#" className="text-primary fs-15 me-3 lh-1">Mark all as read</a>
                                             <div className="dropdown">
@@ -1015,8 +1015,8 @@ function Header() {
                                                     <img src="assets/img/profiles/avatar-12.jpg" alt="img" />
                                                 </span>
                                                 <div>
-                                                    <h5 className="mb-0">Kevin Larry</h5>
-                                                    <p className="fs-12 fw-medium mb-0">warren@example.com</p>
+                                                    <h5 className="mb-0">{details?.user?.name}</h5>
+                                                    <p className="fs-12 fw-medium mb-0">{details?.user?.email}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1048,7 +1048,7 @@ function Header() {
                 </div>
 
 
-                <div className="dropdown mobile-user-menu">
+                {/* <div className="dropdown mobile-user-menu">
                     <a href="javascript:void(0);" className="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         <i className="fa fa-ellipsis-v"></i>
                     </a>
@@ -1057,7 +1057,7 @@ function Header() {
                         <a className="dropdown-item" href="profile-settings.html">Settings</a>
                         <a className="dropdown-item" href="login.html">Logout</a>
                     </div>
-                </div>
+                </div> */}
 
 
             </div>
