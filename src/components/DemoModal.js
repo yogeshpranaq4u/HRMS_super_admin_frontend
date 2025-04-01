@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios"; // For API calls
 
-const baseUrl = "https://development-hrms-services.cvinfotechserver.com/hrms_backend/public/api"
+export const baseUrl = "https://development-hrms-services.cvinfotechserver.com/hrms_backend/public/api"
 const DemoRequestModal = ({ show, handleClose }) => {
   // Form state
   const [loading, setLoading] = useState(false)
