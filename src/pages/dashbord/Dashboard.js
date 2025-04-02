@@ -14,10 +14,8 @@ import {
   getRecenttransactionData,
 } from "../../redux/actions/dashBoardActions";
 
-
 function Dashboard() {
   const details = JSON.parse(sessionStorage.getItem("userDetails")) || {};
-
 
   const dispatch = useDispatch();
   const error = useSelector((state) => state?.commenData?.error);
@@ -40,10 +38,9 @@ function Dashboard() {
     (state) => state?.commenData?.recentTransaction
   );
 
-
   useEffect(() => {
     dispatch(getDashBoardData("all"));
-    dispatch(getPurchaseSummaryData("all"));
+    dispatch(getPurchaseSummaryData());
     dispatch(getPendingDemoRequestData("all"));
     dispatch(getRecentRegistrationData("all"));
     dispatch(getPlantExpireData("all"));
@@ -156,8 +153,17 @@ function Dashboard() {
           </div>
           <div className="row">
             <Card2 data={{ title: "Recent Tickets", type: "Tickets" }} />
-            <Card2 data={{ title: "Recently Demo", type: "Demo",data:pendingDemoRequestsData }} />
-            {/* <PlanChartCard  data={purchaseSummaryData}/> */}
+            <Card2
+              data={{
+                title: "Recently Demo",
+                type: "Demo",
+                data: pendingDemoRequestsData,
+              }}
+            />
+            {console.log("purchaseSummaryData", purchaseSummaryData.length )}
+            {purchaseSummaryData.length > 0 && (
+              <PlanChartCard data={purchaseSummaryData} />
+            )}
           </div>
           <div className="row">
             <Card2
