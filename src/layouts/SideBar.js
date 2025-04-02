@@ -18,22 +18,22 @@ function SideBar() {
     {
       title: "Tickets",
       pathname: "#",
-      iconName: "ti ti-layout-grid-add"
+      iconName: "ti ti-report"
     },
     {
       title: "Demo",
       pathname: "/demo-requests",
-      iconName: "ti ti-layout-grid-add"
+      iconName: "ti ti-message-circle"
     },
     {
       title: "Payments",
       pathname: "#",
-      iconName: "ti ti-layout-grid-add"
+      iconName: "ti ti-credit-card-pay"
     },
     {
       title: "Manage Policy",
       pathname: "#",
-      iconName: "ti ti-layout-grid-add"
+      iconName: "ti ti-device-desktop-cog"
     },
   ]
 
