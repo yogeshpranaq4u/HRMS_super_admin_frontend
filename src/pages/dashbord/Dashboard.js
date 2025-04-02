@@ -157,7 +157,7 @@ function Dashboard() {
           <div className="row">
             <Card2 data={{ title: "Recent Tickets", type: "Tickets" }} />
             <Card2 data={{ title: "Recently Demo", type: "Demo",data:pendingDemoRequestsData }} />
-            <PlanChartCard  data={purchaseSummaryData}/>
+            {/* <PlanChartCard  data={purchaseSummaryData}/> */}
           </div>
           <div className="row">
             <Card2
