@@ -4,8 +4,10 @@ import allRoutes from "./routes/routes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./routes/PrivateRoute";
+
 function App() {
   return (
+
     <React.Fragment>
       <ToastContainer />
       <BrowserRouter>
