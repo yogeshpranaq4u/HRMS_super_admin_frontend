@@ -10,7 +10,7 @@ function BreadCrums({
                 <nav>
                     <ol className="breadcrumb mb-0">
                         <li className="breadcrumb-item">
-                            <a href="index.html"><i className="ti ti-smart-home"></i></a>
+                            <a href="#"><i className="ti ti-smart-home"></i></a>
                         </li>
                         {
                             data?.map((item, index) => {
