@@ -15,17 +15,17 @@ const allRoutes = [
     {
         element:<Dashboard/>,
         path:"/",
-        isPrivate:false
+        isPrivate:true
     },
     {
         element:<Company/>,
         path:"/company",
-        isPrivate:false
+        isPrivate:true
     },
     {
         element:<DemoRequest/>,
         path:"/demo-requests",
-        isPrivate:false
+        isPrivate:true
     },
     
 ]
