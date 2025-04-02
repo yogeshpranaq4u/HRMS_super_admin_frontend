@@ -6,7 +6,7 @@ import { getDemoRequestData } from '../redux/actions/dashBoardActions'
 function DemoRequest() {
     const dispatch = useDispatch()
     const allRequest = useSelector((state)=>state.commenData.demoRequestsData)
-    // console.log("data " ,allRequest);
+    console.log("data " ,allRequest);
     useEffect(() => {
         dispatch(getDemoRequestData("all"))
     }, [])

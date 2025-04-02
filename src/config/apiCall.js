@@ -7,10 +7,10 @@ const callApi = (url, method, payload ,token) => {
             method: method,
             url: url,
             baseURL: `${BaseUrl}`,
-            headers: {
-                // 'Content-Type': 'application/json',
-                "Authorization":`Bearer ${token}`
-            },
+            // headers: {
+            //     // 'Content-Type': 'application/json',
+            //     "Authorization":`Bearer ${token}`
+            // },
             data: payload
         }:{
             method: method,
