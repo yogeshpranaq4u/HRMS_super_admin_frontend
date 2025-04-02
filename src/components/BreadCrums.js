@@ -15,7 +15,7 @@ function BreadCrums({
                         {
                             data?.map((item, index) => {
                                 return (
-                                    <li className="breadcrumb-item">
+                                    <li key={index} className="breadcrumb-item">
                                         {item?.title||"test"}
                                     </li>
                                 )
