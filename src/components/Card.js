@@ -3,6 +3,7 @@ import React from "react";
 const Card = ({
  data
 }) => {
+
   return (
     <div className="col-xl-3 col-sm-6 d-flex">
       <div className="card flex-fill">
