@@ -60,7 +60,7 @@ export function* getPurchaseSummaryAction(action) {
       null,
       userDetails?.token
     );
-console.log("responseaaaaa", response);
+
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
@@ -113,7 +113,7 @@ export function* getPendingDemoRequestAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
-          console.log("responseaaaaa", response);
+   
           yield put({
             type: types.GET_PENDING_DEMO_REQUEST_SUCCESS,
             payload: response?.data,
@@ -159,7 +159,7 @@ export function* getRecentRegistrationAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
-          console.log("responseaaaaa", response);
+       
           yield put({
             type: types.GET_RECENT_REGISTRATIONS_REQUEST_SUCCESS,
             payload: response?.data,
@@ -208,7 +208,7 @@ export function* getPlantExpireDataAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
-          console.log("responseaaaaa", response);
+        
           yield put({
             type: types.GET_PLAN_EXPIRE_REQUEST_SUCCESS,
             payload: response?.data,
@@ -254,7 +254,7 @@ export function* getRecentTransactionAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
-          console.log("responseaaaaa", response);
+        
           yield put({
             type: types.GET_RECENT_TRANSACTION_REQUEST_SUCCESS,
             payload: response?.data,

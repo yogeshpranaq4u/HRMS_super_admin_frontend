@@ -3,6 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import { Link } from "react-router-dom";
 
 const PlanChartCard = ({ data }) => {
+  {console.log("purchaseSummaryData", data)}
   const [PlanChart] = useState({
     chart: {
       height: 240,
@@ -92,7 +93,7 @@ const PlanChartCard = ({ data }) => {
           {data?.planSummary?.map((plan, index) => (
             <div className="d-flex align-items-center justify-content-between mb-2">
               <p className="f-13 mb-0">
-                <i
+                {/* <i
                   className={`ti ti-circle-filled me-1 ${
                     plan?.plan_name === "Basic"
                       ? "text-blue-500"
@@ -102,7 +103,7 @@ const PlanChartCard = ({ data }) => {
                       ? "text-yellow-500"
                       : "text-gray-400"
                   }`}
-                />
+                /> */}
                 {plan?.plan_name}
               </p>
               <p className="f-13 fw-medium text-gray-9">
