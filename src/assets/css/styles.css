@@ -17,3 +17,60 @@
 .slide-nav .sidebar .sidebar-menu {
     margin-top: 1px;
 }
+
+.sv-card-body {
+    overflow-x: scroll;
+}
+
+.sv-dataTables_paginate .dataTables_paginate{
+    margin-top: 0px !important;
+}
+
+.demo-status {
+    background: #e4e1e18c;
+    padding: 5px;
+    border-radius: 3px;
+    color: #000000;
+}
+.demo-status.not-connected {
+    background: #E70D0D1A;
+    color: #E70D0D;
+}
+.demo-status.pending {
+background: #1AD70133;
+color: #1AD701;
+}
+
+.badge.badge-xs {
+    padding: 4px 8px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Tooltip text */
+.tooltip::after {
+    content: attr(data-tooltip); /* Get text from custom attribute */
+    position: absolute;
+    background: black;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    bottom: 150%; /* Position above the element */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Show tooltip on hover */
+.tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+}

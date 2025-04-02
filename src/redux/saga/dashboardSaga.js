@@ -292,6 +292,7 @@ export function* watchGetRecentTransactionAction() {
 
 export function* getDemoRequestsAction(action) {
   try {
+        // console.log("userDetails" , userDetails);
     const response = yield call(
       callApi,
       "request-demo",
@@ -303,7 +304,7 @@ export function* getDemoRequestsAction(action) {
     if (response.success && response.valid) {
       yield put({
         type: types.GET_DEMOREQUEST_SUCCESS,
-        payload: response?.data,
+        payload: response,
       });
     }
   } catch (error) {
