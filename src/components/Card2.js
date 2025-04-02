@@ -1,6 +1,7 @@
 import React from "react";
 
 const Card2 = ({ data }) => {
+  // console.log("data", data);
 
   return (
     <div className="col-xxl-4 col-xl-12 d-flex">

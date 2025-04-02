@@ -60,7 +60,7 @@ export function* getPurchaseSummaryAction(action) {
       null,
       userDetails?.token
     );
-
+console.log("responseaaaaa", response);
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
