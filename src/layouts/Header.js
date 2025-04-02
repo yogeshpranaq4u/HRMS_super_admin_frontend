@@ -1035,7 +1035,11 @@ function Header({handleTogel}) {
                                             </a>
                                         </div>
                                         <div className="card-footer py-1">
-                                            <a className="dropdown-item d-inline-flex align-items-center p-0 py-2" href="login.html"><i className="ti ti-login me-2"></i>Logout</a>
+                                            <a className="dropdown-item d-inline-flex align-items-center p-0 py-2" 
+                                            onClick={()=>{
+                                                sessionStorage.clear()
+                                                window.location = "/login"                                            }}
+                                            ><i className="ti ti-login me-2"></i>Logout</a>
                                         </div>
                                     </div>
                                 </div>

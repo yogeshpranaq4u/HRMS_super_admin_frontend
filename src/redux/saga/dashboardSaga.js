@@ -24,10 +24,11 @@ export function* watchGetDashDataAction() {
 
 export function* getDemoRequestsAction(action) {
     try {
+        // console.log("userDetails" , userDetails);
         const response = yield call(callApi, "request-demo", "GET", "", userDetails?.token) 
         // console.log(response , "<<<<<sdf");
         if (response.success && response.valid) {
-                yield put({ type: types.GET_DEMOREQUEST_SUCCESS, payload: response?.data })
+                yield put({ type: types.GET_DEMOREQUEST_SUCCESS, payload: response })
             }
         } catch (error) {
         // console.log(error , "<<<<<sdf error");

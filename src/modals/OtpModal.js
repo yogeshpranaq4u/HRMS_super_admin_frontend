@@ -50,7 +50,7 @@ const OtpModal = ({ data }) => {
                 }
             );
 
-            console.log("response" ,response)
+            // console.log("response" ,response)
             if (response?.data?.success) {
                 toast.success(response?.data?.message, {
                     position: "top-center",
@@ -111,7 +111,8 @@ const OtpModal = ({ data }) => {
                     position: "top-center",
                     autoClose: 1500,
                 });
-                navigate("/");
+                // navigate("/");
+                window.location = "/"
             }
         } catch (error) {
             setLoading(false);
