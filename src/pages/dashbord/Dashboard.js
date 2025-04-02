@@ -17,7 +17,7 @@ import {
 
 function Dashboard() {
   const details = JSON.parse(sessionStorage.getItem("userDetails")) || {};
-  console.log("details", details);
+
 
   const dispatch = useDispatch();
   const error = useSelector((state) => state?.commenData?.error);
@@ -26,6 +26,7 @@ function Dashboard() {
   const purchaseSummaryData = useSelector(
     (state) => state?.commenData?.purchaseSummaryData
   );
+
   const pendingDemoRequestsData = useSelector(
     (state) => state?.commenData?.pendingDemoRequestsData
   );
@@ -38,7 +39,7 @@ function Dashboard() {
   const recentTransaction = useSelector(
     (state) => state?.commenData?.recentTransaction
   );
-  console.log("purchaseSummaryData", purchaseSummaryData);
+
 
   useEffect(() => {
     dispatch(getDashBoardData("all"));
@@ -155,7 +156,7 @@ function Dashboard() {
           </div>
           <div className="row">
             <Card2 data={{ title: "Recent Tickets", type: "Tickets" }} />
-            <Card2 data={{ title: "Recently Demo", type: "Demo" }} />
+            <Card2 data={{ title: "Recently Demo", type: "Demo",data:pendingDemoRequestsData }} />
             <PlanChartCard  data={purchaseSummaryData}/>
           </div>
           <div className="row">
@@ -163,7 +164,7 @@ function Dashboard() {
               data={{
                 title: "Recent Transactions",
                 type: "Transactions",
-                data: recentTransaction,
+                // data: recentTransaction,
               }}
             />
             <Card2

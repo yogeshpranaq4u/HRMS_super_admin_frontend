@@ -3,7 +3,6 @@ import ReactApexChart from "react-apexcharts";
 import { Link } from "react-router-dom";
 
 const PlanChartCard = ({ data }) => {
-  console.log("data", data?.planSummary);
   const [PlanChart] = useState({
     chart: {
       height: 240,
@@ -12,7 +11,7 @@ const PlanChartCard = ({ data }) => {
         show: false,
       },
     },
-    colors: ["#1B84FF","#F26522", "#FFC107", ],
+    colors: ["#1B84FF", "#F26522", "#FFC107"],
     series: data?.planSummary?.map((plan) => plan?.purchase_percentage),
     labels: data?.planSummary?.map((plan) => plan?.plan_name),
     plotOptions: {
@@ -86,7 +85,7 @@ const PlanChartCard = ({ data }) => {
         <div className="card-body">
           <ReactApexChart
             options={PlanChart}
-            series={PlanChart.series}
+            series={PlanChart?.series}
             type="donut"
             height={240}
           />
@@ -95,11 +94,11 @@ const PlanChartCard = ({ data }) => {
               <p className="f-13 mb-0">
                 <i
                   className={`ti ti-circle-filled me-1 ${
-                    plan.plan_name === "Basic"
+                    plan?.plan_name === "Basic"
                       ? "text-blue-500"
-                      : plan.plan_name === "Advance"
+                      : plan?.plan_name === "Advance"
                       ? "text-orange-500"
-                      : plan.plan_name === "Pro"
+                      : plan?.plan_name === "Pro"
                       ? "text-yellow-500"
                       : "text-gray-400"
                   }`}
@@ -107,8 +106,8 @@ const PlanChartCard = ({ data }) => {
                 {plan?.plan_name}
               </p>
               <p className="f-13 fw-medium text-gray-9">
-                {" "}
-                {Number(plan.purchase_percentage.toFixed(2))}%
+          
+                {Number(plan?.purchase_percentage?.toFixed(2))}%
               </p>
             </div>
           ))}
