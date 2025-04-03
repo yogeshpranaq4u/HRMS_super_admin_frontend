@@ -318,3 +318,35 @@ export function* getDemoRequestsAction(action) {
 export function* watchDemoRequestsAction() {
   yield takeLatest(types.GET_DEMOREQUEST_REQUEST, getDemoRequestsAction);
 }
+
+
+
+
+export function* getPlansAction(action) {
+  try {
+        // console.log("userDetails" , userDetails);
+    const response = yield call(
+      callApi,
+      "get_AllPlans",
+      "GET",
+      "",
+      userDetails?.token
+    );
+
+    if (response.success && response.valid) {
+      yield put({
+        type: types.GET_PLANS_SUCCESS,
+        payload: response,
+      });
+    }
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message || error.message || "server error"
+    );
+    yield put({ type: types.GET_PLANS_FAILED, error: error.response });
+  }
+}
+
+export function* watchPlansAction() {
+  yield takeLatest(types.GET_PLANS_REQUEST, getPlansAction);
+}

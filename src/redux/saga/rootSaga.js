@@ -7,6 +7,7 @@ import {
   watchGetRecentTransactionAction,
   watchGetPlantExpireDataAction,
   watchGetRecentRegistrationAction,
+  watchPlansAction,
 } from "./dashboardSaga";
 
 function* rootSaga() {
@@ -19,6 +20,7 @@ function* rootSaga() {
     watchGetRecentRegistrationAction(),
 
     watchDemoRequestsAction(),
+    watchPlansAction(),
   ]);
 }
 

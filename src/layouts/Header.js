@@ -889,7 +889,7 @@ function Header({handleTogel}) {
 
 
                         <div className="d-flex align-items-center">
-                            <div className="me-1 notification_item">
+                            {/* <div className="me-1 notification_item">
                                 <a href="#" className="btn btn-menubar position-relative me-1" id="notification_popup"
                                     data-bs-toggle="dropdown">
                                     <i className="ti ti-bell"></i>
@@ -897,7 +897,6 @@ function Header({handleTogel}) {
                                 </a>
                                 <div className="dropdown-menu dropdown-menu-end notification-dropdown p-4">
                                     <div className="d-flex align-items-center justify-content-between border-bottom p-0 pb-3 mb-3">
-                                        {/* <h4 className="notification-title">Notifications (2)</h4> */}
                                         <div className="d-flex align-items-center">
                                             <a href="#" className="text-primary fs-15 me-3 lh-1">Mark all as read</a>
                                             <div className="dropdown">
@@ -997,9 +996,9 @@ function Header({handleTogel}) {
                                         <a href="activity.html" className="btn btn-primary w-100">View All</a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="dropdown profile-dropdown">
-                                <a href="javascript:void(0);" className="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+                                <a  className="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
                                     <span className="avatar avatar-sm online">
                                         <img src="assets/img/profiles/avatar-12.jpg" alt="Img" className="img-fluid rounded-circle" />
                                     </span>
@@ -1019,10 +1018,10 @@ function Header({handleTogel}) {
                                         </div>
                                         <div className="card-body">
                                             <a className="dropdown-item d-inline-flex align-items-center p-0 py-2"
-                                                href="profile.html">
+                                                href="#">
                                                 <i className="ti ti-user-circle me-1"></i>My Profile
                                             </a>
-                                            <a className="dropdown-item d-inline-flex align-items-center p-0 py-2" href="bussiness-settings.html">
+                                            {/* <a className="dropdown-item d-inline-flex align-items-center p-0 py-2" href="bussiness-settings.html">
                                                 <i className="ti ti-settings me-1"></i>Settings
                                             </a>
 
@@ -1032,7 +1031,7 @@ function Header({handleTogel}) {
                                             </a>
                                             <a className="dropdown-item d-inline-flex align-items-center p-0 py-2" href="knowledgebase.html">
                                                 <i className="ti ti-question-mark me-1"></i>Knowledge Base
-                                            </a>
+                                            </a> */}
                                         </div>
                                         <div className="card-footer py-1">
                                             <a className="dropdown-item d-inline-flex align-items-center p-0 py-2" 

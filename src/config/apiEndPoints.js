@@ -15,6 +15,9 @@ export const ImagePath =
 export const Api = {
   //Admin Api End   Points
   LOGIN: "login", //done
+  REGISTERCOMPANY: "companies", //done
+  GETPLANS: "get_AllPlans", //done
+  UPDATEDEMOSTATUS: "update_Status", //done
   DASHBOARD_STATS: "dashboard/stats",
   DASHBOARD_PLAN_SUMMARY: "dashboard/plan-purchase-summary",
   DASHBOARD_PENDING_DEMO_REQUEST: "dashboard/pending-demo-requests",
