@@ -31,12 +31,13 @@
     padding: 5px;
     border-radius: 3px;
     color: #000000;
+    font-weight: 500;
 }
 .demo-status.not-connected {
     background: #E70D0D1A;
     color: #E70D0D;
 }
-.demo-status.pending {
+.demo-status.Pending {
 background: #1AD70133;
 color: #1AD701;
 }
@@ -84,3 +85,46 @@ color: #1AD701;
     height: 80vh;
     z-index: 4;
 }
+
+.company-info {
+    background: #f8f9fa;
+    border-radius: 5px;
+    padding: 15px;
+    position: relative;
+  }
+  
+  .status-badge {
+    background: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+  }
+  
+  .section-title {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  .custom-select {
+    color: #111827 !important;
+    line-height: 38px;
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    border: 1px solid #ccc;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .btn.btn-primary{
+    background: #047EFF;
+    border-color: #047EFF;
+  }
+  

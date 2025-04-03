@@ -4,6 +4,7 @@ import Dashboard from "../pages/dashbord/Dashboard";
 import DemoRequest from "../pages/DemoRequest";
 import Landing from "../pages/Landing";
 import Login from "../pages/Login";
+import Tickets from "../pages/Tickets";
 
 
 const allRoutes = [
@@ -25,6 +26,11 @@ const allRoutes = [
     {
         element:<DemoRequest/>,
         path:"/demo-requests",
+        isPrivate:true
+    },
+    {
+        element:<Tickets/>,
+        path:"/tickets",
         isPrivate:true
     },
     

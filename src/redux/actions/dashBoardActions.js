@@ -4,6 +4,10 @@ export const getDashBoardData = (data) => ({
     type: types.GET_DASHBOARDATA_REQUEST,
     payload:data
 });
+export const getAllPlans = (data) => ({
+    type: types.GET_PLANS_REQUEST,
+    payload:data
+});
 
 export const getPurchaseSummaryData = (data) => ({
     type: types.GET_PURCHASE_SUMMARY_REQUEST,

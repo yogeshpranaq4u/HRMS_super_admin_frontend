@@ -15,11 +15,11 @@ function SideBar() {
       iconName: "ti ti-building"
 
     },
-    {
-      title: "Tickets",
-      pathname: "#",
-      iconName: "ti ti-report"
-    },
+    // {
+    //   title: "Tickets",
+    //   pathname: "/tickets",
+    //   iconName: "ti ti-report"
+    // },
     {
       title: "Demo",
       pathname: "/demo-requests",
