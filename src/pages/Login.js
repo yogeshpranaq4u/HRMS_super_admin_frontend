@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import VideoFile from "../assets/images/Splash.mp4";
 import OtpModal from "../modals/OtpModal";
 import CustomAlert from "../components/Alert";
-import { BaseUrl } from "../config/apiEndPoints";
+import { Api, BaseUrl } from "../config/apiEndPoints";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -53,7 +53,7 @@ const Login = () => {
       setLoading(true);
       let config = {
         method: "post",
-        url: `${BaseUrl}/superadmin/login`,
+        url: `${BaseUrl}${Api.LOGIN}`,
         headers: {
           "Content-Type": "application/json",
         },
