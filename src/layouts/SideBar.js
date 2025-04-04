@@ -32,7 +32,7 @@ function SideBar() {
     },
     {
       title: "Manage Policy",
-      pathname: "#",
+      pathname: "/manage-policy",
       iconName: "ti ti-device-desktop-cog"
     },
   ]

@@ -12,7 +12,7 @@ import { toast } from 'react-toastify'
 import RegisterFromDemo from '../components/RegisterFromDemo'
 import ViewRequestDetails from '../components/ViewRequestDetails'
 
-function DemoRequest() {
+function PolicyManage() {
     const dispatch = useDispatch()
     const [searchText, setSearchText] = useState("")
     const [updatedStatus, setUpdatedStatus] = useState({ demo_status: "", disable: false })
@@ -20,6 +20,22 @@ function DemoRequest() {
     const allRequest = useSelector((state) => state.commenData.demoRequestsData)
     const isLoading = useSelector((state) => state.commenData.loading)
     const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
+    const tableHeadings = [
+        "Company Name",
+        "Probation Period",
+        "Office Timing",
+        "Late Limit",
+        "Yearly Leave",
+        "Monthly Leave",
+        "Unapproved Deduction",
+        "Working Days",
+        "Shift Type",
+        "WFH",
+        "Half Day Deduction",
+        "Holiday Leave"
+    ];
+
+    console.log(tableHeadings);
 
     useEffect(() => {
         dispatch(getDemoRequestData("all"))
@@ -59,20 +75,6 @@ function DemoRequest() {
     }
     const headerData = ""
 
-    const tableHeadings = [
-        "Company Name",
-        "Domain Name",
-        "Company Size",
-        "User Name",
-        "Email",
-        "Contact Number",
-        "Selection Type",
-        "Demo Status",
-        "Config",
-        "Deliver",
-        "Meeting Time"
-    ];
-
     return (
         <React.Fragment>
             <MainLayout>
@@ -82,94 +84,20 @@ function DemoRequest() {
                             <Loader /> :
                             <div className="content">
                                 <BreadCrums
-                                    title={"Request Demo"}
+                                    title={"Manage Policy"}
                                     data={[
                                         { path: "/", title: "Superadmin" },
-                                        { path: "/", title: "Request Demo" },
+                                        { path: "/", title: "Manage Policy" },
 
                                     ]}
                                 />
-                                <div className="row">
-                                    {/* <!-- Total Companies --> */}
-                                    <div className="col-lg-3 col-md-6 d-flex">
-                                        <div className="card flex-fill">
-                                            <div className="card-body d-flex align-items-center justify-content-between">
-                                                <div className="d-flex align-items-center overflow-hidden">
-                                                    <span className="avatar avatar-lg flex-shrink-0" style={{ background: "#FF2D55" }}>
-                                                        <i className="ti ti-message-circle fs-24"></i>
-                                                    </span>
-                                                    <div className="ms-2 overflow-hidden">
-                                                        <p className="fs-12 fw-medium mb-1 text-truncate">Total Request</p>
-                                                        <h4>{allRequest?.data?.length || 950}</h4>
-                                                    </div>
-                                                </div>
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-md-6 d-flex">
-                                        <div className="card flex-fill">
-                                            <div className="card-body d-flex align-items-center justify-content-between">
-                                                <div className="d-flex align-items-center overflow-hidden">
-                                                    <span className="avatar avatar-lg flex-shrink-0" style={{ background: "#047EFF" }}>
-                                                        <i className="ti ti-building fs-24"></i>
-                                                    </span>
-                                                    <div className="ms-2 overflow-hidden">
-                                                        <p className="fs-12 fw-medium mb-1 text-truncate">Total Demo Done</p>
-                                                        <h4>90</h4>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-md-6 d-flex">
-                                        <div className="card flex-fill">
-                                            <div className="card-body d-flex align-items-center justify-content-between">
-                                                <div className="d-flex align-items-center overflow-hidden">
-                                                    <span className="avatar avatar-lg flex-shrink-0" style={{ background: "#5856D6" }}>
-                                                        <i className="ti ti-settings fs-24"></i>
-                                                    </span>
-                                                    <div className="ms-2 overflow-hidden">
-                                                        <p className="fs-12 fw-medium mb-1 text-truncate">Total Config</p>
-                                                        <h4>50</h4>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-lg-3 col-md-6 d-flex">
-                                        <div className="card flex-fill">
-                                            <div className="card-body d-flex align-items-center justify-content-between">
-                                                <div className="d-flex align-items-center overflow-hidden">
-                                                    <span className="avatar avatar-lg flex-shrink-0" style={{ background: "#34C759" }}>
-                                                        <i className="ti ti-truck fs-24"></i>
-                                                    </span>
-                                                    <div className="ms-2 overflow-hidden">
-                                                        <p className="fs-12 fw-medium mb-1 text-truncate">Total Delivered</p>
-                                                        <h4>150</h4>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div className="card">
                                     <div className="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
 
-                                        <h5>All Request List</h5>
+                                        <h5>All Companies Policy List</h5>
                                         {/* filters  */}
                                         <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
-                                            {/* <div className="me-3">
-                                    <div className="input-icon-end position-relative">
-                                        <input type="text" className="form-control date-range bookingrange" placeholder="dd/mm/yyyy - dd/mm/yyyy" />
-                                        <span className="input-icon-addon">
-                                            <i className="ti ti-chevron-down"></i>
-                                        </span>
-                                    </div>
-                                </div> */}
                                             <div className="dropdown me-3">
                                                 <a href="javascript:void(0);" className="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
                                                     Select Plan
@@ -279,11 +207,7 @@ function DemoRequest() {
 
                                                                         return (
                                                                             <tr key={index}>
-                                                                                {/* <td>
-                                                                                <div className="form-check form-check-md">
-                                                                                    <input className="form-check-input" type="checkbox" />
-                                                                                </div>
-                                                                            </td> */}
+                                                                               
                                                                                 <td>
                                                                                     <div className="d-flex align-items-center file-name-icon">
                                                                                         {/* <a href="#" className="avatar avatar-md border rounded-circle">
@@ -415,4 +339,4 @@ function DemoRequest() {
     )
 }
 
-export default DemoRequest
+export default PolicyManage
