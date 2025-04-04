@@ -260,7 +260,7 @@ const Company = () => {
               <div className="ms-2 head-icons"></div>
             </div>
           </div>
-          {/* /Breadcrumb */}
+       
           <div className="row">
             {/* Total Companies */}
             <div className="col-lg-3 col-md-6 d-flex">
