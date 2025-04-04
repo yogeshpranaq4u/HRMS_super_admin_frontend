@@ -64,7 +64,7 @@ export function* getPurchaseSummaryAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
-       
+
           yield put({
             type: types.GET_PURCHASE_SUMMARY_SUCCESS,
             payload: response?.data,
@@ -113,7 +113,7 @@ export function* getPendingDemoRequestAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
-   
+
           yield put({
             type: types.GET_PENDING_DEMO_REQUEST_SUCCESS,
             payload: response?.data,
@@ -159,7 +159,7 @@ export function* getRecentRegistrationAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
-       
+
           yield put({
             type: types.GET_RECENT_REGISTRATIONS_REQUEST_SUCCESS,
             payload: response?.data,
@@ -208,7 +208,7 @@ export function* getPlantExpireDataAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
-        
+
           yield put({
             type: types.GET_PLAN_EXPIRE_REQUEST_SUCCESS,
             payload: response?.data,
@@ -254,7 +254,7 @@ export function* getRecentTransactionAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
-        
+
           yield put({
             type: types.GET_RECENT_TRANSACTION_REQUEST_SUCCESS,
             payload: response?.data,
@@ -292,10 +292,10 @@ export function* watchGetRecentTransactionAction() {
 
 export function* getDemoRequestsAction(action) {
   try {
-        // console.log("userDetails" , userDetails);
+    // console.log("userDetails" , userDetails);
     const response = yield call(
       callApi,
-      "request-demo",
+      Api.GETREQUESTDEMO,
       "GET",
       "",
       userDetails?.token
@@ -324,10 +324,10 @@ export function* watchDemoRequestsAction() {
 
 export function* getPlansAction(action) {
   try {
-        // console.log("userDetails" , userDetails);
+    // console.log("userDetails" , userDetails);
     const response = yield call(
       callApi,
-      "get_AllPlans",
+      Api.GETPLANS,
       "GET",
       "",
       userDetails?.token
