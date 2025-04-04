@@ -69,7 +69,7 @@ function DemoRequest() {
         "Selection Type",
         "Demo Status",
         "Config",
-        "Deliver",
+        // "Deliver",
         "Meeting Time"
     ];
 
@@ -336,17 +336,30 @@ function DemoRequest() {
                                                                                     </div>
 
                                                                                 </td>
-                                                                                <td>
+                                                                                {/* <td>
                                                                                     <span style={item?.deliver.toLowerCase() == "pending" ? { background: "#e4e1e18c", color: "#000000" } : {}} className="badge badge-suucess d-inline-flex align-items-center badge-xs">
                                                                                         <i className="ti ti-point-filled me-1"></i>
                                                                                         {item?.deliver || ""}
                                                                                     </span>
-                                                                                </td>
+                                                                                </td> */}
                                                                                 <td>
                                                                                     {item?.demo_date ? moment(item?.demo_date || "").format("DD/MMM/YYYY") : "NA"}, {item?.demo_time || ""}
                                                                                 </td>
                                                                                 <td>
                                                                                     <div className="action-icon d-inline-flex">
+                                                                                        <a href="#" className="me-2"
+                                                                                            onClick={() => {
+                                                                                                setModalData((prev) => ({
+                                                                                                    ...prev,
+                                                                                                    data: item,
+                                                                                                    isOpen: true,
+                                                                                                    type: "viewDetails",
+                                                                                                    onClose: onClose
+                                                                                                }))
+                                                                                            }}
+                                                                                            title='View Details'>
+                                                                                            <i className="ti ti-eye"></i>
+                                                                                        </a>
                                                                                         <a href="#" className="me-2" >
                                                                                             <i className="ti ti-device-tv" style={{ transform: "rotate(180deg)" }}></i>
                                                                                         </a>
@@ -362,19 +375,6 @@ function DemoRequest() {
                                                                                             }}
                                                                                             title='Register' >
                                                                                             <i className="ti ti-user-edit"></i>
-                                                                                        </a>
-                                                                                        <a href="#" className="me-2"
-                                                                                            onClick={() => {
-                                                                                                setModalData((prev) => ({
-                                                                                                    ...prev,
-                                                                                                    data: item,
-                                                                                                    isOpen: true,
-                                                                                                    type: "viewDetails",
-                                                                                                    onClose: onClose
-                                                                                                }))
-                                                                                            }}
-                                                                                            title='View Details'>
-                                                                                            <i className="ti ti-eye"></i>
                                                                                         </a>
                                                                                         {/* <a href="#" className="me-2" title='Edit' ><i className="ti ti-edit"></i></a> */}
                                                                                         {/* <a href="javascript:void(0);" ><i className="ti ti-trash"></i></a> */}

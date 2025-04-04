@@ -17,9 +17,25 @@ function PolicyManage() {
     const [searchText, setSearchText] = useState("")
     const [updatedStatus, setUpdatedStatus] = useState({ demo_status: "", disable: false })
     const [modalData, setModalData] = useState({ isOpen: false, data: "" })
-    const allRequest = useSelector((state) => state.commenData.demoRequestsData)
-    const isLoading = useSelector((state) => state.commenData.loading)
-    const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
+    const tableData = [
+        {
+            "company_name": "BrightWave Innovations",
+            "probation_period": "3 Month",
+            "office_timing": "10:00 am - 7:00 pm",
+            "late_limit": 3,
+            "yearly_leave": 12,
+            "monthly_leave": 1,
+            "unapproved_detection": "Double Detection",
+            "working_days": "6 Days",
+            "shift_type": "1st Shift",
+            "wfh": "No",
+            "half_day_detection": "Yes",
+            "holiday_leave": 6
+          }
+          
+    ]
+    const isLoading = false
+    // const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
     const tableHeadings = [
         "Company Name",
         "Probation Period",
@@ -32,47 +48,20 @@ function PolicyManage() {
         "Shift Type",
         "WFH",
         "Half Day Deduction",
-        "Holiday Leave"
+        "Holiday Leave",
+        "Action"
     ];
 
-    console.log(tableHeadings);
+    // console.log(tableHeadings);
 
-    useEffect(() => {
-        dispatch(getDemoRequestData("all"))
-    }, [])
-    // console.log("details", details);
-    const updataStatues = async (e, data) => {
-        try {
-            const payload = {
-                id: data?.id,
-                demo_status: e.target.value
-            }
-            const response = await callApi(Api.UPDATEDEMOSTATUS, "POST", payload, details?.token)
-            console.log("response", response);
-            if (response.valid || response.authenticated) {
-                toast.success(response.message)
-                setUpdatedStatus((prev) => ({
-                    ...prev,
-                    [data?.id]: {
-                        demo_status: response?.data?.demo_status || "",
-                        disable: true  // Or your desired logic for enabling/disabling
-                    }
-
-
-                }))
-            }
-
-        } catch (error) {
-            console.log(error);
-            toast.error(error.response.data.message || error.message || "Server error")
-        }
-    }
+   
     const onClose = () => {
         setModalData((prev) => ({
             ...prev,
             isOpen: false
         }))
     }
+
     const headerData = ""
 
     return (
@@ -94,7 +83,6 @@ function PolicyManage() {
 
                                 <div className="card">
                                     <div className="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-
                                         <h5>All Companies Policy List</h5>
                                         {/* filters  */}
                                         <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
@@ -176,7 +164,7 @@ function PolicyManage() {
                                         <div className="card-body sv-card-body p-0">
                                             <div className="custom-datatable-filter table-responsive">
                                                 {
-                                                    allRequest?.data?.length == 0 ?
+                                                    tableData?.length == 0 ?
                                                         <p>Date not found</p> :
                                                         <table className="table datatable">
                                                             <thead className="thead-light">
@@ -194,7 +182,7 @@ function PolicyManage() {
                                                             </thead>
                                                             <tbody>
                                                                 {
-                                                                    allRequest?.data?.filter((item) => {
+                                                                    tableData?.filter((item) => {
                                                                         if (searchText) {
                                                                             return item.company_name.toLowerCase().includes(searchText.toLowerCase()) ||
                                                                                 item.company_domain.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -203,7 +191,7 @@ function PolicyManage() {
                                                                         return item
                                                                     })?.map((item, index) => {
                                                                         // console.log(item);
-                                                                        const validSelection = JSON.parse(item?.selection)
+                                                                        // const validSelection = JSON.parse(item?.selection)
 
                                                                         return (
                                                                             <tr key={index}>
@@ -224,21 +212,18 @@ function PolicyManage() {
                                                                                 <td>{item?.email || "NA"}</td>
                                                                                 <td>{item?.phone_no || "NA"}</td>
                                                                                 <td>
-                                                                                    {
+                                                                                    {/* {
                                                                                         validSelection?.map((item, index) => {
                                                                                             return (
                                                                                                 <p key={index} className='p-0 m-0'>{item}</p>
                                                                                             )
                                                                                         })
-                                                                                    }
+                                                                                    } */}
                                                                                 </td>
                                                                                 <td>
                                                                                     <div>
                                                                                         <select value={updatedStatus[item?.id]?.demo_status || item.demo_status}
                                                                                             disabled={updatedStatus[item?.id]?.disable || item.demo_status == "Done"}
-                                                                                            onChange={(e) => {
-                                                                                                updataStatues(e, item)
-                                                                                            }}
                                                                                             className={`demo-status  
                                                                                         ${item.demo_status == "Not Connected" ? "not-connected"
                                                                                                     : item.demo_status || updatedStatus[item?.id]?.demo_status} `}>
@@ -261,9 +246,15 @@ function PolicyManage() {
 
                                                                                 </td>
                                                                                 <td>
-                                                                                    <span style={item?.deliver.toLowerCase() == "pending" ? { background: "#e4e1e18c", color: "#000000" } : {}} className="badge badge-suucess d-inline-flex align-items-center badge-xs">
+                                                                                    <span style={item?.deliver?.toLowerCase() == "pending" ? { background: "#e4e1e18c", color: "#000000" } : {}} className="badge badge-suucess d-inline-flex align-items-center badge-xs">
                                                                                         <i className="ti ti-point-filled me-1"></i>
-                                                                                        {item?.deliver || ""}
+                                                                                        {item?.deliver || "NA"}
+                                                                                    </span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <span style={item?.deliver?.toLowerCase() == "pending" ? { background: "#e4e1e18c", color: "#000000" } : {}} className="badge badge-suucess d-inline-flex align-items-center badge-xs">
+                                                                                        <i className="ti ti-point-filled me-1"></i>
+                                                                                        {item?.deliver || "NA"}
                                                                                     </span>
                                                                                 </td>
                                                                                 <td>
@@ -271,31 +262,28 @@ function PolicyManage() {
                                                                                 </td>
                                                                                 <td>
                                                                                     <div className="action-icon d-inline-flex">
-                                                                                        <a href="#" className="me-2" >
-                                                                                            <i className="ti ti-device-tv" style={{ transform: "rotate(180deg)" }}></i>
-                                                                                        </a>
                                                                                         <a href="#" className="me-2"
                                                                                             onClick={() => {
-                                                                                                setModalData((prev) => ({
-                                                                                                    ...prev,
-                                                                                                    data: item,
-                                                                                                    isOpen: true,
-                                                                                                    type: "register",
-                                                                                                    onClose: onClose
-                                                                                                }))
+                                                                                                // setModalData((prev) => ({
+                                                                                                //     ...prev,
+                                                                                                //     data: item,
+                                                                                                //     isOpen: true,
+                                                                                                //     type: "register",
+                                                                                                //     onClose: onClose
+                                                                                                // }))
                                                                                             }}
                                                                                             title='Register' >
                                                                                             <i className="ti ti-user-edit"></i>
                                                                                         </a>
                                                                                         <a href="#" className="me-2"
                                                                                             onClick={() => {
-                                                                                                setModalData((prev) => ({
-                                                                                                    ...prev,
-                                                                                                    data: item,
-                                                                                                    isOpen: true,
-                                                                                                    type: "viewDetails",
-                                                                                                    onClose: onClose
-                                                                                                }))
+                                                                                                // setModalData((prev) => ({
+                                                                                                //     ...prev,
+                                                                                                //     data: item,
+                                                                                                //     isOpen: true,
+                                                                                                //     type: "viewDetails",
+                                                                                                //     onClose: onClose
+                                                                                                // }))
                                                                                             }}
                                                                                             title='View Details'>
                                                                                             <i className="ti ti-eye"></i>

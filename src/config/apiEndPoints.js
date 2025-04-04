@@ -11,8 +11,9 @@ export const Api = {
   //Admin Api End   Points
   LOGIN: "/super-admin/login", //done
   VERIFYOTP: "/super-admin/verify-otp", //done
-  REGISTERCOMPANY: "companies", //done
-  GETPLANS: "get_AllPlans", //done
+  REGISTERCOMPANY: "super-admin/companies", //done
+  GETPLANS: "super-admin/plans", //done
+  GETREQUESTDEMO:  "super-admin/request-demo", //done
   UPDATEDEMOSTATUS: "update_Status", //done
   DASHBOARD_STATS: "dashboard/stats",
   DASHBOARD_PLAN_SUMMARY: "dashboard/plan-purchase-summary",

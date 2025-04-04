@@ -26,8 +26,8 @@ function RegisterFromDemo({ handleData }) {
         plan_id: "",
         company_logo: ""//type will be file (binary)
     })
-    const [isloading, setLoading] = useState(false)
 
+    const [isloading, setLoading] = useState(false)
     useEffect(() => {
         dispatch(getAllPlans())
     }, [])
@@ -63,39 +63,42 @@ function RegisterFromDemo({ handleData }) {
     }
 
     const requiredFields = [
-         "admin_email", "company_email", "company_name",
+        "admin_email", "company_email", "company_name",
         "company_domain", "team_size", "contact_no", "service_type", "status", "plan_id"
     ]
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log(formData ,"<<<<<<",validatedFields(formData, requiredFields, setErrors));
         if (!validatedFields(formData, requiredFields, setErrors)) return;
         try {
             setLoading(true)
-            //let data = JSON.stringify(formData);
-            const response = await callApi(Api.REGISTERCOMPANY, "POST", formData, details?.token)
+            let data = new FormData()
+            Object.entries(formData)?.map(([key, value]) => {
+                // console.log(key, value);
+                data.append(key, value)
+            })
+            const response = await callApi(Api.REGISTERCOMPANY, "POST", data, details?.token)
             toast.success(response.data?.message || "Form submitted successfully!");
             // console.log(response);
             setLoading(false)
-            //   handleClose(); // Close modal on success
+            handleData.onClose()
         } catch (error) {
             console.error("Error submitting form", error);
-            if(error.response.data.errors){
-                toast.error(getFirstErrorMessage(error.response.data.errors))
-            }else{
-                toast.error(error.response.data.message|| error.message ||"server error");
+            if (error.response.data.errors) {
+                toast.error(error.response.data.errors[0] || getFirstErrorMessage(error.response.data.errors))
+            } else {
+                toast.error(error.response.data.message || error.message || "server error");
             }
             setLoading(false)
         }
     };
 
-   
+
 
     return (
         <div
             style={handleData?.isOpen ? { display: "block" } : {}}
-            class={`modal fade ${handleData?.isOpen ? "show" : ""} `}
+            className={`modal fade ${handleData?.isOpen ? "show" : ""} `}
             id="edit_company" >
             <div className="modal-dialog modal-dialog-centered modal-lg">
                 <div className="modal-content">
@@ -103,8 +106,7 @@ function RegisterFromDemo({ handleData }) {
                         <h4 className="modal-title">Register Company</h4>
                         <button type="button"
                             className="btn-close custom-btn-close"
-                            onClick={handleData.onClose}
-                        >
+                            onClick={handleData.onClose}>
                             <i className="ti ti-x"></i>
                         </button>
                     </div>
@@ -161,7 +163,7 @@ function RegisterFromDemo({ handleData }) {
                                             name='company_email'
                                             onChange={onTextChange}
                                             className="form-control" />
-                                             {hasValidationError(errors, "company_email") && (
+                                        {hasValidationError(errors, "company_email") && (
                                             <small className="text-danger pt-1">{validationError(errors, "company_email")}</small>
                                         )}
                                     </div>
@@ -173,7 +175,7 @@ function RegisterFromDemo({ handleData }) {
                                             value={formData.admin_email}
                                             name='admin_email'
                                             onChange={onTextChange} />
-                                             {hasValidationError(errors, "admin_email") && (
+                                        {hasValidationError(errors, "admin_email") && (
                                             <small className="text-danger pt-1">{validationError(errors, "admin_email")}</small>
                                         )}
                                     </div>
@@ -188,7 +190,7 @@ function RegisterFromDemo({ handleData }) {
                                             name='contact_no'
                                             maxLength={12}
                                             onChange={onTextChange} />
-                                             {hasValidationError(errors, "contact_no") && (
+                                        {hasValidationError(errors, "contact_no") && (
                                             <small className="text-danger pt-1">{validationError(errors, "contact_no")}</small>
                                         )}
                                     </div>
@@ -201,7 +203,7 @@ function RegisterFromDemo({ handleData }) {
                                             name='company_domain'
                                             onChange={onTextChange}
                                         />
-                                         {hasValidationError(errors, "company_domain") && (
+                                        {hasValidationError(errors, "company_domain") && (
                                             <small className="text-danger pt-1">{validationError(errors, "company_domain")}</small>
                                         )}
                                     </div>
@@ -213,7 +215,7 @@ function RegisterFromDemo({ handleData }) {
                                         <input type="text" value={formData.company_address}
                                             name='company_address'
                                             onChange={onTextChange} className="form-control" />
-                                             {hasValidationError(errors, "company_address") && (
+                                        {hasValidationError(errors, "company_address") && (
                                             <small className="text-danger pt-1">{validationError(errors, "company_address")}</small>
                                         )}
                                     </div>
@@ -353,7 +355,7 @@ function RegisterFromDemo({ handleData }) {
                             <button type="button" onClick={handleData.onClose} className="btn btn-light me-2" >Cancel</button>
                             <button type="submit" className="btn btn-primary">
                                 {
-                                    isloading ?"Loading...":"Submit"
+                                    isloading ? "Loading..." : "Submit"
                                 }
                             </button>
                         </div>

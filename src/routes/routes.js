@@ -36,7 +36,7 @@ const allRoutes = [
     },
     {
         element:<PolicyManage/>,
-        path:"/policy-manage",
+        path:"/manage-policy",
         isPrivate:false
     },
     
