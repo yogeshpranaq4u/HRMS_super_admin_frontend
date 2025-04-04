@@ -9,6 +9,7 @@ const initialState = {
   planExpireData: [],
   recentTransaction:[],
   demoRequestsData: [],
+  companiesData: {},
   allPlans: {},
   profileData: {},
   loading: false,
@@ -160,6 +161,24 @@ const commenDataReducer = (state = initialState, action) => {
         loading: false,
         error: action.error,
       };
+
+      case types.GET_COMPANIES_REQUEST:
+        return {
+          ...state,
+          loading: true,
+        };
+      case types.GET_COMPANIES_SUCCESS:
+        return {
+          ...state,
+          loading: false,
+          companiesData: action.payload,
+        };
+      case types.GET_COMPANIES_FAILED:
+        return {
+          ...state,
+          loading: false,
+          error: action.error,
+        };
 
     default:
       return state;

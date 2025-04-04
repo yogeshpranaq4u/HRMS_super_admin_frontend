@@ -9,6 +9,7 @@ import {
   watchGetRecentRegistrationAction,
   watchPlansAction,
 } from "./dashboardSaga";
+import { watchGetCompanyAction } from "./companyDataSaga";
 
 function* rootSaga() {
   yield all([
@@ -21,6 +22,7 @@ function* rootSaga() {
 
     watchDemoRequestsAction(),
     watchPlansAction(),
+    watchGetCompanyAction()
   ]);
 }
 

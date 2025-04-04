@@ -262,8 +262,8 @@ function RegisterFromDemo({ handleData }) {
 
                                             </select>
                                         </div>
-                                        {hasValidationError(errors, "plan_type") && (
-                                            <small className="text-danger pt-1">{validationError(errors, "plan_type")}</small>
+                                        {hasValidationError(errors, "plan_id") && (
+                                            <small className="text-danger pt-1">{validationError(errors, "plan_id")}</small>
                                         )}
                                     </div>
                                 </div>

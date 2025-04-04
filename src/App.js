@@ -9,13 +9,14 @@ function App() {
   return (
 
     <React.Fragment>
-      <ToastContainer  />
+      <ToastContainer position="top-center"
+        autoClose={1500} />
       <BrowserRouter>
         <Routes>
           {
             allRoutes.map((page, index) => {
               return (
-                <Route key={index} path={page.path} element={page.isPrivate ? <PrivateRoute element={page.element} />:page.element} />
+                <Route key={index} path={page.path} element={page.isPrivate ? <PrivateRoute element={page.element} /> : page.element} />
               )
             })
           }

@@ -4,6 +4,7 @@ import Dashboard from "../pages/dashbord/Dashboard";
 import DemoRequest from "../pages/DemoRequest";
 import Landing from "../pages/Landing";
 import Login from "../pages/Login";
+import NotFound from "../pages/NotFound";
 import PolicyManage from "../pages/PolicyManage";
 import Tickets from "../pages/Tickets";
 
@@ -37,6 +38,11 @@ const allRoutes = [
     {
         element:<PolicyManage/>,
         path:"/manage-policy",
+        isPrivate:false
+    },
+    {
+        element:<NotFound/>,
+        path:"*",
         isPrivate:false
     },
     

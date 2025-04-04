@@ -11,14 +11,16 @@ export const Api = {
   //Admin Api End   Points
   LOGIN: "/super-admin/login", //done
   VERIFYOTP: "/super-admin/verify-otp", //done
+  RESEND: "super-admin/resend-otp", //done
   REGISTERCOMPANY: "super-admin/companies", //done
   GETPLANS: "super-admin/plans", //done
   GETREQUESTDEMO:  "super-admin/request-demo", //done
-  UPDATEDEMOSTATUS: "update_Status", //done
-  DASHBOARD_STATS: "dashboard/stats",
-  DASHBOARD_PLAN_SUMMARY: "dashboard/plan-purchase-summary",
-  DASHBOARD_PENDING_DEMO_REQUEST: "dashboard/pending-demo-requests",
-  DASHBOARD_RECENT_REGISTRATIONS: "dashboard/recent-registrations",
-  DASHBOARD_PLAN_EXPIRE: "dashboard/near-expire-expired-companies",
-  DASHBOARD_TRANSACTION: "dashboard/get-recent-transactions",//done
+  GETCOMPANIES:  "super-admin/companies", //done
+  UPDATEDEMOSTATUS: "super-admin/update-Status", //done
+  DASHBOARD_STATS: "super-admin/dashboard/stats",
+  DASHBOARD_PLAN_SUMMARY: "super-admin/dashboard/plan-purchase-summary",
+  DASHBOARD_PENDING_DEMO_REQUEST: "super-admin/dashboard/pending-demo-requests",
+  DASHBOARD_RECENT_REGISTRATIONS: "super-admin/dashboard/recent-registrations",
+  DASHBOARD_PLAN_EXPIRE: "super-admin/dashboard/near-expire-expired-companies",
+  DASHBOARD_TRANSACTION: "super-admin/dashboard/get-recent-transactions",//done
 };

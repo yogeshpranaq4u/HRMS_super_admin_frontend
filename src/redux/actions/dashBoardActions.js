@@ -8,6 +8,10 @@ export const getAllPlans = (data) => ({
     type: types.GET_PLANS_REQUEST,
     payload:data
 });
+export const getCompanies = (data) => ({
+    type: types.GET_COMPANIES_REQUEST,
+    payload:data
+});
 
 export const getPurchaseSummaryData = (data) => ({
     type: types.GET_PURCHASE_SUMMARY_REQUEST,
