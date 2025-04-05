@@ -3,7 +3,7 @@ import { types } from "../constants/types";
 // reducers/postReducer.js
 const initialState = {
   dashData: {},
-  purchaseSummaryData: [],
+  purchaseSummaryData: {},
   pendingDemoRequestsData: [],
   recentRegistrations: [],
   planExpireData: [],

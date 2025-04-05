@@ -147,6 +147,7 @@ export function* watchGetPendingDemoRequestAction() {
 }
 
 export function* getRecentRegistrationAction(action) {
+  console.log("zxcxzcxzcxzc",userDetails?.token)
   try {
     const response = yield call(
       callApi,
@@ -251,6 +252,7 @@ export function* getRecentTransactionAction(action) {
       userDetails?.token
     );
 
+ 
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {

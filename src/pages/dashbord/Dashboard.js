@@ -28,6 +28,7 @@ function Dashboard() {
   const pendingDemoRequestsData = useSelector(
     (state) => state?.commenData?.pendingDemoRequestsData
   );
+
   const recentRegistrations = useSelector(
     (state) => state?.commenData?.recentRegistrations
   );
@@ -38,6 +39,7 @@ function Dashboard() {
     (state) => state?.commenData?.recentTransaction
   );
 
+  console.log("planExpireData", planExpireData);
   useEffect(() => {
     dispatch(getDashBoardData("all"));
     dispatch(getPurchaseSummaryData());
@@ -152,7 +154,8 @@ function Dashboard() {
             />
           </div>
           <div className="row">
-            <Card2 data={{ title: "Recent Tickets", type: "Tickets" }} />
+            {/* <Card2 data={{ title: "Recent Tickets", type: "Tickets",data:pendingDemoRequestsData }} /> */}
+
             <Card2
               data={{
                 title: "Recently Demo",
@@ -160,24 +163,31 @@ function Dashboard() {
                 data: pendingDemoRequestsData,
               }}
             />
-            {console.log("purchaseSummaryData", purchaseSummaryData.length )}
-            {purchaseSummaryData.length > 0 && (
-              <PlanChartCard data={purchaseSummaryData} />
-            )}
+          
+            <Card2
+              data={{
+                title: "Recently Registered",
+                type: "Registered",
+                data: recentRegistrations,
+              }}
+            />
+            <PlanChartCard data={purchaseSummaryData} />
           </div>
           <div className="row">
             <Card2
               data={{
                 title: "Recent Transactions",
                 type: "Transactions",
-                // data: recentTransaction,
+                data: recentTransaction,
               }}
             />
+           
             <Card2
-              data={{ title: "Recently Registered", type: "Registered" }}
-            />
-            <Card2
-              data={{ title: "Recent Plan Expired", type: "Plan Expired" }}
+              data={{
+                title: "Recent Plan Expired",
+                type: "Plan Expired",
+                data: planExpireData,
+              }}
             />
           </div>
         </div>
