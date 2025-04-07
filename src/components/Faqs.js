@@ -15,7 +15,7 @@ const FAQ = ({handleOpen}) => {
   };
 
   return (
-    <section className="pb-3 faqs">
+    <section className="pt-4 faqs">
     <div className="faq-container" data-aos="fade-up">
       <div className="faq-left">
         <h2>See Common Question and Answer</h2>

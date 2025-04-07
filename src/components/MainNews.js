@@ -82,10 +82,10 @@ const MainNews = () => {
                 <h2 className="m-0">Our recent News & Insights</h2>
                 <div className="slider-btns">
                     <span className="slide-left" onClick={()=>{arrowAction("left")}}>
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <i className="fa fa-angle-left" aria-hidden="true"></i>
                     </span>
                     <span className="slide-right" onClick={()=>{arrowAction("right")}}>
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        <i className="fa fa-angle-right" aria-hidden="true"></i>
                     </span>
                 </div>
             </div>

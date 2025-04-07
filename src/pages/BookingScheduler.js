@@ -58,7 +58,7 @@ const BookingScheduler = () => {
     }
     setLoading(true)
     try {
-      const response = await axios.post(`${baseUrl}/book_Demo`, {
+      const response = await axios.post(`${baseUrl}/public/book-now`, {
         id: cvi||"",
         demo_date: formData.date,
         demo_time: formData.time,
@@ -90,7 +90,7 @@ const BookingScheduler = () => {
   const getSlots = async (date) => {
     // console.log("formData.date" ,date );
     try {
-      const response = await axios.post(`${baseUrl}/get_timeSlote?date=${dayjs(date).format("YYYY-MM-DD")}`)
+      const response = await axios.post(`${baseUrl}/public/get-time-slote?date=${dayjs(date).format("YYYY-MM-DD")}`)
       // console.log(response);
       if (response.data.status) {
         setSlotsData(response.data)

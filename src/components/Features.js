@@ -17,16 +17,16 @@ function Features({handleOpen}) {
 
 
     return (
-        <section className="pt-3" id='features'>
+        <section className="py-3" id='features'>
             <div className="faq-container flex-column" data-aos="fade-up">
                 <div className="d-flex justify-content-between align-items-center py-2 w-100">
                     <h2 className="m-0">Features that Help you build better</h2>
                     {/* <div className="slider-btns">
                         <span className="slide-left" onClick={() => { arrowAction("left") }}>
-                            <i class="fa fa-angle-left" aria-hidden="true"></i>
+                            <i className="fa fa-angle-left" aria-hidden="true"></i>
                         </span>
                         <span className="slide-right" onClick={() => { arrowAction("right") }}>
-                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                            <i className="fa fa-angle-right" aria-hidden="true"></i>
                         </span>
                     </div> */}
                 </div>
@@ -52,7 +52,7 @@ function Features({handleOpen}) {
                                         "Reports for essential HR metrics, turnover rates, employee demographics, and performances."
                                     ].map((item, index) => (
                                         <li key={index} className="d-flex align-items-center mb-2 text-dark">
-                                            <i class="fa fa-check text-success me-2" aria-hidden="true"></i>
+                                            <i className="fa fa-check text-success me-2" aria-hidden="true"></i>
                                             {item}
                                         </li>
                                     ))}

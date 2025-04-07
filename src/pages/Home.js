@@ -86,8 +86,8 @@ function Home() {
         }}
       />
       <div className="media-icons">
-        <a href="https://wa.me/919600008844" className="whatsap-icon" target="_blank"><i className="fa-brands fa-whatsapp"></i></a>
-        <a href="mailto:support@dreamstechnologies.com" className="mail-icon"><i className="fa-regular fa-envelope"></i></a>
+        <a href="https://wa.me/918766291838" className="whatsap-icon" target="_blank"><i className="fa-brands fa-whatsapp"></i></a>
+        <a href="mailto:business@cvinfotech.com" className="mail-icon"><i className="fa-regular fa-envelope"></i></a>
         <a href="https://join.skype.com/invite/KqfsfMbmDu9a" className="skype-icon" target="_blank"><i className="fa-brands fa-skype"></i></a>
       </div>
       <main className="second-landing-page">
