@@ -48,6 +48,26 @@ function Home() {
   const handleOpen = (v) => {
     setShow(true)
   }
+
+  const data1 = [
+    {
+      title: "Scalability  & Performance",
+      icon: "assets/img/icon3.svg",
+      description: "Utilize cloud hosting for scalability, ensuring can grow with your user base.Ensure that the system can handle varying loads"
+    },
+    {
+      title: "Continuous Improvement",
+      icon: "assets/img/icon1.svg",
+      description: "Using agile methodologies to iteratively improve the platform based on user feedback and changing needs."
+    },
+    {
+      title: "Security & Compliance",
+      icon: "assets/img/icon2.svg",
+      description: "Ensure that users have access only to the information relevant to their roles.Tools for tracking compliance"
+    },
+  ]
+
+
   return (
     <React.Fragment>
       <div
@@ -145,16 +165,18 @@ function Home() {
                 </div>
                 <div className="row justify-content-center ">
                   {
-                    [1, 2, 3]?.map((item, index) => {
+                    data1?.map((item, index) => {
                       return (
                         <div key={index} className="col-md-6 col-lg-4 col-12 mb-2 ">
                           <div className="card aos-init aos-animate" data-aos="flip-left" data-aos-duration="1500" data-aos-once="true">
                             <div className="card-body sv-card-body">
                               <span className="hrms-software-icon">
-                                <i className="ti ti-arrow-big-up-line-filled text-primary fs-22"></i>
+                                <img src={item?.icon} alt={item?.title} />
                               </span>
-                              <h3>Scalability &amp; Performance</h3>
-                              <p className="text-gray-5  line-clamb-3">Utilize cloud hosting for scalability, ensuring can grow with your user base.Ensure that the system can handle varying loads</p>
+                              <h3>{item?.title}</h3>
+                              <p className="text-gray-5  line-clamb-3">
+                                {item?.description}
+                              </p>
                             </div>
 
                           </div>
@@ -165,23 +187,6 @@ function Home() {
                 </div>
               </div>
             </div>
-
-            {/* <div className="row">
-            <div className="d-flex gap-2" >
-              <marquee className="d-flex gap-2">
-                {
-                  [1,2,3,3,4,4,5,5,3,6,6,6,]?.map((item, index) => {
-                    return (
-                      <div className="support-item">
-                        <img src="https://smarthr.dreamstechnologies.com/html/sass-landing/assets/img/icon/brand1.svg" alt="img" className="brand-logos" />
-                      </div>
-                    )
-                  })
-                }
-
-              </marquee>
-            </div>
-          </div> */}
           </div>
         </div>
         {/* Testimonial */}

@@ -93,7 +93,7 @@ const DemoRequestModal = ({ show, handleClose }) => {
 
   return (
     <div className={`modal fade ${show ? "show d-block" : ""}`} tabIndex="-1">
-      <div className="modal-dialog modal-dialog-centered shadow">
+      <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content shadow" style={{zIndex:"2"}}>
           <div className="modal-header">
             <h5 className="modal-title fw-bold">Request a Demo</h5>
