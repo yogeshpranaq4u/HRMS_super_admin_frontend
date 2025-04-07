@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios"; // For API calls
-
-export const baseUrl = "https://development-hrms-services.cvinfotechserver.com/hrms_backend/public/api"
+// https://development-hrms-services-2.cvinfotechserver.com/public/api
+export const baseUrl = "https://development-hrms-services-2.cvinfotechserver.com/public/api"
 const DemoRequestModal = ({ show, handleClose }) => {
   // Form state
   const [loading, setLoading] = useState(false)
@@ -10,7 +10,7 @@ const DemoRequestModal = ({ show, handleClose }) => {
     email: "",
     phone_no: "",
     company_name: "",
-    company_domain:"democompany.com",
+    company_domain:"",
     company_size: "",
     selection: [],
   });
@@ -62,7 +62,7 @@ const DemoRequestModal = ({ show, handleClose }) => {
       let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: `${baseUrl}/request-demo`,
+        url: `${baseUrl}/public/request-demo`,
         headers: { 
           'Content-Type': 'application/json'
         },
@@ -77,7 +77,7 @@ const DemoRequestModal = ({ show, handleClose }) => {
           email: "",
           phone_no: "",
           company_name: "",
-          company_domain:"democompany.com",
+          company_domain:"",
           company_size: "",
           selection: [],
         })
@@ -142,6 +142,12 @@ const DemoRequestModal = ({ show, handleClose }) => {
                   <input type="text" name="company_name" className="form-control" placeholder="Enter company name"
                     value={formData.company_name} onChange={handleChange} />
                   {errors.company_name && <small className="text-danger">{errors.company_name}</small>}
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label className="form-label">Company Domain</label>
+                  <input type="text" name="company_domain" className="form-control" placeholder="Enter company domain"
+                    value={formData.company_domain} onChange={handleChange} />
+                  {errors.company_domain && <small className="text-danger">{errors.company_domain}</small>}
                 </div>
 
                 <div className="col-md-6 mb-3">

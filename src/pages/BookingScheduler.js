@@ -46,24 +46,12 @@ const BookingScheduler = () => {
     // Extract year, month, and day
     const formattedDate = dateObj.format("YYYY-MM-DD");
     // Combine date and time
-    // console.log(dateObj, "formattedDate", formattedDate);
-
     const finalDateTime = dayjs(`${formattedDate} ${data.time}`, "YYYY-MM-DD hh:mm A");
     console.log(formattedDate, data.time); // Output: 2025-04-01 12:00:00
     return finalDateTime;
   }
   const handleSubmit = async () => {
-    const title = encodeURIComponent("Appointment Reminder");
-    const details = encodeURIComponent("Your appointment is scheduled.");
-    const location = encodeURIComponent("Online Meeting");
-    const appointmentDate = combineDateTime({
-      date: formData.date,
-      time: formData.time,
-    })
-    const startDate = dayjs(appointmentDate).format("YYYYMMDDTHHmmss"); // Example: Tomorrow
-    const endDate = dayjs(appointmentDate).add(15, "minutes").format("YYYYMMDDTHHmmss"); // +1 hour
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${startDate}/${endDate}`;
-    // window.open(googleCalendarUrl, "_blank"); // Open in a new tab
+   
     if (!formData.date || !formData.time) {
       alert("Please select a time slot.");
       return;
