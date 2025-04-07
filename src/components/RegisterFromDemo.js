@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Api, BaseUrl } from '../config/apiEndPoints';
+import { Api, BaseUrl, ImagePath } from '../config/apiEndPoints';
 import { callApi } from '../config/apiCall';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllPlans } from '../redux/actions/dashBoardActions';
+import { addCompany, getAllPlans } from '../redux/actions/dashBoardActions';
 import { getFirstErrorMessage, hasValidationError, validatedFields, validationError } from '../helpers/frontend';
 import { toast } from 'react-toastify';
 
@@ -34,14 +34,24 @@ function RegisterFromDemo({ handleData }) {
     // console.log("handleData", handleData ,plansData);
     useEffect(() => {
         // console.log(handleData);
-        setFormData((prev) => ({
-            ...prev, ...handleData?.data,
-            team_size: handleData?.data?.company_size,
-            contact_no: handleData?.data?.phone_no,
-            admin_email: handleData?.data?.email,
-            admin_name: handleData?.data?.name,
-            service_type: handleData?.data?.selection ? JSON.parse(handleData?.data?.selection) : [],
-        }))
+        if (handleData?.type == "edit") {
+            setFormData((prev) => ({
+                ...handleData?.data
+            }))
+        } else {
+            const service_type = Array.isArray(handleData?.data?.selection)
+                ? handleData?.data?.selection
+                : JSON.parse(handleData?.data?.selection || "[]")
+            setFormData((prev) => ({
+                ...prev, ...handleData?.data,
+                team_size: handleData?.data?.company_size,
+                contact_no: handleData?.data?.phone_no,
+                admin_email: handleData?.data?.email,
+                admin_name: handleData?.data?.name,
+                service_type: service_type,
+
+            }))
+        }
     }, [handleData])
 
     const onTextChange = (e) => {
@@ -79,7 +89,12 @@ function RegisterFromDemo({ handleData }) {
             })
             const response = await callApi(Api.REGISTERCOMPANY, "POST", data, details?.token)
             toast.success(response.data?.message || "Form submitted successfully!");
-            // console.log(response);
+            console.log("response", response);
+            if (handleData?.type == "Register") {
+                if (response?.authenticated && response?.valid) {
+                    dispatch(addCompany(response?.data?.company))
+                }
+            }
             setLoading(false)
             handleData.onClose()
         } catch (error) {
@@ -103,7 +118,7 @@ function RegisterFromDemo({ handleData }) {
             <div className="modal-dialog modal-dialog-centered modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h4 className="modal-title">Register Company</h4>
+                        <h4 className="modal-title">{handleData?.type == "edit" ? "Edit" : "Register"} Company</h4>
                         <button type="button"
                             className="btn-close custom-btn-close"
                             onClick={handleData.onClose}>
@@ -120,7 +135,14 @@ function RegisterFromDemo({ handleData }) {
                                 <div className="col-md-12">
                                     <div className="d-flex align-items-center flex-wrap row-gap-3 bg-light w-100 rounded p-3 mb-4">
                                         <div className="d-flex align-items-center justify-content-center avatar avatar-xxl rounded-circle border border-dashed me-2 flex-shrink-0 text-dark frames">
-                                            <img src={formData.company_logo ? URL.createObjectURL(formData.company_logo) : "assets/img/profiles/avatar-30.jpg"} alt="img" className="rounded-circle" />
+                                            <img
+                                                src={
+                                                    formData.company_logo
+                                                        ? formData.company_logo instanceof File
+                                                            ? URL.createObjectURL(formData.company_logo) // Preview uploaded file
+                                                            : ImagePath + formData.company_logo // Assume it's a URL
+                                                        : "assets/img/profiles/avatar-30.jpg" // Default image
+                                                } alt="img" className="rounded-circle" />
                                         </div>
                                         <div className="profile-upload">
                                             <div className="mb-2">
@@ -355,7 +377,9 @@ function RegisterFromDemo({ handleData }) {
                             <button type="button" onClick={handleData.onClose} className="btn btn-light me-2" >Cancel</button>
                             <button type="submit" className="btn btn-primary">
                                 {
-                                    isloading ? "Loading..." : "Submit"
+                                    isloading ? "Loading..." :
+                                        handleData?.type == "edit" ? "Save" :
+                                            "Submit"
                                 }
                             </button>
                         </div>

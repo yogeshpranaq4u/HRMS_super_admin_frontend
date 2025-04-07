@@ -25,7 +25,10 @@
 .sv-dataTables_paginate .dataTables_paginate{
     margin-top: 0px !important;
 }
-
+.dropdown-toggle.show {
+    color: #ccc;
+    border-color: #ccc;
+}
 .demo-status {
     background: #e4e1e18c;
     padding: 5px;

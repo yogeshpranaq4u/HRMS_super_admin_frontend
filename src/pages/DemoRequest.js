@@ -274,16 +274,13 @@ function DemoRequest() {
                                                                         }
                                                                         return item
                                                                     })?.map((item, index) => {
-                                                                        // console.log(item);
-                                                                        const validSelection = JSON.parse(item?.selection)
+                                                                        const validSelection = Array.isArray(item?.selection)
+                                                                        ? item.selection
+                                                                        : JSON.parse(item?.selection || "[]");
+                                                                        // console.log(item?.selection ,validSelection);
 
                                                                         return (
                                                                             <tr key={index}>
-                                                                                {/* <td>
-                                                                                <div className="form-check form-check-md">
-                                                                                    <input className="form-check-input" type="checkbox" />
-                                                                                </div>
-                                                                            </td> */}
                                                                                 <td>
                                                                                     <div className="d-flex align-items-center file-name-icon">
                                                                                         {/* <a href="#" className="avatar avatar-md border rounded-circle">

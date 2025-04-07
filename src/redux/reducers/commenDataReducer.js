@@ -6,7 +6,7 @@ const initialState = {
   pendingDemoRequestsData: [],
   recentRegistrations: [],
   planExpireData: [],
-  recentTransaction:[],
+  recentTransaction: [],
   demoRequestsData: [],
   companiesData: {},
   allPlans: {},
@@ -161,23 +161,32 @@ const commenDataReducer = (state = initialState, action) => {
         error: action.error,
       };
 
-      case types.GET_COMPANIES_REQUEST:
-        return {
-          ...state,
-          loading: true,
-        };
-      case types.GET_COMPANIES_SUCCESS:
-        return {
-          ...state,
-          loading: false,
-          companiesData: action.payload,
-        };
-      case types.GET_COMPANIES_FAILED:
-        return {
-          ...state,
-          loading: false,
-          error: action.error,
-        };
+    case types.GET_COMPANIES_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.GET_COMPANIES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        companiesData: action.payload,
+      };
+    case types.GET_COMPANIES_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+
+
+    case types.ADD_COMPANIES_SUCCESS:
+      return {
+        ...state,
+        companiesData: {...state.companiesData ,data:[action.payload , ...state.companiesData?.data]},
+        loading: false,
+      };
+
 
     default:
       return state;

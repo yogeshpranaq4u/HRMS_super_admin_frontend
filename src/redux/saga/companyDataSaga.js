@@ -22,7 +22,7 @@ export function* getCompanyAction(action) {
         if (response?.success) {
           yield put({
             type: types.GET_COMPANIES_SUCCESS,
-            payload: response?.data,
+            payload: response,
           });
         } else {
           toast.error(response?.data?.mssg, {

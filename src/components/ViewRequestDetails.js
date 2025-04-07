@@ -2,8 +2,12 @@ import moment from 'moment';
 import React, { useState } from 'react'
 
 function ViewRequestDetails({ handleData }) {
-    console.log("handleData", handleData?.data);
+    // console.log("handleData", handleData?.data);
     const d = handleData?.data
+
+    const service_type = Array.isArray(d?.selection)
+    ? d.selection
+    : JSON.parse(d?.selection || "[]")
 
     return (
         <div
@@ -54,11 +58,11 @@ function ViewRequestDetails({ handleData }) {
                                 <strong>Selection Type</strong>
                                 <p>
                                     {
-                                        JSON.parse(d?.selection)?.map((item, i) => {
+                                        service_type?.map((item, i) => {
                                             return item + "/"
                                         })
                                     }
-                                </p>
+                                          </p>
                             </div>
                             <div className="col-md-4">
                                 <strong>Demo Status</strong>
