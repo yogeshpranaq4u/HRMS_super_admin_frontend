@@ -68,7 +68,7 @@ function DemoRequest() {
                 id: data?.id,
                 demo_status: e.target.value
             }
-            const response = await callApi(Api.UPDATEDEMOSTATUS, "POST", payload, details?.token)
+            const response = await callApi(Api.UPDATEDEMOSTATUS+`/${data?.id}`, "PUT", payload, details?.token)
             // console.log("response", response);
             if (response.valid || response.authenticated) {
                 toast.success(response.message)
@@ -338,7 +338,7 @@ function DemoRequest() {
                                                                                 <td>
                                                                                     <div>
                                                                                         <select value={updatedStatus[item?.id]?.demo_status || item.demo_status}
-                                                                                            disabled={updatedStatus[item?.id]?.disable || item.demo_status == "Done"}
+                                                                                            disabled={updatedStatus[item?.id]?.demo_status || item.demo_status == "Done"}
                                                                                             onChange={(e) => {
                                                                                                 updataStatues(e, item)
                                                                                             }}
