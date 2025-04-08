@@ -186,6 +186,19 @@ const commenDataReducer = (state = initialState, action) => {
         companiesData: {...state.companiesData ,data:[action.payload , ...state.companiesData?.data]},
         loading: false,
       };
+    case types.UPDATE_COMPANIES_SUCCESS:
+      const updated = state.companiesData?.data?.map((item)=>{
+        if(item?.id == action.payload.id){
+          return action.payload
+        }else{
+          return item
+        }
+      })
+      return {
+        ...state,
+        companiesData: {...state.companiesData ,data:updated},
+        loading: false,
+      };
 
 
     default:

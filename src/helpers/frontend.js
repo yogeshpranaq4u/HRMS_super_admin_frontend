@@ -86,8 +86,8 @@ export  const validatedFields = (formdata , inputArray ,setErrors) => {
                 positionFocus = positionFocus || inputname;
             }
         } else{
-            // console.log(formdata ,inputname ,formdata[inputname] );
-            if (!formdata[inputname] || !formdata[inputname].trim()) {
+            console.log(formdata ,inputname ,formdata[inputname] );
+            if (!formdata[inputname]) {
                 newError[inputname] = "Please fill Required field";
                 positionFocus = positionFocus || inputname
             }
@@ -128,3 +128,8 @@ export  const validatedFields = (formdata , inputArray ,setErrors) => {
   };
 
 
+  export const formatDate = (isoDate) => {
+    const date = new Date(isoDate);
+    const options = { day: "2-digit", month: "short", year: "numeric" };
+    return date.toLocaleDateString("en-GB", options).replace(",", "");
+  };

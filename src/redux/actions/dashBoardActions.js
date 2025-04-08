@@ -17,6 +17,10 @@ export const addCompany = (data) => ({
     type: types.ADD_COMPANIES_SUCCESS,
     payload:data
 });
+export const updateCompany = (data) => ({
+    type: types.UPDATE_COMPANIES_SUCCESS,
+    payload:data
+});
 
 export const getPurchaseSummaryData = (data) => ({
     type: types.GET_PURCHASE_SUMMARY_REQUEST,

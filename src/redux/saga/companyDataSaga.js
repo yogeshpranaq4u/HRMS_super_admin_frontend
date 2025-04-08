@@ -8,11 +8,25 @@ const userDetails = sessionStorage.getItem("userDetails")
   ? JSON.parse(sessionStorage.getItem("userDetails"))
   : {};
 
+  
 export function* getCompanyAction(action) {
   try {
+    const { limit = 5, page = 1, sort = 'last_7_days', plan_id, status } = action?.payload || {};
+
+    // You can also dynamically build this query string if deliver and demo_status are needed
+    const queryParams = new URLSearchParams({
+      limit,
+      page,
+      sort,
+      ...(plan_id && { plan_id }),
+      ...(status && { status })
+    }).toString();
+
+    const queryUrl = `?${queryParams}`;
+    console.log(queryUrl);
     const response = yield call(
       callApi,
-      Api?.GETCOMPANIES,
+      Api?.GETCOMPANIES+queryUrl,
       "GET",
       null,
       userDetails?.token

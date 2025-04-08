@@ -7,6 +7,7 @@ export const ImagePath =
 export const Api = {
   //Admin Api End   Points
   LOGIN: "/super-admin/login", 
+  DEMOSTATS: "super-admin/request-demo/stats", 
   VERIFYOTP: "/super-admin/verify-otp", 
   RESEND: "super-admin/resend-otp", 
   REGISTERCOMPANY: "super-admin/companies", 

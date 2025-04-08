@@ -292,10 +292,23 @@ export function* watchGetRecentTransactionAction() {
 
 export function* getDemoRequestsAction(action) {
   try {
-    // console.log("userDetails" , userDetails);
+    const { limit = 5, page = 1, sort = 'last_7_days', deliver, demo_status } = action?.payload || {};
+    // You can also dynamically build this query string if deliver and demo_status are needed
+    const queryParams = new URLSearchParams({
+      limit,
+      page,
+      sort,
+      ...(deliver && { deliver }),
+      ...(demo_status && { demo_status })
+    }).toString();
+
+    const queryUrl = `?${queryParams}`;
+    console.log(queryUrl);
+    
+    // const queryUrl = `?limit=5&page=1&sort=last_7_days`
     const response = yield call(
       callApi,
-      Api.GETREQUESTDEMO,
+      Api.GETREQUESTDEMO+queryUrl,
       "GET",
       "",
       userDetails?.token

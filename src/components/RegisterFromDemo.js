@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Api, BaseUrl, ImagePath } from '../config/apiEndPoints';
 import { callApi } from '../config/apiCall';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCompany, getAllPlans } from '../redux/actions/dashBoardActions';
+import { addCompany, getAllPlans, updateCompany } from '../redux/actions/dashBoardActions';
 import { getFirstErrorMessage, hasValidationError, validatedFields, validationError } from '../helpers/frontend';
 import { toast } from 'react-toastify';
 
@@ -26,18 +26,19 @@ function RegisterFromDemo({ handleData }) {
         plan_id: "",
         company_logo: ""//type will be file (binary)
     })
-
     const [isloading, setLoading] = useState(false)
-    useEffect(() => {
-        dispatch(getAllPlans())
-    }, [])
-    // console.log("handleData", handleData ,plansData);
+
     useEffect(() => {
         // console.log(handleData);
         if (handleData?.type == "edit") {
+            const service_type = Array.isArray(handleData?.data?.service_type)
+                ? handleData?.data?.service_type
+                : JSON.parse(handleData?.data?.service_type || "[]")
             setFormData((prev) => ({
-                ...handleData?.data
+                ...handleData?.data,
+                service_type: JSON.parse(service_type),
             }))
+
         } else {
             const service_type = Array.isArray(handleData?.data?.selection)
                 ? handleData?.data?.selection
@@ -68,8 +69,7 @@ function RegisterFromDemo({ handleData }) {
         } else {
             setFormData((prev) => ({ ...prev, [name]: value }));
         }
-
-
+        console.log("formData", formData);
     }
 
     const requiredFields = [
@@ -84,19 +84,31 @@ function RegisterFromDemo({ handleData }) {
             setLoading(true)
             let data = new FormData()
             Object.entries(formData)?.map(([key, value]) => {
-                // console.log(key, value);
-                data.append(key, value)
+                if (key == "service_type") {
+                    data.append(key, JSON.stringify(value))
+                } else if (key == "company_logo") {
+                    if (typeof formData.company_logo == "string") {
+                        data.append(key, "")
+                    }
+                } else {
+                    data.append(key, value)
+                }
             })
-            const response = await callApi(Api.REGISTERCOMPANY, "POST", data, details?.token)
+            const response = await callApi(Api.REGISTERCOMPANY + `${handleData?.type == "edit" ? "/" + handleData.data.id : ""}`, "POST", data, details?.token)
             toast.success(response.data?.message || "Form submitted successfully!");
-            console.log("response", response);
+            // console.log("response", response);
             if (handleData?.type == "Register") {
                 if (response?.authenticated && response?.valid) {
                     dispatch(addCompany(response?.data?.company))
                 }
             }
+            if (handleData?.type == "edit") {
+                dispatch(updateCompany(response?.data?.company))
+            }
             setLoading(false)
+            reSetForm()
             handleData.onClose()
+
         } catch (error) {
             console.error("Error submitting form", error);
             if (error.response.data.errors) {
@@ -108,6 +120,23 @@ function RegisterFromDemo({ handleData }) {
         }
     };
 
+    const reSetForm = () => {
+        setFormData({
+            admin_name: "",
+            admin_email: "",
+            company_email: "",
+            company_name: " ",
+            company_domain: "",
+            team_size: "",
+            contact_no: "",
+            demo_status: "",
+            config: "",
+            service_type: [],
+            status: "",//active ,inactive
+            plan_id: "",
+            company_logo: ""
+        })
+    }
 
 
     return (
@@ -121,7 +150,10 @@ function RegisterFromDemo({ handleData }) {
                         <h4 className="modal-title">{handleData?.type == "edit" ? "Edit" : "Register"} Company</h4>
                         <button type="button"
                             className="btn-close custom-btn-close"
-                            onClick={handleData.onClose}>
+                            onClick={() => {
+                                reSetForm()
+                                handleData.onClose()
+                            }}>
                             <i className="ti ti-x"></i>
                         </button>
                     </div>
@@ -231,6 +263,41 @@ function RegisterFromDemo({ handleData }) {
                                     </div>
                                 </div>
 
+                                {
+                                    handleData.type == "edit" &&
+                                    <>
+                                        <div className="col-md-6">
+                                            <div className="mb-3">
+                                                <label className="form-label">Company Id</label>
+                                                <input type="text" className="form-control"
+                                                    value={formData.company_id}
+                                                    disabled
+                                                    name='company_id'
+                                                    onChange={onTextChange}
+                                                />
+                                                {hasValidationError(errors, "company_id") && (
+                                                    <small className="text-danger pt-1">{validationError(errors, "company_id")}</small>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="mb-3">
+                                                <label className="form-label">DB Name</label>
+                                                <input type="text" className="form-control"
+                                                    value={formData.db_name}
+                                                    disabled
+                                                    name='db_name'
+                                                    onChange={onTextChange}
+                                                />
+                                                {hasValidationError(errors, "db_name") && (
+                                                    <small className="text-danger pt-1">{validationError(errors, "db_name")}</small>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                    </>
+                                }
+
                                 <div className="col-md-12">
                                     <div className="mb-3">
                                         <label className="form-label">Address</label>
@@ -299,6 +366,7 @@ function RegisterFromDemo({ handleData }) {
                                                 name='team_size'
                                                 onChange={onTextChange}
                                                 className="custom-select">
+                                                <option value={""}>Select</option>
                                                 <option value={"1-10"}>1-10</option>
                                                 <option value={"11-50"}>11-50</option>
                                                 <option value={"51-100"}>51-100</option>
@@ -315,7 +383,6 @@ function RegisterFromDemo({ handleData }) {
                                     <div className="mb-3 ">
                                         <label className="form-label">Status</label>
                                         <div className="pass-group">
-
                                             <select
                                                 value={formData?.status}
                                                 name='status'
@@ -323,7 +390,8 @@ function RegisterFromDemo({ handleData }) {
                                                 className="custom-select">
                                                 <option>Select</option>
                                                 <option value={"Active"}>Active</option>
-                                                <option value={"inactive"}>In Active</option>
+                                                <option value={"Inactive"}>In Active</option>
+                                                <option value={"Hold"}>Hold</option>
                                                 {/* <option value={"Not Connected"}>Not Connected</option>
                                                 <option value={"Done"}>Done</option> */}
                                             </select>
@@ -333,43 +401,33 @@ function RegisterFromDemo({ handleData }) {
                                         )}
                                     </div>
                                 </div>
-                                {/* <div className="col-md-4">
-                                    <div className="mb-3 ">
-                                        <label className="form-label">Demo Status</label>
-                                        <div className="pass-group">
-
-                                            <select
-                                                value={formData?.demo_status}
-                                                name='demo_status'
-                                                onChange={onTextChange}
-                                                className="custom-select">
-                                                <option>Select</option>
-                                                <option value={"Pending"}>Pending</option>
-                                                <option value={"Scheduled"}>Scheduled</option>
-                                                <option value={"Not Connected"}>Not Connected</option>
-                                                <option value={"Done"}>Done</option>
-                                            </select>
+                                {
+                                    handleData.type == "edit" &&
+                                    <>
+                                        <div className="col-md-4">
+                                            <div className="mb-3">
+                                                <label className="form-label">Start Date</label>
+                                                <input type="date" value={formData?.plan_start_date}
+                                                    name='plan_start_date'
+                                                    onChange={onTextChange} className="form-control" />
+                                                {hasValidationError(errors, "plan_start_date") && (
+                                                    <small className="text-danger pt-1">{validationError(errors, "plan_start_date")}</small>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-4">
-                                    <div className="mb-3 ">
-                                        <label className="form-label">Config</label>
-                                        <div className="pass-group">
-
-                                            <select
-                                                value={formData?.config}
-                                                name='config'
-                                                onChange={onTextChange}
-                                                className="custom-select">
-                                                <option>Select</option>
-                                                <option value={"Yes"}>Yes</option>
-                                                <option value={"No"}>No</option>
-
-                                            </select>
+                                        <div className="col-md-4">
+                                            <div className="mb-3">
+                                                <label className="form-label">End Date</label>
+                                                <input type="date" value={formData?.plan_end_date}
+                                                    name='plan_end_date'
+                                                    onChange={onTextChange} className="form-control" />
+                                                {hasValidationError(errors, "plan_end_date") && (
+                                                    <small className="text-danger pt-1">{validationError(errors, "plan_end_date")}</small>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                </div> */}
+                                    </>
+                                }
 
                             </div>
                         </div>

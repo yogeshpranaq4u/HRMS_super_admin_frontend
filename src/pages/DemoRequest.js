@@ -11,6 +11,7 @@ import { callApi } from '../config/apiCall'
 import { toast } from 'react-toastify'
 import RegisterFromDemo from '../components/RegisterFromDemo'
 import ViewRequestDetails from '../components/ViewRequestDetails'
+import Pagination from '../components/Pagination'
 
 function DemoRequest() {
     const dispatch = useDispatch()
@@ -20,11 +21,47 @@ function DemoRequest() {
     const allRequest = useSelector((state) => state.commenData.demoRequestsData)
     const isLoading = useSelector((state) => state.commenData.loading)
     const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
+    const [denoStats, setdenoStats] = useState()
+
+    const [filters, setFilters] = useState({
+        limit: 10,
+        page: 1,
+        deliver: "",
+        demo_status: "",
+        sort: "",
+        currentPage: 1,
+    })
 
     useEffect(() => {
-        dispatch(getDemoRequestData("all"))
+        fetchStats()
     }, [])
-    // console.log("details", details);
+
+    useEffect(() => {
+        // console.log("filters", filters);
+        dispatch(getDemoRequestData(filters))
+    }, [filters])
+
+    const fetchStats = async () => {
+        try {
+            const response = await callApi(Api.DEMOSTATS, "GET", "", details?.token)
+            if (response.authenticated && response.valid) {
+                // console.log(response);
+                setdenoStats(response.data || {})
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const changeFilter = (value, key) => {
+        // console.log(value, key);
+        setFilters((prev) => ({
+            ...prev,
+            [key]: value
+        }))
+    }
+    // console.log("allRequest", allRequest);
     const updataStatues = async (e, data) => {
         try {
             const payload = {
@@ -32,7 +69,7 @@ function DemoRequest() {
                 demo_status: e.target.value
             }
             const response = await callApi(Api.UPDATEDEMOSTATUS, "POST", payload, details?.token)
-            console.log("response", response);
+            // console.log("response", response);
             if (response.valid || response.authenticated) {
                 toast.success(response.message)
                 setUpdatedStatus((prev) => ({
@@ -73,6 +110,23 @@ function DemoRequest() {
         "Meeting Time"
     ];
 
+    const handlePageChange = (page) => {
+        // Call your API here to fetch data for the new page
+        // console.log(page);
+        setFilters(prev => ({
+            ...prev,
+            currentPage: page,
+            page: page
+        }));
+    };
+    const sortOptions = [
+        { title: "Recently Added", value: "recent_added" },
+        { title: "Descending", value: "descending" },
+        { title: "Ascending", value: "ascending" },
+        { title: "Last Month", value: "last_month" },
+        { title: "Last 7 Days", value: "last_7_days" },
+    ];
+
     return (
         <React.Fragment>
             <MainLayout>
@@ -100,7 +154,7 @@ function DemoRequest() {
                                                     </span>
                                                     <div className="ms-2 overflow-hidden">
                                                         <p className="fs-12 fw-medium mb-1 text-truncate">Total Request</p>
-                                                        <h4>{allRequest?.data?.length || 950}</h4>
+                                                        <h4>{denoStats?.total || 950}</h4>
                                                     </div>
                                                 </div>
 
@@ -116,7 +170,7 @@ function DemoRequest() {
                                                     </span>
                                                     <div className="ms-2 overflow-hidden">
                                                         <p className="fs-12 fw-medium mb-1 text-truncate">Total Demo Done</p>
-                                                        <h4>90</h4>
+                                                        <h4>{denoStats?.done || 90}</h4>
                                                     </div>
                                                 </div>
 
@@ -132,7 +186,7 @@ function DemoRequest() {
                                                     </span>
                                                     <div className="ms-2 overflow-hidden">
                                                         <p className="fs-12 fw-medium mb-1 text-truncate">Total Config</p>
-                                                        <h4>50</h4>
+                                                        <h4>{denoStats?.config || 50}</h4>
                                                     </div>
                                                 </div>
 
@@ -148,7 +202,7 @@ function DemoRequest() {
                                                     </span>
                                                     <div className="ms-2 overflow-hidden">
                                                         <p className="fs-12 fw-medium mb-1 text-truncate">Total Delivered</p>
-                                                        <h4>150</h4>
+                                                        <h4>{denoStats?.delivered || 150}</h4>
                                                     </div>
                                                 </div>
 
@@ -162,64 +216,37 @@ function DemoRequest() {
                                         <h5>All Request List</h5>
                                         {/* filters  */}
                                         <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
-                                            {/* <div className="me-3">
-                                    <div className="input-icon-end position-relative">
-                                        <input type="text" className="form-control date-range bookingrange" placeholder="dd/mm/yyyy - dd/mm/yyyy" />
-                                        <span className="input-icon-addon">
-                                            <i className="ti ti-chevron-down"></i>
-                                        </span>
-                                    </div>
-                                </div> */}
                                             <div className="dropdown me-3">
-                                                <a href="javascript:void(0);" className="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                                                    Select Plan
-                                                </a>
-                                                <ul className="dropdown-menu  dropdown-menu-end p-3">
-                                                    <li>
-                                                        <a href="javascript:void(0);" className="dropdown-item rounded-1">Advanced</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);" className="dropdown-item rounded-1">Basic</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);" className="dropdown-item rounded-1">Enterprise</a>
-                                                    </li>
-                                                </ul>
+                                                <select value={filters?.demo_status} onChange={(e) => {
+                                                    changeFilter(e.target.value, "demo_status")
+                                                }} className='select border py-2 px-2 rounded'>
+                                                    <option value={""}> Select Status</ option>
+                                                    {
+                                                        ["Pending", "Scheduled", "Done", "Not Connected"]?.map((item, i) => {
+                                                            return (
+                                                                <option key={i} value={item}> {item}</ option>
+                                                            )
+                                                        })
+
+                                                    }
+                                                </select>
                                             </div>
-                                            <div className="dropdown me-3">
-                                                <a href="javascript:void(0);" className="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                                                    Select Status
-                                                </a>
-                                                <ul className="dropdown-menu  dropdown-menu-end p-3">
-                                                    <li>
-                                                        <a href="javascript:void(0);" className="dropdown-item rounded-1">Active</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);" className="dropdown-item rounded-1">Inactive</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+
                                             <div className="dropdown">
-                                                <a href="javascript:void(0);" className="dropdown-toggle btn btn-white d-inline-flex align-items-center" data-bs-toggle="dropdown">
-                                                    Sort By : Last 7 Days
-                                                </a>
-                                                <ul className="dropdown-menu  dropdown-menu-end p-3">
-                                                    <li>
-                                                        <a href="javascript:void(0);" className="dropdown-item rounded-1">Recently Added</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);" className="dropdown-item rounded-1">Ascending</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);" className="dropdown-item rounded-1">Desending</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);" className="dropdown-item rounded-1">Last Month</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="javascript:void(0);" className="dropdown-item rounded-1">Last 7 Days</a>
-                                                    </li>
-                                                </ul>
+                                                <select value={filters?.sort} onChange={(e) => {
+                                                    changeFilter(e.target.value, "sort")
+                                                }} className='select border py-2 px-2 rounded'>
+                                                    <option value={""}> Sort</ option>
+                                                    {
+                                                        sortOptions?.map((item, i) => {
+                                                            return (
+                                                                <option key={i} value={item?.value}> {item.title}</ option>
+                                                            )
+                                                        })
+
+                                                    }
+                                                </select>
+
                                             </div>
                                         </div>
                                     </div>
@@ -227,8 +254,11 @@ function DemoRequest() {
                                         <div className="row align-items-center">
                                             <div className="col-sm-12 col-md-6">
                                                 <div className="dataTables_length" >
-                                                    <label>Entries <select aria-controls="DataTables_Table_0" className="form-select form-select-sm">
-                                                        <option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> </label>
+                                                    <label>Entries
+                                                        <select value={filters?.limit} onChange={(e) => {
+                                                            changeFilter(e.target.value, "limit")
+                                                        }} className="form-select form-select-sm">
+                                                            <option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> </label>
                                                 </div>
                                             </div>
                                             <div className="col-sm-12 col-md-6">
@@ -275,8 +305,8 @@ function DemoRequest() {
                                                                         return item
                                                                     })?.map((item, index) => {
                                                                         const validSelection = Array.isArray(item?.selection)
-                                                                        ? item.selection
-                                                                        : JSON.parse(item?.selection || "[]");
+                                                                            ? item.selection
+                                                                            : JSON.parse(item?.selection || "[]");
                                                                         // console.log(item?.selection ,validSelection);
 
                                                                         return (
@@ -389,14 +419,8 @@ function DemoRequest() {
                                         </div>
 
                                     </div>
-                                    {/* <div className="row p-3 align-items-center">
-                                        <div className="col-sm-12 col-md-5">
-                                            <div className="dataTables_info" role="status" aria-live="polite">
-                                                Showing 1 - 10 of 10 entries</div></div>
-                                        <div className="col-sm-12 col-md-7 sv-dataTables_paginate">
-                                            <div className="dataTables_paginate paging_simple_numbers mt-0 p-0"
-                                                style={{ marginTop: "0px!important" }}
-                                            ><ul className="pagination"><li className="paginate_button page-item previous disabled" ><a aria-controls="DataTables_Table_0" aria-disabled="true" role="link" data-dt-idx="previous" tabIndex="-1" className="page-link"><i className="ti ti-chevron-left"></i> </a></li><li className="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabIndex="0" className="page-link">1</a></li><li className="paginate_button page-item next disabled" id="DataTables_Table_0_next"><a aria-controls="DataTables_Table_0" aria-disabled="true" role="link" data-dt-idx="next" tabIndex="-1" className="page-link"><i className="ti ti-chevron-right"></i></a></li></ul></div></div></div> */}
+                                    <Pagination pagination={allRequest?.pagination} onPageChange={handlePageChange} />
+
                                 </div>
 
                             </div>
