@@ -67,6 +67,14 @@
   background: rgb(230, 242, 255);
 }
 
+.freeplan {
+  padding: 20px;
+}
+
+.sv-freeplan{
+  background: #F4F5F6;
+}
+
 .customize-calender {
   border-spacing: 0;
   max-width: 350px;

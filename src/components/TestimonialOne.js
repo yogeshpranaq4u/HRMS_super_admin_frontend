@@ -30,24 +30,24 @@ const TestimonialOne = () => {
 
     const testimonials = [
         {
-            name: "Robert Frost",
-            company: "Lumessa, Administrator",
-            text: "The platform is intuitive and easy to navigate, which reduces the learning curve for new users. Includes all essential modules like payroll, performance management, and employee self-service.",
-            logo: "🟢 Lumessa",
-            rating: 5,
-        },
-        {
-            name: "Maria Zenath",
-            company: "Cyrix, CEO",
+            name: "Applepie",
+            company: "Applepie",
             text: "The platform’s reporting tools give us all the data we need, from attendance to team metrics, in one place. It’s drastically cut down the time we spend preparing reports.",
-            logo: "🔵 Quixana",
+            logo: "assets/img/Applepie.png",
             rating: 5,
         },
         {
-            name: "Andrew Fetcher",
-            company: "Zenithia, Product Manager",
+            name: "Robert Frost",
+            company: "Pet Friendly Place",
+            text: "The platform is intuitive and easy to navigate, which reduces the learning curve for new users. Includes all essential modules like payroll, performance management, and employee self-service.",
+            logo: "assets/img/Pet.png",
+            rating: 5,
+        },
+        {
+            name: "Fitme",
+            company: "Fitme",
             text: "Our hiring process is faster and more organized with this platform. From job listings to final onboarding, each step is clear and seamless, helping us secure top talent efficiently.",
-            logo: "🔴 Zenithia",
+            logo: "assets/img/Fitme.png",
             rating: 5,
         },
     ];
@@ -90,13 +90,12 @@ const TestimonialOne = () => {
                         {testimonials.map((testimonial, index) => (
                             <div key={index} className="px-2">
                                 <div className="testimonial-card">
-                                    <h5 className="testimonial-logo">{testimonial.logo}</h5>
+                                    <h5 className="testimonial-logo d-flex align-items-center gap-2">
+                                        <img src={testimonial.logo} alt="img"  style={{maxWidth:"40px"}}/>
+                                        {testimonial.name}
+                                    </h5>
                                     <p className="testimonial-text">{testimonial.text}</p>
-                                    <div className="testimonial-footer">
-                                        <div className="testimonial-author">
-                                            <strong>{testimonial.name}</strong>
-                                            <span>{testimonial.company}</span>
-                                        </div>
+                                    <div className="testimonial-footer justify-content-end">
                                         <div className="testimonial-rating">⭐⭐⭐⭐⭐</div>
                                     </div>
                                 </div>

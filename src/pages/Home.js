@@ -194,7 +194,7 @@ function Home() {
         {/* features 1 */}
         <Features handleOpen={handleOpen} />
         {/* pricing */}
-        <Pricing />
+        <Pricing  handleOpen={handleOpen}/>
         {/* faq */}
         <FAQ handleOpen={handleOpen} />
         {/* TestimonialOne */}
