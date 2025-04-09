@@ -55,11 +55,11 @@ function ViewRequestDetails({ handleData }) {
                         <h6 className="section-title">Demo Details</h6>
                         <div className="row">
                             <div className="col-md-4">
-                                <strong>Selection Type</strong>
-                                <p>
+                                <strong>Service Type</strong>
+                                <p className='text-capitalize'>
                                     {
                                         service_type?.map((item, i) => {
-                                            return item + "/"
+                                            return item + (i == 0 && service_type?.length > 1 ? "/":"")
                                         })
                                     }
                                           </p>

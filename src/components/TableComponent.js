@@ -37,14 +37,16 @@ const TableComponent = ({ tableHeader, dataSource, dataKeys, onEdit, handleDelet
                   const validSelection = Array.isArray(item[key])
                     ? item[key]
                     : JSON.parse(item[key] || "[]");
-                  // console.log(item[key] ,validSelection);
+                  const reVlidate = !Array.isArray(validSelection) ? JSON.parse(validSelection || "[]") : validSelection
+                  // console.log(item[key] ,validSelection ,!Array.isArray(validSelection) ? JSON.parse(validSelection || "[]"):"");
                   return (
                     <td key={colIndex}>
                       <div className="d-flex align-items-center justify-content-between">
                         {
-                          JSON.parse(validSelection || "[]")?.map((item, index) => {
+                          reVlidate?.map((item, index) => {
                             return (
-                              <p key={index} className='p-0 m-0'>{item},</p>
+                              <p key={index} className='p-0 m-0 text-capitalize '>{item}
+                                {index == 0 && reVlidate?.length > 1 && "/"}</p>
                             )
                           })
                         }

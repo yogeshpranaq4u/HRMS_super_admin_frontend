@@ -22,7 +22,6 @@ function DemoRequest() {
     const isLoading = useSelector((state) => state.commenData.loading)
     const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
     const [denoStats, setdenoStats] = useState()
-
     const [filters, setFilters] = useState({
         limit: 10,
         page: 1,
@@ -32,12 +31,8 @@ function DemoRequest() {
         currentPage: 1,
     })
 
+    useEffect(() => { fetchStats() }, [])
     useEffect(() => {
-        fetchStats()
-    }, [])
-
-    useEffect(() => {
-        // console.log("filters", filters);
         dispatch(getDemoRequestData(filters))
     }, [filters])
 
@@ -55,27 +50,26 @@ function DemoRequest() {
     }
 
     const changeFilter = (value, key) => {
-        // console.log(value, key);
         setFilters((prev) => ({
             ...prev,
             [key]: value
         }))
     }
     // console.log("allRequest", allRequest);
-    const updataStatues = async (e, data) => {
+    const updataStatues = async (e, data, type) => {
         try {
             const payload = {
                 id: data?.id,
-                demo_status: e.target.value
+                [type]: e.target.value
             }
-            const response = await callApi(Api.UPDATEDEMOSTATUS+`/${data?.id}`, "PUT", payload, details?.token)
+            const response = await callApi(Api.UPDATEDEMOSTATUS + `/${data?.id}`, "PUT", payload, details?.token)
             // console.log("response", response);
             if (response.valid || response.authenticated) {
                 toast.success(response.message)
                 setUpdatedStatus((prev) => ({
                     ...prev,
                     [data?.id]: {
-                        demo_status: response?.data?.demo_status || "",
+                        [type]: response?.data?.[type] || "",
                         disable: true  // Or your desired logic for enabling/disabling
                     }
 
@@ -103,16 +97,14 @@ function DemoRequest() {
         "User Name",
         "Email",
         "Contact Number",
-        "Selection Type",
+        "Service Type",
         "Demo Status",
         "Config",
-        // "Deliver",
         "Meeting Time"
     ];
 
     const handlePageChange = (page) => {
         // Call your API here to fetch data for the new page
-        // console.log(page);
         setFilters(prev => ({
             ...prev,
             currentPage: page,
@@ -330,7 +322,9 @@ function DemoRequest() {
                                                                                     {
                                                                                         validSelection?.map((item, index) => {
                                                                                             return (
-                                                                                                <p key={index} className='p-0 m-0'>{item}</p>
+                                                                                                <p key={index} className='p-0 m-0 text-capitalize '>{item}
+                                                                                                    {index == 0 && validSelection?.length > 1 && "/"}
+                                                                                                </p>
                                                                                             )
                                                                                         })
                                                                                     }
@@ -340,7 +334,7 @@ function DemoRequest() {
                                                                                         <select value={updatedStatus[item?.id]?.demo_status || item.demo_status}
                                                                                             disabled={updatedStatus[item?.id]?.demo_status || item.demo_status == "Done"}
                                                                                             onChange={(e) => {
-                                                                                                updataStatues(e, item)
+                                                                                                updataStatues(e, item, "demo_status")
                                                                                             }}
                                                                                             className={`demo-status  
                                                                                         ${item.demo_status == "Not Connected" ? "not-connected"
@@ -355,20 +349,20 @@ function DemoRequest() {
                                                                                 </td>
                                                                                 <td>
                                                                                     <div>
-                                                                                        <select disabled={true} defaultValue={item?.config} className='demo-status '>
-                                                                                            <option value={"yes"}>Yes</option>
-                                                                                            <option value={"no"}>No</option>
-
+                                                                                        <select
+                                                                                            onChange={(e) => {
+                                                                                                updataStatues(e, item, "config")
+                                                                                            }}
+                                                                                            defaultValue={item?.config}
+                                                                                            disabled={updatedStatus[item?.id]?.config || item?.config == "Yes"}
+                                                                                            className='demo-status '>
+                                                                                            <option value={"Yes"}>Yes</option>
+                                                                                            <option value={"No"}>No</option>
                                                                                         </select>
                                                                                     </div>
 
                                                                                 </td>
-                                                                                {/* <td>
-                                                                                    <span style={item?.deliver.toLowerCase() == "pending" ? { background: "#e4e1e18c", color: "#000000" } : {}} className="badge badge-suucess d-inline-flex align-items-center badge-xs">
-                                                                                        <i className="ti ti-point-filled me-1"></i>
-                                                                                        {item?.deliver || ""}
-                                                                                    </span>
-                                                                                </td> */}
+
                                                                                 <td>
                                                                                     {item?.demo_date ? moment(item?.demo_date || "").format("DD/MMM/YYYY") : "NA"}, {item?.demo_time || ""}
                                                                                 </td>
@@ -387,22 +381,28 @@ function DemoRequest() {
                                                                                             title='View Details'>
                                                                                             <i className="ti ti-eye"></i>
                                                                                         </a>
-                                                                                        <a href="#" className="me-2" >
-                                                                                            <i className="ti ti-device-tv" style={{ transform: "rotate(180deg)" }}></i>
-                                                                                        </a>
-                                                                                        <a href="#" className="me-2"
-                                                                                            onClick={() => {
-                                                                                                setModalData((prev) => ({
-                                                                                                    ...prev,
-                                                                                                    data: item,
-                                                                                                    isOpen: true,
-                                                                                                    type: "register",
-                                                                                                    onClose: onClose
-                                                                                                }))
-                                                                                            }}
-                                                                                            title='Register' >
-                                                                                            <i className="ti ti-user-edit"></i>
-                                                                                        </a>
+                                                                                        {
+                                                                                            !(item.demo_status == "Done" )&&
+                                                                                            <a href="#" className="me-2" >
+                                                                                                <i className="ti ti-device-tv" style={{ transform: "rotate(180deg)" }}></i>
+                                                                                            </a>
+                                                                                        }
+                                                                                        {
+                                                                                            (updatedStatus[item?.id]?.config  || item?.config == "Yes") ? "":
+                                                                                            <a href="#" className="me-2"
+                                                                                                onClick={() => {
+                                                                                                    setModalData((prev) => ({
+                                                                                                        ...prev,
+                                                                                                        data: item,
+                                                                                                        isOpen: true,
+                                                                                                        type: "register",
+                                                                                                        onClose: onClose
+                                                                                                    }))
+                                                                                                }}
+                                                                                                title='Register' >
+                                                                                                <i className="ti ti-user-edit"></i>
+                                                                                            </a>
+                                                                                        }
                                                                                         {/* <a href="#" className="me-2" title='Edit' ><i className="ti ti-edit"></i></a> */}
                                                                                         {/* <a href="javascript:void(0);" ><i className="ti ti-trash"></i></a> */}
                                                                                     </div>

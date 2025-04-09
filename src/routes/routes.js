@@ -1,5 +1,6 @@
 
 import Company from "../pages/company/Company";
+import CompanyPlans from "../pages/CompanyPlans";
 import Dashboard from "../pages/dashbord/Dashboard";
 import DemoRequest from "../pages/DemoRequest";
 import Landing from "../pages/Landing";
@@ -38,6 +39,11 @@ const allRoutes = [
     {
         element:<PolicyManage/>,
         path:"/manage-policy",
+        isPrivate:false
+    },
+    {
+        element:<CompanyPlans/>,
+        path:"/plans",
         isPrivate:false
     },
     {

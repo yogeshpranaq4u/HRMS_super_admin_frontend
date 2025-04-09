@@ -29,6 +29,15 @@
     color: #ccc;
     border-color: #ccc;
 }
+
+.profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+.profile-image img {
+}
+
 .demo-status {
     background: #e4e1e18c;
     padding: 5px;

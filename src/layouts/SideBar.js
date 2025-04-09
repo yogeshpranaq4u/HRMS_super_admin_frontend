@@ -31,6 +31,11 @@ function SideBar() {
       iconName: "ti ti-credit-card-pay"
     },
     {
+      title: "Plans",
+      pathname: "/plans",
+      iconName: "ti ti-circle-dotted-letter-p"
+    },
+    {
       title: "Manage Policy",
       pathname: "/manage-policy",
       iconName: "ti ti-device-desktop-cog"
