@@ -54,7 +54,7 @@ const Company = () => {
     "company_domain",        // Domain Name
     "company_id",            // Company Id
     "team_size",             // Company Size
-    "id",                    // DB Name (assuming "id" is used for DB name)
+    "database_name",                    // DB Name (assuming "id" is used for DB name)
     // "redirect_url",          // Redirect URL
     "admin_email",           // Admin Email
     "contact_no",            // Contact Number
