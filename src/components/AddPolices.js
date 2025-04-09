@@ -6,7 +6,7 @@ import { addCompany, getAllPlans, updateCompany } from '../redux/actions/dashBoa
 import { getFirstErrorMessage, hasValidationError, validatedFields, validationError } from '../helpers/frontend';
 import { toast } from 'react-toastify';
 
-function RegisterFromDemo({ handleData }) {
+function AddPolices({ handleData }) {
     const dispatch = useDispatch()
     const plansData = useSelector((state) => state.commenData.allPlans)
     const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
@@ -36,7 +36,7 @@ function RegisterFromDemo({ handleData }) {
                 : JSON.parse(handleData?.data?.service_type || "[]")
             setFormData((prev) => ({
                 ...handleData?.data,
-                service_type: Array.isArray(service_type) ? service_type: JSON.parse(service_type),
+                service_type: Array.isArray(service_type) ? service_type : JSON.parse(service_type),
             }))
 
         } else {
@@ -147,7 +147,7 @@ function RegisterFromDemo({ handleData }) {
             <div className="modal-dialog modal-dialog-centered modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h4 className="modal-title">{handleData?.type == "edit" ? "Edit" : "Register"} Company</h4>
+                        <h4 className="modal-title">{handleData?.type == "edit" ? "Edit Policy" : "Add New Policy"} </h4>
                         <button type="button"
                             className="btn-close custom-btn-close"
                             onClick={() => {
@@ -165,40 +165,31 @@ function RegisterFromDemo({ handleData }) {
                         <div className="modal-body pb-0">
                             <div className="row">
                                 <div className="col-md-12">
-                                    <div className="d-flex align-items-center flex-wrap row-gap-3 bg-light w-100 rounded p-3 mb-4">
-                                        <div className="d-flex align-items-center justify-content-center avatar avatar-xxl rounded-circle border border-dashed me-2 flex-shrink-0 text-dark frames">
-                                            <img
-                                                src={
-                                                    formData.company_logo
-                                                        ? formData.company_logo instanceof File
-                                                            ? URL.createObjectURL(formData.company_logo) // Preview uploaded file
-                                                            : ImagePath + formData.company_logo // Assume it's a URL
-                                                        : "assets/img/profiles/avatar-30.jpg" // Default image
-                                                } alt="img" className="rounded-circle" />
-                                        </div>
-                                        <div className="profile-upload">
-                                            <div className="mb-2">
-                                                <h6 className="mb-1">Upload Profile Image</h6>
-                                                <p className="fs-12">Image should be below 4 mb</p>
-                                            </div>
-                                            <div className="profile-uploader d-flex align-items-center">
-                                                <div className="drag-upload-btn btn btn-sm btn-primary me-2">
-                                                    Upload
-                                                    <input type="file"
-                                                        //  value={formData.company_logo}
-                                                        name='company_logo'
-                                                        onChange={onTextChange}
-                                                        className="form-control image-sign" multiple="" />
-                                                </div>
-                                                {/* <a href="javascript:void(0);" className="btn btn-light btn-sm">Cancel</a> */}
-                                            </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Select Company <span className="text-danger"> *</span></label>
+                                        <div className="pass-group">
+                                            <select value={formData?.company_id}
+                                                name='company_id'
+                                                onChange={onTextChange} className="custom-select">
+                                                <option>Select</option>
+                                                {
+                                                    plansData?.data?.map((item, index) => {
+                                                        return (
+                                                            <option key={index} value={item?.id}>{item?.name || ""}</option>
+                                                        )
+                                                    })
+                                                }
 
+                                            </select>
                                         </div>
+                                        {hasValidationError(errors, "company_id") && (
+                                            <small className="text-danger pt-1">{validationError(errors, "company_id")}</small>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="col-md-6">
                                     <div className="mb-3">
-                                        <label className="form-label">Company Name</label>
+                                        <label className="form-label">Probation Period</label>
                                         <input type="text" className="form-control"
                                             value={formData.company_name}
                                             name='company_name'
@@ -211,7 +202,7 @@ function RegisterFromDemo({ handleData }) {
                                 </div>
                                 <div className="col-md-6">
                                     <div className="mb-3">
-                                        <label className="form-label" >Company Email <span className="text-danger"> *</span></label>
+                                        <label className="form-label" >Holiday <span className="text-danger"> *</span></label>
                                         <input type="text"
                                             value={formData.company_email}
                                             name='company_email'
@@ -224,7 +215,7 @@ function RegisterFromDemo({ handleData }) {
                                 </div>
                                 <div className="col-md-6">
                                     <div className="mb-3">
-                                        <label className="form-label">Email Address</label>
+                                        <label className="form-label">Email </label>
                                         <input type="email" className="form-control"
                                             value={formData.admin_email}
                                             name='admin_email'
@@ -336,7 +327,6 @@ function RegisterFromDemo({ handleData }) {
                                     <div className="mb-3 ">
                                         <label className="form-label">Plan Type <span className="text-danger"> *</span></label>
                                         <div className="pass-group">
-
                                             <select value={formData.plan_id}
                                                 name='plan_id'
                                                 onChange={onTextChange} className="custom-select">
@@ -437,7 +427,7 @@ function RegisterFromDemo({ handleData }) {
                                 {
                                     isloading ? "Loading..." :
                                         handleData?.type == "edit" ? "Save" :
-                                            "Submit"
+                                            "Add"
                                 }
                             </button>
                         </div>
@@ -448,4 +438,4 @@ function RegisterFromDemo({ handleData }) {
     )
 }
 
-export default RegisterFromDemo
+export default AddPolices

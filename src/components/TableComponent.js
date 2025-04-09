@@ -90,7 +90,7 @@ const TableComponent = ({ tableHeader, dataSource, dataKeys, onEdit, handleDelet
                 <div className="action-icon d-inline-flex">
                   {
                     historyLink &&
-                    <a href={historyLink} className="me-2" title='view history' >
+                    <a href={historyLink}  className="me-2" title='view history' >
                       <i class="ti ti-history"></i>
                     </a>
                   }

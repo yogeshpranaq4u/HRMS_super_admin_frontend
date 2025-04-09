@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MainLayout from '../layouts/MainLayout'
 import { useDispatch, useSelector } from 'react-redux'
-import { getDemoRequestData } from '../redux/actions/dashBoardActions'
+import { getAllPlans, getDemoRequestData } from '../redux/actions/dashBoardActions'
 import moment from 'moment'
 import BreadCrums from '../components/BreadCrums'
 import Loader from '../components/Loader'
@@ -31,7 +31,9 @@ function DemoRequest() {
         currentPage: 1,
     })
 
-    useEffect(() => { fetchStats() }, [])
+    useEffect(() => { 
+        dispatch(getAllPlans())
+        fetchStats() }, [])
     useEffect(() => {
         dispatch(getDemoRequestData(filters))
     }, [filters])
@@ -88,8 +90,6 @@ function DemoRequest() {
             isOpen: false
         }))
     }
-    const headerData = ""
-
     const tableHeadings = [
         "Company Name",
         "Domain Name",
@@ -300,6 +300,7 @@ function DemoRequest() {
                                                                             ? item.selection
                                                                             : JSON.parse(item?.selection || "[]");
                                                                         // console.log(item?.selection ,validSelection);
+                                                                        const isdemoStatus = updatedStatus[item?.id]?.demo_status || item.demo_status == "Done"
 
                                                                         return (
                                                                             <tr key={index}>
@@ -331,19 +332,26 @@ function DemoRequest() {
                                                                                 </td>
                                                                                 <td>
                                                                                     <div>
-                                                                                        <select value={updatedStatus[item?.id]?.demo_status || item.demo_status}
-                                                                                            disabled={updatedStatus[item?.id]?.demo_status || item.demo_status == "Done"}
-                                                                                            onChange={(e) => {
-                                                                                                updataStatues(e, item, "demo_status")
-                                                                                            }}
-                                                                                            className={`demo-status  
-                                                                                        ${item.demo_status == "Not Connected" ? "not-connected"
-                                                                                                    : item.demo_status || updatedStatus[item?.id]?.demo_status} `}>
-                                                                                            <option value={"Pending"}>Pending</option>
-                                                                                            <option value={"Scheduled"}>Scheduled</option>
-                                                                                            <option value={"Not Connected"}>Not Connected</option>
-                                                                                            <option value={"Done"}>Done</option>
-                                                                                        </select>
+                                                                                        {
+                                                                                            isdemoStatus ?
+                                                                                                <div className='demo-status done d-flex justify-content-center '>Done</div> :
+                                                                                                <>
+                                                                                                    <select value={updatedStatus[item?.id]?.demo_status || item.demo_status}
+                                                                                                        disabled={isdemoStatus}
+                                                                                                        onChange={(e) => {
+                                                                                                            updataStatues(e, item, "demo_status")
+                                                                                                        }}
+                                                                                                        className={`demo-status  
+                                                                                                        ${item.demo_status == "Not Connected" ? "not-connected"
+                                                                                                        : item.demo_status || updatedStatus[item?.id]?.demo_status} `}>
+                                                                                                        <option value={"Pending"}>Pending</option>
+                                                                                                        <option value={"Scheduled"}>Scheduled</option>
+                                                                                                        <option value={"Not Connected"}>Not Connected</option>
+                                                                                                        <option value={"Done"}>Done</option>
+                                                                                                    </select>
+                                                                                                </>
+
+                                                                                        }
                                                                                     </div>
 
                                                                                 </td>
@@ -382,26 +390,26 @@ function DemoRequest() {
                                                                                             <i className="ti ti-eye"></i>
                                                                                         </a>
                                                                                         {
-                                                                                            !(item.demo_status == "Done" )&&
-                                                                                            <a href="#" className="me-2" >
+                                                                                            !(item.demo_status == "Done") &&
+                                                                                            <a href={item?.meeting_link} className="me-2" target='_blank' >
                                                                                                 <i className="ti ti-device-tv" style={{ transform: "rotate(180deg)" }}></i>
                                                                                             </a>
                                                                                         }
                                                                                         {
-                                                                                            (updatedStatus[item?.id]?.config  || item?.config == "Yes") ? "":
-                                                                                            <a href="#" className="me-2"
-                                                                                                onClick={() => {
-                                                                                                    setModalData((prev) => ({
-                                                                                                        ...prev,
-                                                                                                        data: item,
-                                                                                                        isOpen: true,
-                                                                                                        type: "register",
-                                                                                                        onClose: onClose
-                                                                                                    }))
-                                                                                                }}
-                                                                                                title='Register' >
-                                                                                                <i className="ti ti-user-edit"></i>
-                                                                                            </a>
+                                                                                            (updatedStatus[item?.id]?.config || item?.config == "Yes") ? "" :
+                                                                                                <a href="#" className="me-2"
+                                                                                                    onClick={() => {
+                                                                                                        setModalData((prev) => ({
+                                                                                                            ...prev,
+                                                                                                            data: item,
+                                                                                                            isOpen: true,
+                                                                                                            type: "register",
+                                                                                                            onClose: onClose
+                                                                                                        }))
+                                                                                                    }}
+                                                                                                    title='Register' >
+                                                                                                    <i className="ti ti-user-edit"></i>
+                                                                                                </a>
                                                                                         }
                                                                                         {/* <a href="#" className="me-2" title='Edit' ><i className="ti ti-edit"></i></a> */}
                                                                                         {/* <a href="javascript:void(0);" ><i className="ti ti-trash"></i></a> */}

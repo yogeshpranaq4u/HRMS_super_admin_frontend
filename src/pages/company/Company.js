@@ -160,9 +160,6 @@ const Company = () => {
                 ]}
               />
               <div className="d-flex my-xl-auto right-content align-items-center flex-wrap ">
-                <div className="me-2 mb-2">
-
-                </div>
                 <div className="mb-2">
                   <Link
                     to="#"
@@ -356,7 +353,7 @@ const Company = () => {
                         dataKeys={dataKeys || []}
                         onEdit={handleActions}
                         onView={handleActions}
-                        handleDelete={handleActions}
+                        // handleDelete={handleActions}
                       />
                     </div>
                   </div>
@@ -376,7 +373,7 @@ const Company = () => {
       {
         modalData.type == "delete" && modalData.isOpen ?
           <ConfirmDelete handleData={modalData} /> :
-          modalData.isOpen && modalData.type == "edit" &&
+          modalData.isOpen && (modalData.type == "edit" || modalData.type == "Register") &&
           <RegisterFromDemo handleData={modalData} />
       }
     </React.Fragment>

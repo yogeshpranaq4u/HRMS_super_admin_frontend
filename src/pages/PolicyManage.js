@@ -7,8 +7,9 @@ import Loader from '../components/Loader'
 import { Api, BaseUrl } from '../config/apiEndPoints'
 import { callApi } from '../config/apiCall'
 import { toast } from 'react-toastify'
-import RegisterFromDemo from '../components/RegisterFromDemo'
+import AddPolices from '../components/AddPolices'
 import ViewRequestDetails from '../components/ViewRequestDetails'
+import TableComponent from "../components/TableComponent";
 
 function PolicyManage() {
     const dispatch = useDispatch()
@@ -17,42 +18,98 @@ function PolicyManage() {
     const [modalData, setModalData] = useState({ isOpen: false, data: "" })
     const tableData = [
         {
-            "company_name": "BrightWave Innovations",
-            "probation_period": "3 Month",
-            "office_timing": "10:00 am - 7:00 pm",
-            "late_limit": 3,
-            "yearly_leave": 12,
-            "monthly_leave": 1,
-            "unapproved_detection": "Double Detection",
-            "working_days": "6 Days",
-            "shift_type": "1st Shift",
-            "wfh": "No",
-            "half_day_detection": "Yes",
-            "holiday_leave": 6
-          }
-          
-    ]
+            company_name: "BrightWave Innovations",
+            probation_period: "3 Month",
+            office_timing: "10:00 am - 7:00 pm",
+            late_limit: 3,
+            yearly_leave: 12,
+            monthly_leave: 1,
+            unapproved_detection: "Double Detection",
+            working_days: "6 Days",
+            shift_type: "1st Shift",
+            wfh: "No",
+            half_day_detection: "Yes",
+            holiday_leave: 6
+        },
+        {
+            company_name: "Brakke, Rowe and O'Kon",
+            probation_period: "3 Month",
+            office_timing: "10:00 am - 7:00 pm",
+            late_limit: 3,
+            yearly_leave: 24,
+            monthly_leave: 2,
+            unapproved_detection: "Single Detection",
+            working_days: "6 Days",
+            shift_type: "1st Shift",
+            wfh: "Yes",
+            half_day_detection: "Yes",
+            holiday_leave: 4
+        },
+        {
+            company_name: "Koelpin Group",
+            probation_period: "3 Month",
+            office_timing: "9:30 am - 7:00 pm",
+            late_limit: 3,
+            yearly_leave: 24,
+            monthly_leave: 2,
+            unapproved_detection: "Single Detection",
+            working_days: "5 Days",
+            shift_type: "1st Shift",
+            wfh: "No",
+            half_day_detection: "Yes",
+            holiday_leave: 6
+        },
+        {
+            company_name: "Prodovic - Writing",
+            probation_period: "6 Month",
+            office_timing: "10:00 am - 6:00 pm",
+            late_limit: 3,
+            yearly_leave: 16,
+            monthly_leave: 1,
+            unapproved_detection: "Single Detection",
+            working_days: "5 Days",
+            shift_type: "1st Shift",
+            wfh: "Yes",
+            half_day_detection: "Yes",
+            holiday_leave: 5
+        }
+    ];
     const isLoading = false
     // const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
-    const tableHeadings = [
-        "Company Name",
-        "Probation Period",
-        "Office Timing",
-        "Late Limit",
-        "Yearly Leave",
-        "Monthly Leave",
-        "Unapproved Deduction",
-        "Working Days",
-        "Shift Type",
-        "WFH",
-        "Half Day Deduction",
-        "Holiday Leave",
-        "Action"
+    const tableHeader = [
+        'Company Name',
+        'Probation Period',
+        'Office Timing',
+        'Late Limit',
+        'Yearly Leave',
+        'Monthly Leave',
+        'Unapproved Detection',
+        'Working Days',
+        'Shift Type',
+        'WFH',
+        'Half Day Detection',
+        'Holiday Leave',
     ];
+
+
+    const dataKeys = [
+        'company_name',
+        'probation_period',
+        'office_timing',
+        'late_limit',
+        'yearly_leave',
+        'monthly_leave',
+        'unapproved_detection',
+        'working_days',
+        'shift_type',
+        'wfh',
+        'half_day_detection',
+        'holiday_leave',
+    ]
 
     // console.log(tableHeadings);
 
-   
+
     const onClose = () => {
         setModalData((prev) => ({
             ...prev,
@@ -60,8 +117,17 @@ function PolicyManage() {
         }))
     }
 
-    const headerData = ""
-
+    const handleActions = (data, type) => {
+        // console.log(data ,type);
+        setModalData((prev) => ({
+            ...prev,
+            data: data,
+            type: type,
+            isOpen: true,
+            onConfirm: "",
+            onClose: onClose
+        }))
+    }
     return (
         <React.Fragment>
             <MainLayout>
@@ -70,14 +136,36 @@ function PolicyManage() {
                         isLoading ?
                             <Loader /> :
                             <div className="content">
-                                <BreadCrums
-                                    title={"Manage Policy"}
-                                    data={[
-                                        { path: "/", title: "Superadmin" },
-                                        { path: "/", title: "Manage Policy" },
+                                <div className="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
+                                    <BreadCrums
+                                        title={"Manage Policy"}
+                                        data={[
+                                            { path: "/", title: "Superadmin" },
+                                            { path: "/", title: "Manage Policy" },
 
-                                    ]}
-                                />
+                                        ]}
+                                    />
+                                    <div className="d-flex my-xl-auto right-content align-items-center flex-wrap ">
+                                        <div className="mb-2">
+                                            <a
+                                                to="#"
+                                                onClick={() => {
+                                                    setModalData((prev) => ({
+                                                        ...prev,
+                                                        isOpen: true,
+                                                        type: "add",
+                                                        onClose: onClose
+                                                    }))
+                                                }}
+                                                className="btn btn-primary d-flex align-items-center"
+                                            >
+                                                <i className="ti ti-circle-plus me-2" />
+                                                Add
+                                            </a>
+                                        </div>
+                                        <div className="ms-2 head-icons"></div>
+                                    </div>
+                                </div>
 
                                 <div className="card">
                                     <div className="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
@@ -161,155 +249,27 @@ function PolicyManage() {
                                         </div>
                                         <div className="card-body sv-card-body p-0">
                                             <div className="custom-datatable-filter table-responsive">
-                                                {
-                                                    tableData?.length == 0 ?
-                                                        <p>Date not found</p> :
-                                                        <table className="table datatable">
-                                                            <thead className="thead-light">
-                                                                <tr>
-                                                                    {
-                                                                        tableHeadings?.map((tableHead, index) => {
-                                                                            return (
-                                                                                <th key={index}>{tableHead}</th>
-                                                                            )
-                                                                        })
-                                                                    }
-                                                                    <th></th>
-                                                                </tr>
-
-                                                            </thead>
-                                                            <tbody>
-                                                                {
-                                                                    tableData?.filter((item) => {
-                                                                        if (searchText) {
-                                                                            return item.company_name.toLowerCase().includes(searchText.toLowerCase()) ||
-                                                                                item.company_domain.toLowerCase().includes(searchText.toLowerCase()) ||
-                                                                                item.email.toLowerCase().includes(searchText.toLowerCase())
-                                                                        }
-                                                                        return item
-                                                                    })?.map((item, index) => {
-                                                                        // console.log(item);
-                                                                        // const validSelection = JSON.parse(item?.selection)
-
-                                                                        return (
-                                                                            <tr key={index}>
-                                                                               
-                                                                                <td>
-                                                                                    <div className="d-flex align-items-center file-name-icon">
-                                                                                        {/* <a href="#" className="avatar avatar-md border rounded-circle">
-                                                                                            <img src="assets/img/company/company-01.svg" className="img-fluid" alt="img" />
-                                                                                        </a> */}
-                                                                                        <div className="ms-2">
-                                                                                            <h6 className="fw-medium"><a href="#">{item?.company_domain || "NA"}</a></h6>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                                <td>{item?.company_domain || "NA"}</td>
-                                                                                <td>{item?.company_size || "NA"}</td>
-                                                                                <td>{item?.name || "NA"}</td>
-                                                                                <td>{item?.email || "NA"}</td>
-                                                                                <td>{item?.phone_no || "NA"}</td>
-                                                                                <td>
-                                                                                    {/* {
-                                                                                        validSelection?.map((item, index) => {
-                                                                                            return (
-                                                                                                <p key={index} className='p-0 m-0'>{item}</p>
-                                                                                            )
-                                                                                        })
-                                                                                    } */}
-                                                                                </td>
-                                                                                <td>
-                                                                                    <div>
-                                                                                        <select value={updatedStatus[item?.id]?.demo_status || item.demo_status}
-                                                                                            disabled={updatedStatus[item?.id]?.disable || item.demo_status == "Done"}
-                                                                                            className={`demo-status  
-                                                                                        ${item.demo_status == "Not Connected" ? "not-connected"
-                                                                                                    : item.demo_status || updatedStatus[item?.id]?.demo_status} `}>
-                                                                                            <option value={"Pending"}>Pending</option>
-                                                                                            <option value={"Scheduled"}>Scheduled</option>
-                                                                                            <option value={"Not Connected"}>Not Connected</option>
-                                                                                            <option value={"Done"}>Done</option>
-                                                                                        </select>
-                                                                                    </div>
-
-                                                                                </td>
-                                                                                <td>
-                                                                                    <div>
-                                                                                        <select disabled={true} defaultValue={item?.config} className='demo-status '>
-                                                                                            <option value={"yes"}>Yes</option>
-                                                                                            <option value={"no"}>No</option>
-
-                                                                                        </select>
-                                                                                    </div>
-
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span style={item?.deliver?.toLowerCase() == "pending" ? { background: "#e4e1e18c", color: "#000000" } : {}} className="badge badge-suucess d-inline-flex align-items-center badge-xs">
-                                                                                        <i className="ti ti-point-filled me-1"></i>
-                                                                                        {item?.deliver || "NA"}
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <span style={item?.deliver?.toLowerCase() == "pending" ? { background: "#e4e1e18c", color: "#000000" } : {}} className="badge badge-suucess d-inline-flex align-items-center badge-xs">
-                                                                                        <i className="ti ti-point-filled me-1"></i>
-                                                                                        {item?.deliver || "NA"}
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    {item?.demo_date ? moment(item?.demo_date || "").format("DD/MMM/YYYY") : "NA"}, {item?.demo_time || ""}
-                                                                                </td>
-                                                                                <td>
-                                                                                    <div className="action-icon d-inline-flex">
-                                                                                        <a href="#" className="me-2"
-                                                                                            onClick={() => {
-                                                                                                // setModalData((prev) => ({
-                                                                                                //     ...prev,
-                                                                                                //     data: item,
-                                                                                                //     isOpen: true,
-                                                                                                //     type: "register",
-                                                                                                //     onClose: onClose
-                                                                                                // }))
-                                                                                            }}
-                                                                                            title='Register' >
-                                                                                            <i className="ti ti-user-edit"></i>
-                                                                                        </a>
-                                                                                        <a href="#" className="me-2"
-                                                                                            onClick={() => {
-                                                                                                // setModalData((prev) => ({
-                                                                                                //     ...prev,
-                                                                                                //     data: item,
-                                                                                                //     isOpen: true,
-                                                                                                //     type: "viewDetails",
-                                                                                                //     onClose: onClose
-                                                                                                // }))
-                                                                                            }}
-                                                                                            title='View Details'>
-                                                                                            <i className="ti ti-eye"></i>
-                                                                                        </a>
-                                                                                        {/* <a href="#" className="me-2" title='Edit' ><i className="ti ti-edit"></i></a> */}
-                                                                                        {/* <a href="javascript:void(0);" ><i className="ti ti-trash"></i></a> */}
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </tbody>
-
-                                                        </table>
-                                                }
+                                                <TableComponent
+                                                    tableHeader={tableHeader}
+                                                    dataSource={tableData?.filter((item) => {
+                                                        if (searchText) {
+                                                            return item.company_name.toLowerCase().includes(searchText.toLowerCase()) ||
+                                                                item.company_domain.toLowerCase().includes(searchText.toLowerCase()) ||
+                                                                item.admin_email.toLowerCase().includes(searchText.toLowerCase())
+                                                        }
+                                                        return item
+                                                    }) || []}
+                                                    // historyLink={"#"}//here will be the history page link
+                                                    dataKeys={dataKeys || []}
+                                                    onEdit={handleActions}
+                                                    onView={handleActions}
+                                                // handleDelete={handleActions}
+                                                />
                                             </div>
                                         </div>
 
                                     </div>
-                                    {/* <div className="row p-3 align-items-center">
-                                        <div className="col-sm-12 col-md-5">
-                                            <div className="dataTables_info" role="status" aria-live="polite">
-                                                Showing 1 - 10 of 10 entries</div></div>
-                                        <div className="col-sm-12 col-md-7 sv-dataTables_paginate">
-                                            <div className="dataTables_paginate paging_simple_numbers mt-0 p-0"
-                                                style={{ marginTop: "0px!important" }}
-                                            ><ul className="pagination"><li className="paginate_button page-item previous disabled" ><a aria-controls="DataTables_Table_0" aria-disabled="true" role="link" data-dt-idx="previous" tabIndex="-1" className="page-link"><i className="ti ti-chevron-left"></i> </a></li><li className="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_0" role="link" aria-current="page" data-dt-idx="0" tabIndex="0" className="page-link">1</a></li><li className="paginate_button page-item next disabled" id="DataTables_Table_0_next"><a aria-controls="DataTables_Table_0" aria-disabled="true" role="link" data-dt-idx="next" tabIndex="-1" className="page-link"><i className="ti ti-chevron-right"></i></a></li></ul></div></div></div> */}
+                                    {/* pagination will hare */}
                                 </div>
 
                             </div>
@@ -317,9 +277,8 @@ function PolicyManage() {
                 </div>
             </MainLayout>
             {
-                modalData.type == "viewDetails" ?
-                    <ViewRequestDetails handleData={modalData} /> :
-                    <RegisterFromDemo handleData={modalData} />
+                modalData.isOpen && (modalData.type == "add" || modalData.type == "edit") &&
+                <AddPolices handleData={modalData} />
             }
         </React.Fragment>
     )

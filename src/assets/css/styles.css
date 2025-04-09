@@ -39,7 +39,7 @@
 }
 
 .demo-status {
-    background: #e4e1e18c;
+    background: #E7E8EB;
     padding: 5px;
     border-radius: 3px;
     color: #000000;
@@ -49,9 +49,17 @@
     background: #E70D0D1A;
     color: #E70D0D;
 }
+.demo-status.done {
+background: #03C95A1A;
+color: #17C653;
+}
+.demo-status.Scheduled {
+background: #047EFF1A;
+color: #047EFF;
+}
 .demo-status.Pending {
-background: #1AD70133;
-color: #1AD701;
+background: #E887001A;
+color: #E88700;
 }
 
 .badge.badge-xs {
