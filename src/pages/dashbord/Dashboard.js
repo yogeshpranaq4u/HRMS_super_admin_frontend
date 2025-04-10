@@ -28,7 +28,6 @@ function Dashboard() {
   const pendingDemoRequestsData = useSelector(
     (state) => state?.commenData?.pendingDemoRequestsData
   );
-
   const recentRegistrations = useSelector(
     (state) => state?.commenData?.recentRegistrations
   );
@@ -39,7 +38,9 @@ function Dashboard() {
     (state) => state?.commenData?.recentTransaction
   );
 
-  console.log("planExpireData", planExpireData);
+
+  
+  
   useEffect(() => {
     dispatch(getDashBoardData("all"));
     dispatch(getPurchaseSummaryData());
@@ -103,27 +104,7 @@ function Dashboard() {
           </div>
 
           <div className="row">
-            {/* <div className="col-xl-3 col-sm-6 d-flex">
-              <div className="card flex-fill">
-                <div className="card-body">
-                  <div className="d-flex align-items-center justify-content-between">
-                    <span className="avatar avatar-md bg-dark mb-3">
-                      <i className="ti ti-building fs-16"></i>
-                    </span>
-                    <span className="badge bg-success fw-normal mb-3">
-                      +19.01%
-                    </span>
-                  </div>
-                  <div className="d-flex align-items-center justify-content-between">
-                    <div>
-                      <h2 className="mb-1">5468</h2>
-                      <p className="fs-13">Total Companies</p>
-                    </div>
-                    <div className="company-bar1">5,10,7,5,10,7,5</div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
+  
             <Card
               data={{
                 img: "ti ti-building fs-16",
@@ -154,7 +135,7 @@ function Dashboard() {
             />
           </div>
           <div className="row">
-            {/* <Card2 data={{ title: "Recent Tickets", type: "Tickets",data:pendingDemoRequestsData }} /> */}
+           
 
             <Card2
               data={{
@@ -181,12 +162,13 @@ function Dashboard() {
                 data: recentTransaction,
               }}
             />
-           
+          
             <Card2
               data={{
                 title: "Recent Plan Expired",
                 type: "Plan Expired",
                 data: planExpireData,
+              
               }}
             />
           </div>

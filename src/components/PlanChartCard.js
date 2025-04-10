@@ -1,10 +1,8 @@
+import React, { useMemo } from "react";
 
-import React, { useState, useEffect, useMemo } from "react";
 import ReactApexChart from "react-apexcharts";
-import { Link } from "react-router-dom";
 
 const PlanChartCard = ({ data }) => {
- 
   const planSummary = useMemo(() => {
     if (!data) return [];
     if (Array.isArray(data.planSummary)) return data.planSummary;
@@ -22,7 +20,7 @@ const PlanChartCard = ({ data }) => {
           show: false,
         },
       },
-      colors: ["#1B84FF", "#F26522", "#FFC107"],
+      colors: data?.planSummary?.map((plan) => plan?.color),
       labels: planSummary.map((plan) => plan?.plan_name),
       plotOptions: {
         pie: {
@@ -71,6 +69,52 @@ const PlanChartCard = ({ data }) => {
     [planSummary]
   );
 
+  // const [PlanChart] = useState({
+  //   chart: {
+  //     height: 240,
+  //     type: "donut",
+  //     toolbar: {
+  //       show: false,
+  //     },
+  //   },
+  //   colors: data?.planSummary?.map((plan) => plan?.color),
+  //   series: data?.planSummary?.map((plan) => plan?.purchase_percentage),
+  //   labels: data?.planSummary?.map((plan) => plan?.plan_name),
+  //   plotOptions: {
+  //     pie: {
+  //       donut: {
+  //         size: "50%",
+  //         labels: {
+  //           show: false,
+  //         },
+  //         borderRadius: 30,
+  //       },
+  //     },
+  //   },
+  //   stroke: {
+  //     lineCap: "round",
+  //     show: true,
+  //     width: 0, // Space between donut sections
+  //     colors: "#fff",
+  //   },
+  //   dataLabels: {
+  //     enabled: false,
+  //   },
+  //   legend: { show: false },
+  //   responsive: [
+  //     {
+  //       breakpoint: 480,
+  //       options: {
+  //         chart: {
+  //           height: 180,
+  //         },
+  //         legend: {
+  //           position: "bottom",
+  //         },
+  //       },
+  //     },
+  //   ],
+  // });
   return (
     <div className="col-xxl-4 col-xl-12 d-flex">
       <div className="card flex-fill">
@@ -88,7 +132,7 @@ const PlanChartCard = ({ data }) => {
           ) : (
             <p>No plan data available</p>
           )}
-
+     
           {planSummary?.map((plan, index) => (
             <div
               key={index}
@@ -98,14 +142,7 @@ const PlanChartCard = ({ data }) => {
                 <i
                   className="ti ti-circle-filled me-1"
                   style={{
-                    color:
-                      plan?.plan_name === "Basic"
-                        ? "#1B84FF"
-                        : plan?.plan_name === "Advance"
-                        ? "#F26522"
-                        : plan?.plan_name === "Pro"
-                        ? "#FFC107"
-                        : "#9CA3AF", // Tailwind's gray-400
+                    color: plan?.color,
                   }}
                 />
                 {plan?.plan_name}

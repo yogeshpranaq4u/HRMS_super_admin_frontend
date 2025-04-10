@@ -7,7 +7,9 @@ import {
   watchGetRecentTransactionAction,
   watchGetPlantExpireDataAction,
   watchGetRecentRegistrationAction,
+  watchPlansAction,
 } from "./dashboardSaga";
+import { watchGetCompanyAction } from "./companyDataSaga";
 
 function* rootSaga() {
   yield all([
@@ -19,6 +21,8 @@ function* rootSaga() {
     watchGetRecentRegistrationAction(),
 
     watchDemoRequestsAction(),
+    watchPlansAction(),
+    watchGetCompanyAction()
   ]);
 }
 

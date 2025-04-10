@@ -1,14 +1,15 @@
 import { types } from "../constants/types";
-
 // reducers/postReducer.js
 const initialState = {
   dashData: {},
-  purchaseSummaryData: {},
+  purchaseSummaryData: [],
   pendingDemoRequestsData: [],
   recentRegistrations: [],
-  planExpireData: [],
-  recentTransaction:[],
+  planExpireData: {},
+  recentTransaction: [],
   demoRequestsData: [],
+  companiesData: {},
+  allPlans: {},
   profileData: {},
   loading: false,
   error: null,
@@ -141,6 +142,64 @@ const commenDataReducer = (state = initialState, action) => {
         loading: false,
         error: action.error,
       };
+
+    case types.GET_PLANS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.GET_PLANS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        allPlans: action.payload,
+      };
+    case types.GET_PLANS_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+
+    case types.GET_COMPANIES_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.GET_COMPANIES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        companiesData: action.payload,
+      };
+    case types.GET_COMPANIES_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+
+
+    case types.ADD_COMPANIES_SUCCESS:
+      return {
+        ...state,
+        companiesData: {...state.companiesData ,data:[action.payload , ...state.companiesData?.data]},
+        loading: false,
+      };
+    case types.UPDATE_COMPANIES_SUCCESS:
+      const updated = state.companiesData?.data?.map((item)=>{
+        if(item?.id == action.payload.id){
+          return action.payload
+        }else{
+          return item
+        }
+      })
+      return {
+        ...state,
+        companiesData: {...state.companiesData ,data:updated},
+        loading: false,
+      };
+
 
     default:
       return state;

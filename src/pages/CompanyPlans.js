@@ -1,26 +1,21 @@
 import React, { useEffect, useState } from "react";
-import MainLayout from "../../layouts/MainLayout";
-import BreadCrums from "../../components/BreadCrums";
-import { Link } from "react-router-dom";
-import TableComponent from "../../components/TableComponent";
+import MainLayout from "../layouts/MainLayout";
+import BreadCrums from "../components/BreadCrums";
+import TableComponent from "../components/TableComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPlans, getCompanies } from "../../redux/actions/dashBoardActions";
-import RegisterFromDemo from "../../components/RegisterFromDemo";
-import ConfirmDelete from "../../modals/ConfirmDelete";
-import Loader from "../../components/Loader";
-import Pagination from "../../components/Pagination";
-import CompanyDetails from "../../components/CompanyDetails";
-import { Api } from "../../config/apiEndPoints";
-import { callApi } from "../../config/apiCall";
+import { getAllPlans, getCompanies } from "../redux/actions/dashBoardActions";
+import RegisterFromDemo from "../components/RegisterFromDemo";
+import ConfirmDelete from "../modals/ConfirmDelete";
+import Loader from "../components/Loader";
+import Pagination from "../components/Pagination";
+import CompanyDetails from "../components/CompanyDetails";
 
-const Company = () => {
+const CompanyPlans = () => {
   const dispatch = useDispatch()
   const [modalData, setModalData] = useState({ isOpen: false, data: "" })
   const isLoading = useSelector((state) => state.commenData.loading)
   const companiesData = useSelector((state) => state.commenData?.companiesData)
-  const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
   const [searchText, setSearchText] = useState("")
-  const [statsData, setStatsData] = useState({})
   const [filters, setFilters] = useState({
     limit: 10,
     page: 1,
@@ -30,9 +25,9 @@ const Company = () => {
     currentPage: 1,
   })
   const plansData = useSelector((state) => state.commenData.allPlans)
+
   useEffect(() => {
     dispatch(getAllPlans())
-    fetchStats()
   }, [])
   const tableHeader = [
     "Company Name",
@@ -54,7 +49,7 @@ const Company = () => {
     "company_domain",        // Domain Name
     "company_id",            // Company Id
     "team_size",             // Company Size
-    "database_name",                    // DB Name (assuming "id" is used for DB name)
+    "id",                    // DB Name (assuming "id" is used for DB name)
     // "redirect_url",          // Redirect URL
     "admin_email",           // Admin Email
     "contact_no",            // Contact Number
@@ -65,6 +60,8 @@ const Company = () => {
     "service_type"           // Service Type (array stored as string)
   ];
 
+
+  // console.log("companiesData", companiesData);
 
   useEffect(() => {
     dispatch(getCompanies(filters))
@@ -131,18 +128,6 @@ const Company = () => {
     }))
   }
 
-  const fetchStats = async () => {
-    try {
-      const response = await callApi(Api.COMPANIESSTATS, "GET", "", details?.token)
-      if (response.authenticated && response.valid) {
-        // console.log(response);
-        setStatsData(response.data || {})
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   return (
     <React.Fragment>
@@ -152,15 +137,18 @@ const Company = () => {
             {/* Breadcrumb */}
             <div className="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
               <BreadCrums
-                title={"Companies"}
+                title={"Plans"}
                 data={[
                   { path: "/", title: "Superadmin" },
 
-                  { path: "/company", title: "Company" },
+                  { path: "#", title: "Plans" },
                 ]}
               />
               <div className="d-flex my-xl-auto right-content align-items-center flex-wrap ">
-                <div className="mb-2">
+                <div className="me-2 mb-2">
+
+                </div>
+                {/* <div className="mb-2">
                   <Link
                     to="#"
                     onClick={() => {
@@ -176,7 +164,7 @@ const Company = () => {
                     <i className="ti ti-circle-plus me-2" />
                     Add Company
                   </Link>
-                </div>
+                </div> */}
                 <div className="ms-2 head-icons"></div>
               </div>
             </div>
@@ -194,7 +182,7 @@ const Company = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Total Companies
                         </p>
-                        <h4>{statsData?.total || 950}</h4>
+                        <h4>950</h4>
                       </div>
                     </div>
                   </div>
@@ -211,7 +199,7 @@ const Company = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Active Companies
                         </p>
-                        <h4>{statsData?.active || ""}</h4>
+                        <h4>920</h4>
                       </div>
                     </div>
                   </div>
@@ -229,39 +217,21 @@ const Company = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Inactive Companies
                         </p>
-                        <h4>{statsData?.inactive || 30}</h4>
+                        <h4>30</h4>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="col-lg-3 col-md-6 d-flex">
-                <div className="card flex-fill">
-                  <div className="card-body d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg bg-skyblue flex-shrink-0">
-                        <i className="ti ti-map-pin-check fs-16" />
-                      </span>
-                      <div className="ms-2 overflow-hidden">
-                        <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Hold
-                        </p>
-                        <h4>{statsData?.hold || 180}</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* /Company Location */}
             </div>
             {
               isLoading ?
                 <Loader /> :
                 <div className="card">
                   <div className="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-                    <h5>Companies List</h5>
-                    <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+                    <h5>Companies Plans </h5>
+                    {/* <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
                       <div className="dropdown me-3">
                         <select value={filters?.status} onChange={(e) => {
                           changeFilter(e.target.value, "status")
@@ -306,7 +276,7 @@ const Company = () => {
                         </select>
                       </div>
 
-                    </div>
+                    </div> */}
                   </div>
                   <div className="row align-items-center px-3">
                     <div className="col-sm-12 col-md-6">
@@ -353,7 +323,7 @@ const Company = () => {
                         dataKeys={dataKeys || []}
                         onEdit={handleActions}
                         onView={handleActions}
-                        // handleDelete={handleActions}
+                        handleDelete={handleActions}
                       />
                     </div>
                   </div>
@@ -373,11 +343,11 @@ const Company = () => {
       {
         modalData.type == "delete" && modalData.isOpen ?
           <ConfirmDelete handleData={modalData} /> :
-          modalData.isOpen && (modalData.type == "edit" || modalData.type == "Register") &&
+          modalData.isOpen &&  modalData.type ==  "edit" &&
           <RegisterFromDemo handleData={modalData} />
       }
     </React.Fragment>
   );
 };
 
-export default Company;
+export default CompanyPlans;

@@ -1,100 +1,128 @@
-import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import React from "react";
+import { useSelector } from "react-redux";
+import { formatDate } from "../helpers/frontend";
 
-const TableComponent = ({ columns, dataSource, Selection }) => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [searchText, setSearchText] = useState("");
-  const [Selections, setSelections] = useState(true);
-  const [filteredDataSource, setFilteredDataSource] = useState(dataSource);
-
-  const onSelectChange = (newSelectedRowKeys) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
-  const handleSearch = (value) => {
-    setSearchText(value);
-    const filteredData = dataSource.filter((record) =>
-      Object.values(record).some((field) =>
-        String(field).toLowerCase().includes(value.toLowerCase())
-      )
-    );
-    setFilteredDataSource(filteredData);
-  };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
-  useEffect(() => {
-    return setSelections(Selection);
-  }, [Selection]);
-
+const TableComponent = ({ tableHeader, dataSource, dataKeys, onEdit, handleDelete, onView, historyLink }) => {
+  const plansData = useSelector((state) => state.commenData.allPlans)
+  // console.log("plansData" ,plansData);
   return (
-    <>
-      <div className="table-top-data">
-        <div className="row p-3">
-          <div className="col-sm-12 col-md-6">
-            <div
-              className="dataTables_length"
-              id="DataTables_Table_0_length"
-            ></div>
-          </div>
-          <div className="col-sm-12 col-md-6">
-            <div
-              id="DataTables_Table_0_filter"
-              className="dataTables_filter text-end mb-0"
-            >
-              <label>
-                {" "}
-                <input
-                  type="search"
-                  className="form-control form-control-sm"
-                  placeholder="Search"
-                  aria-controls="DataTables_Table_0"
-                  value={searchText}
-                  onChange={(e) => handleSearch(e.target.value)}
-                />
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
+    <React.Fragment>
+      <table className="table datatable">
+        <thead className="thead-light">
+          <tr>
+            {
+              tableHeader?.map((tableHead, index) => {
+                return (
+                  <th key={index}>{tableHead}</th>
+                )
+              })
+            }
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {dataSource?.map((item, rowIndex) => (
+            <tr key={rowIndex}>
+              {dataKeys?.map((key, colIndex) => {
+                if (key == "status") {
+                  return (
+                    <td key={colIndex}>
+                      <span class={`badge badge-${item[key] == "Active" ? "success" : item[key] == "Hold" ? "warning" : "danger"} d-inline-flex align-items-center badge-xs`}>
+                        <i className="ti ti-point-filled me-1"></i>
+                        {item[key] !== undefined && item[key] !== '' ? item[key] : '-'}
+                      </span>
+                    </td>
+                  )
+                } else if (key == "service_type") {
+                  const validSelection = Array.isArray(item[key])
+                    ? item[key]
+                    : JSON.parse(item[key] || "[]");
+                  const reVlidate = !Array.isArray(validSelection) ? JSON.parse(validSelection || "[]") : validSelection
+                  // console.log(item[key] ,validSelection ,!Array.isArray(validSelection) ? JSON.parse(validSelection || "[]"):"");
+                  return (
+                    <td key={colIndex}>
+                      <div className="d-flex align-items-center justify-content-between">
+                        {
+                          reVlidate?.map((item, index) => {
+                            return (
+                              <p key={index} className='p-0 m-0 text-capitalize '>{item}
+                                {index == 0 && reVlidate?.length > 1 && "/"}</p>
+                            )
+                          })
+                        }
+                      </div>
+                    </td>
+                  )
+                } else if (key == "plan_id") {
+                  const findPlan = plansData?.data?.find((planItem) => { return planItem?.id == item[key] }) || {}
+                  return (
+                    <td key={colIndex}>
+                      <div className="d-flex align-items-center justify-content-between">
+                        <p className="mb-0 me-2">
+                          {findPlan?.name}-({findPlan?.duration})
+                        </p>
+                        {
+                          item[key] < 2 &&
+                          <a className="badge badge-purple badge-xs" >Upgrade</a>
+                        }
+                      </div>
+                    </td>
+                  )
+                } else if (key == "plan_dates") {
+                  // const findPlan = plansData?.data?.find((planItem) => { return planItem?.id == item[key] }) || {}
+                  return (
+                    <td key={colIndex}>
+                      <div className="d-flex align-items-center justify-content-between">
+                        <p className="mb-0 me-2">
+                          {formatDate(item["plan_start_date"])} - {formatDate(item["plan_end_date"])}
+                        </p>
+                      </div>
+                    </td>
+                  )
+                } else {
+                  return (
+                    <td key={colIndex}>{item[key] !== undefined && item[key] !== '' ? item[key] : '-'}</td>
+                  )
+                }
+              })}
 
-      {!Selections ? (
-        <Table
-          className="table datanew dataTable no-footer"
-          columns={columns}
-          rowHoverable={false}
-          dataSource={filteredDataSource}
-          pagination={{
-            locale: { items_per_page: "" },
-            nextIcon: <i className="ti ti-chevron-right" />,
-            prevIcon: <i className="ti ti-chevron-left" />,
-            defaultPageSize: 10,
-            showSizeChanger: true,
-            pageSizeOptions: ["10", "20", "30"],
-          }}
-        />
-      ) : (
-        <Table
-          className="table datanew dataTable no-footer"
-          rowSelection={rowSelection}
-          columns={columns}
-          rowHoverable={false}
-          dataSource={filteredDataSource}
-          pagination={{
-            locale: { items_per_page: "" },
-            nextIcon: <i className="ti ti-chevron-right" />,
-            prevIcon: <i className="ti ti-chevron-left" />,
-            defaultPageSize: 10,
-            showSizeChanger: true,
-            pageSizeOptions: ["10", "20", "30"],
-            showTotal: (total, range) =>
-              `Showing ${range[0]} - ${range[1]} of ${total} entries`,
-          }}
-        />
-      )}
-    </>
+              <td>
+                <div className="action-icon d-inline-flex">
+                  {
+                    historyLink &&
+                    <a href={historyLink}  className="me-2" title='view history' >
+                      <i class="ti ti-history"></i>
+                    </a>
+                  }
+                  {
+                    onView &&
+                    <a href="#" className="me-2"
+                      onClick={() => { onView(item, "view") }}
+                      title='View Details'>
+                      <i className="ti ti-eye"></i>
+                    </a>
+                  }
+                  {
+                    onEdit &&
+                    <a href="#" className="me-2"
+                      onClick={() => { onEdit(item, "edit") }}
+                      title='Register' >
+                      <i className="ti ti-user-edit"></i>
+                    </a>
+                  }
+                  {/* <a href="#" className="me-2" title='Edit' ><i className="ti ti-edit"></i></a> */}
+                  {
+                    handleDelete &&
+                    <a onClick={() => { handleDelete(item, "delete") }} ><i className="ti ti-trash"></i></a>
+                  }
+                </div>
+              </td>
+            </tr>
+          ))}
+
+        </tbody>
+      </table>
+    </React.Fragment>
   );
 };
 

@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import VideoFile from "../assets/images/Splash.mp4";
 import OtpModal from "../modals/OtpModal";
 import CustomAlert from "../components/Alert";
-import { BaseUrl } from "../config/apiEndPoints";
+import { Api, BaseUrl } from "../config/apiEndPoints";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -53,7 +53,7 @@ const Login = () => {
       setLoading(true);
       let config = {
         method: "post",
-        url: `${BaseUrl}/superadmin/login`,
+        url: `${BaseUrl}${Api.LOGIN}`,
         headers: {
           "Content-Type": "application/json",
         },
@@ -133,7 +133,6 @@ const Login = () => {
           justifyContent: "center",
         }}
       >
-   
         <Box
           sx={{
             width: { xs: "95%", sm: "85%", md: "75%" },
@@ -145,116 +144,110 @@ const Login = () => {
           }}
         >
           <Grid container>
-          
-            <Grid item xs={12} md={6}>
-              <Box
-                sx={{
-                  height: { xs: "00px", md: "100%" },
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  overflow: "hidden",
-                }}
-              >
-                <video
-                  src={VideoFile}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                />
-              </Box>
-            </Grid>
+            <div className="row  align-items-center ">
+              <div className="col-lg-6 col-md-6 text-center px-0">
+                <div className=" h-100">
+                  <video
+                    src={VideoFile}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="col-lg-6 col-md-6 text-center px-0">
+                <div className="h-100">
+                  <Box
+                    sx={{
+                      height: "100%",
+                      bgcolor: "#0789ff",
+                      p: { xs: 2, sm: 4 },
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ThemeProvider theme={darkTheme}>
+                      <Container maxWidth="sm">
+                        <Box sx={{ textAlign: "center" }}>
+                          <Typography
+                            component="h1"
+                            variant="h4"
+                            color="white"
+                            fontWeight={"600"}
+                          >
+                            LOGIN
+                          </Typography>
+                        </Box>
 
-            {/* Right Side - Login Form */}
-            <Grid item xs={12} md={6}>
-              <Box
-                sx={{
-                  height: "100%",
-                  bgcolor: "#0789ff",
-                  p: { xs: 2, sm: 4 },
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <ThemeProvider theme={darkTheme}>
-                  <Container maxWidth="sm">
-                    <Box sx={{ textAlign: "center" }}>
-                      <Typography
-                        component="h1"
-                        variant="h4"
-                        color="white"
-                        fontWeight={"600"}
-                      >
-                        LOGIN
-                      </Typography>
-                    </Box>
-
-                    <Box
-                      component="form"
-                      // noValidate
-                      onSubmit={(e) => {
-                        if (!loading) {
-                          handleSubmit(e);
-                        }
-                      }}
-                      sx={{ mt: 2 }}
-                    >
-                      <TextField
-                        required
-                        fullWidth
-                        id="email"
-                        label="Username"
-                        name="email"
-                        type="email"
-                        onChange={onChange}
-                        // autoComplete="email"
-                        sx={{ mb: 2, color: "#fff" }}
-                      />
-                      <TextField
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        onChange={onChange}
-                        // autoComplete="new-password"
-                        sx={{
-                          mb: 2,
-                        }}
-                      />
-
-                      <Box sx={{ display: "flex", justifyContent: "center" }}>
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          sx={{
-                            mt: 2,
-                            borderRadius: 28,
-                            color: "#ffffff",
-                            fontWeight: "600",
-                            fontSize: 18,
-                            backgroundColor: "#FF9A01",
-                            "&:hover": { backgroundColor: "#e68a00" },
+                        <Box
+                          component="form"
+                          // noValidate
+                          onSubmit={(e) => {
+                            if (!loading) {
+                              handleSubmit(e);
+                            }
                           }}
+                          sx={{ mt: 2 }}
                         >
-                          {loading ? "Loading..." : "Login"}
-                        </Button>
-                      </Box>
-                    </Box>
-                  </Container>
-                </ThemeProvider>
-              </Box>
-            </Grid>
+                          <TextField
+                            required
+                            fullWidth
+                            id="email"
+                            label="Username"
+                            name="email"
+                            type="email"
+                            onChange={onChange}
+                            // autoComplete="email"
+                            sx={{ mb: 2, color: "#fff" }}
+                          />
+                          <TextField
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            onChange={onChange}
+                            // autoComplete="new-password"
+                            sx={{
+                              mb: 2,
+                            }}
+                          />
+
+                          <Box sx={{ display: "flex", justifyContent: "center" }}>
+                            <Button
+                              type="submit"
+                              variant="contained"
+                              sx={{
+                                mt: 2,
+                                borderRadius: 28,
+                                color: "#ffffff",
+                                fontWeight: "600",
+                                fontSize: 18,
+                                backgroundColor: "#FF9A01",
+                                "&:hover": { backgroundColor: "#e68a00" },
+                              }}
+                            >
+                              {loading ? "Loading..." : "Login"}
+                            </Button>
+                          </Box>
+                        </Box>
+                      </Container>
+                    </ThemeProvider>
+                  </Box>
+                </div>
+              </div>
+
+            </div>
           </Grid>
+         
         </Box>
       </Box>
       {otpModal.data && (

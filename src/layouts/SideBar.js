@@ -15,11 +15,11 @@ function SideBar() {
       iconName: "ti ti-building"
 
     },
-    {
-      title: "Tickets",
-      pathname: "#",
-      iconName: "ti ti-report"
-    },
+    // {
+    //   title: "Tickets",
+    //   pathname: "/tickets",
+    //   iconName: "ti ti-report"
+    // },
     {
       title: "Demo",
       pathname: "/demo-requests",
@@ -31,8 +31,13 @@ function SideBar() {
       iconName: "ti ti-credit-card-pay"
     },
     {
+      title: "Plans",
+      pathname: "/plans",
+      iconName: "ti ti-circle-dotted-letter-p"
+    },
+    {
       title: "Manage Policy",
-      pathname: "#",
+      pathname: "/manage-policy",
       iconName: "ti ti-device-desktop-cog"
     },
   ]
