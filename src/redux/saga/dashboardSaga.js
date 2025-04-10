@@ -64,6 +64,7 @@ export function* getPurchaseSummaryAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
+       
 
           yield put({
             type: types.GET_PURCHASE_SUMMARY_SUCCESS,
@@ -113,6 +114,7 @@ export function* getPendingDemoRequestAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
+   
 
           yield put({
             type: types.GET_PENDING_DEMO_REQUEST_SUCCESS,
@@ -147,6 +149,7 @@ export function* watchGetPendingDemoRequestAction() {
 }
 
 export function* getRecentRegistrationAction(action) {
+
   try {
     const response = yield call(
       callApi,
@@ -159,6 +162,7 @@ export function* getRecentRegistrationAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
+       
 
           yield put({
             type: types.GET_RECENT_REGISTRATIONS_REQUEST_SUCCESS,
@@ -208,6 +212,7 @@ export function* getPlantExpireDataAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
+        
 
           yield put({
             type: types.GET_PLAN_EXPIRE_REQUEST_SUCCESS,
@@ -251,6 +256,9 @@ export function* getRecentTransactionAction(action) {
       userDetails?.token
     );
 
+ 
+ 
+        
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
@@ -292,6 +300,8 @@ export function* watchGetRecentTransactionAction() {
 
 export function* getDemoRequestsAction(action) {
   try {
+        // console.log("userDetails" , userDetails);
+
     const { limit = 5, page = 1, sort = 'last_7_days', deliver, demo_status } = action?.payload || {};
     // You can also dynamically build this query string if deliver and demo_status are needed
     const queryParams = new URLSearchParams({

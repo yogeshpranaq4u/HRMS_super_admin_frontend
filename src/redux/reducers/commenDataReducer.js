@@ -5,7 +5,7 @@ const initialState = {
   purchaseSummaryData: [],
   pendingDemoRequestsData: [],
   recentRegistrations: [],
-  planExpireData: [],
+  planExpireData: {},
   recentTransaction: [],
   demoRequestsData: [],
   companiesData: {},
