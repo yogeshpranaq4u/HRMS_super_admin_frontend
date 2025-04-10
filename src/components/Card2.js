@@ -10,9 +10,9 @@ const Card2 = ({ data }) => {
   };
 
   const dataToShow =
-  selectedTab === "Expired"
-    ? data?.data?.expiredCompanies ?? []
-    : data?.data?.nearExpireCompanies ?? [];
+    selectedTab === "Expired"
+      ? data?.data?.expiredCompanies ?? []
+      : data?.data?.nearExpireCompanies ?? [];
   return (
     <div className="col-xxl-4 col-xl-12 d-flex">
       <div className="card flex-fill  ">
@@ -218,7 +218,7 @@ const Card2 = ({ data }) => {
             )
           ) : (
             <>
-              {console.log("planExpireData", dataToShow?.length)}
+              {console.log("planExpireData", dataToShow)}
               {dataToShow?.length === 0 ? (
                 <p>No companies found in this category.</p>
               ) : (
@@ -227,8 +227,6 @@ const Card2 = ({ data }) => {
                     key={index}
                     className="d-sm-flex justify-content-between flex-wrap mb-3"
                   >
-                 
-
                     <div className="d-flex align-items-center mb-2">
                       <a className="avatar avatar-md bg-gray-100 rounded-circle flex-shrink-0">
                         <img
@@ -246,14 +244,30 @@ const Card2 = ({ data }) => {
                           <span className="text-info">
                             {item?.current_plan?.end_date}
                           </span>
-               
+
                           {item?.phone_no}
                         </p>
                       </div>
                     </div>
                     <div className="text-sm-end mb-2">
                       <h6 className="mb-1">Send Reminder</h6>
-                      <p className="fs-13">{item?.current_plan?.plan_name}</p>
+                      {/* <p className="fs-13">{item?.current_plan?.plan_name}</p> */}
+                      <p className="fs-13">
+                        <span>
+                          {item?.current_plan?.plan_name
+                            ? item?.current_plan?.plan_name
+                            : ""}
+                          {/* {item?.current_plan?.plan_name} */}
+                        </span>
+                        {item?.plan ? (
+                          <i className="ti ti-circle-filled fs-4 text-primary mx-1"></i>
+                        ) : (
+                          ""
+                        )}
+                        {item?.current_plan?.duration
+                          ? ` (${item.current_plan.duration})`
+                          : ""}
+                      </p>
                     </div>
                   </div>
                 ))
