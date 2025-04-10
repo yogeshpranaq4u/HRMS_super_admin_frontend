@@ -105,3 +105,34 @@ export function* getPlanHistoryAction(action) {
 export function* watchGetPlanHistoryAction() {
   yield takeLatest(types.GET_PLANHISTORY_REQUEST, getPlanHistoryAction);
 }
+
+
+
+function* getServiceTypeAction(action) {
+  try {
+    const response = yield call(
+      callApi,
+      `super-admin/services`,
+      "GET",
+      null,
+      userDetails?.token
+    );
+    console.log("response response" ,response);
+    if (response?.authenticated) {
+      if (response?.valid) {
+        if (response?.success) {
+          yield put({
+            type: types.GET_SERVICETYPE_SUCCESS,
+            payload: response,
+          });
+        } 
+      } 
+    }
+  } catch (error) {
+    yield put({ type: types.GET_SERVICETYPE_FAILED, error: error.response });
+  }
+}
+
+export function* watchGetServiceTypeAction() {
+  yield takeLatest(types.GET_SERVICETYPE_REQUEST, getServiceTypeAction);
+}

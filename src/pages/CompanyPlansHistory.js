@@ -9,6 +9,7 @@ import Pagination from "../components/Pagination";
 import { useLocation } from "react-router-dom";
 import UpGradePlan from "../modals/UpGradePlan";
 import { formatDate } from "../helpers/frontend";
+import { getServiceType } from "../redux/actions/otherActions";
 
 const CompanyPlansHistory = () => {
   const dispatch = useDispatch()
@@ -16,6 +17,7 @@ const CompanyPlansHistory = () => {
   const [modalData, setModalData] = useState({ isOpen: false, data: "" })
   const isLoading = useSelector((state) => state.commenData.loading)
   const planHistoryData = useSelector((state) => state.commenData?.planHistoryData)
+  const serviceTypeData = useSelector((state) => state.data?.serviceTypeData)
   const [searchText, setSearchText] = useState("")
   const [filters, setFilters] = useState({
     limit: 10,
@@ -28,6 +30,8 @@ const CompanyPlansHistory = () => {
   useEffect(()=>{
     dispatch(getPlanHistory(state?.data))
     dispatch(getAllPlans(state?.data))
+    dispatch(getServiceType())
+
   },[])
   const UpcomingPlans = planHistoryData?.data?.plans?.find((item)=>{
     return item?.status == "Upcoming"
@@ -82,13 +86,7 @@ const CompanyPlansHistory = () => {
     }));
   };
 
-  const sortOptions = [
-    { title: "Recently Added", value: "recent_added" },
-    { title: "Descending", value: "descending" },
-    { title: "Ascending", value: "ascending" },
-    { title: "Last Month", value: "last_month" },
-    { title: "Last 7 Days", value: "last_7_days" },
-  ];
+ 
   const changeFilter = (value, key) => {
     setFilters((prev) => ({
       ...prev,
@@ -96,7 +94,8 @@ const CompanyPlansHistory = () => {
     }))
   }
 
-
+  // console.log("serviceTypeData" ,serviceTypeData);
+  
   return (
     <React.Fragment>
       <MainLayout>

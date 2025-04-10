@@ -407,7 +407,9 @@ function RegisterFromDemo({ handleData }) {
                                         <div className="col-md-4">
                                             <div className="mb-3">
                                                 <label className="form-label">Start Date</label>
-                                                <input type="date" value={formData?.plan_start_date}
+                                                <input type="date"  
+                                                 min={new Date().toISOString().split("T")[0]}
+                                                value={formData?.plan_start_date}
                                                     name='plan_start_date'
                                                     onChange={onTextChange} className="form-control" />
                                                 {hasValidationError(errors, "plan_start_date") && (
@@ -415,7 +417,7 @@ function RegisterFromDemo({ handleData }) {
                                                 )}
                                             </div>
                                         </div>
-                                        <div className="col-md-4">
+                                        {/* <div className="col-md-4">
                                             <div className="mb-3">
                                                 <label className="form-label">End Date</label>
                                                 <input type="date" value={formData?.plan_end_date}
@@ -425,7 +427,7 @@ function RegisterFromDemo({ handleData }) {
                                                     <small className="text-danger pt-1">{validationError(errors, "plan_end_date")}</small>
                                                 )}
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </>
                                 }
 
