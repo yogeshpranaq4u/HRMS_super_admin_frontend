@@ -13,6 +13,10 @@ export const getCompanies = (data) => ({
     type: types.GET_COMPANIES_REQUEST,
     payload:data
 });
+export const getPlanHistory = (data) => ({
+    type: types.GET_PLANHISTORY_REQUEST,
+    payload:data
+});
 export const addCompany = (data) => ({
     type: types.ADD_COMPANIES_SUCCESS,
     payload:data

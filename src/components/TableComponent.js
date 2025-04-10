@@ -1,9 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { formatDate } from "../helpers/frontend";
+import { useNavigate } from "react-router-dom";
 
-const TableComponent = ({ tableHeader, dataSource, dataKeys, onEdit, handleDelete, onView, historyLink }) => {
+const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKeys, onEdit, handleDelete, onView, historyLink }) => {
   const plansData = useSelector((state) => state.commenData.allPlans)
+  const navigate = useNavigate()
   // console.log("plansData" ,plansData);
   return (
     <React.Fragment>
@@ -38,7 +40,6 @@ const TableComponent = ({ tableHeader, dataSource, dataKeys, onEdit, handleDelet
                     ? item[key]
                     : JSON.parse(item[key] || "[]");
                   const reVlidate = !Array.isArray(validSelection) ? JSON.parse(validSelection || "[]") : validSelection
-                  // console.log(item[key] ,validSelection ,!Array.isArray(validSelection) ? JSON.parse(validSelection || "[]"):"");
                   return (
                     <td key={colIndex}>
                       <div className="d-flex align-items-center justify-content-between">
@@ -80,8 +81,24 @@ const TableComponent = ({ tableHeader, dataSource, dataKeys, onEdit, handleDelet
                     </td>
                   )
                 } else {
+                  // console.log(item ,item["company_logo"]);
+                  
                   return (
-                    <td key={colIndex}>{item[key] !== undefined && item[key] !== '' ? item[key] : '-'}</td>
+
+                    <td key={colIndex}>
+                      {
+                        // item["company_logo"] !== undefined ?
+                        //   <div class="d-flex align-items-center file-name-icon">
+                        //     <a class="avatar avatar-md border rounded-circle" href="/react/template/super-admin/companies" data-discover="true">
+                        //       <img class="img-fluid" alt="img" src="/react/template/assets/img/company/company-01.svg" />
+                        //     </a><div class="ms-2"><h6 class="fw-medium">
+                        //       <a href="/react/template/super-admin/companies" data-discover="true">BrightWave Innovations</a></h6>
+                        //     </div>
+                        //   </div> :
+                          item[key] !== undefined && item[key] !== '' ? item[key] : '-' 
+
+                      }
+                    </td>
                   )
                 }
               })}
@@ -90,7 +107,9 @@ const TableComponent = ({ tableHeader, dataSource, dataKeys, onEdit, handleDelet
                 <div className="action-icon d-inline-flex">
                   {
                     historyLink &&
-                    <a href={historyLink}  className="me-2" title='view history' >
+                    <a onClick={() => {
+                      navigate(historyLink, { state: { data: item["id"] } })
+                    }} className="me-2" title='view history' >
                       <i class="ti ti-history"></i>
                     </a>
                   }
@@ -100,6 +119,22 @@ const TableComponent = ({ tableHeader, dataSource, dataKeys, onEdit, handleDelet
                       onClick={() => { onView(item, "view") }}
                       title='View Details'>
                       <i className="ti ti-eye"></i>
+                    </a>
+                  }
+                  {
+                    pdfView &&
+                    <a href="#" className="me-2"
+                      onClick={() => { pdfView(item, "pdfView") }}
+                      title='View Invoice'>
+                      <i className="ti ti-file-text"></i>
+                    </a>
+                  }
+                  {
+                    pdfDownload &&
+                    <a href="#" className="me-2"
+                      onClick={() => { pdfDownload(item, "pdfDownload") }}
+                      title='View Invoice'>
+                      <i className="ti ti-download"></i>
                     </a>
                   }
                   {

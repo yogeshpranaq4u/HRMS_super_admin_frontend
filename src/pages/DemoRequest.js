@@ -31,9 +31,10 @@ function DemoRequest() {
         currentPage: 1,
     })
 
-    useEffect(() => { 
+    useEffect(() => {
         dispatch(getAllPlans())
-        fetchStats() }, [])
+        fetchStats()
+    }, [])
     useEffect(() => {
         dispatch(getDemoRequestData(filters))
     }, [filters])
@@ -99,7 +100,7 @@ function DemoRequest() {
         "Contact Number",
         "Service Type",
         "Demo Status",
-        "Config",
+        // "Config",
         "Meeting Time"
     ];
 
@@ -300,7 +301,7 @@ function DemoRequest() {
                                                                             ? item.selection
                                                                             : JSON.parse(item?.selection || "[]");
                                                                         // console.log(item?.selection ,validSelection);
-                                                                        const isdemoStatus = updatedStatus[item?.id]?.demo_status || item.demo_status == "Done"
+                                                                        const isdemoStatus = updatedStatus[item?.id]?.demo_status == "Done" || item.demo_status == "Done"
 
                                                                         return (
                                                                             <tr key={index}>
@@ -336,14 +337,15 @@ function DemoRequest() {
                                                                                             isdemoStatus ?
                                                                                                 <div className='demo-status done d-flex justify-content-center '>Done</div> :
                                                                                                 <>
-                                                                                                    <select value={updatedStatus[item?.id]?.demo_status || item.demo_status}
+                                                                                                    <select
+                                                                                                        value={updatedStatus[item?.id]?.demo_status || item.demo_status}
                                                                                                         disabled={isdemoStatus}
                                                                                                         onChange={(e) => {
                                                                                                             updataStatues(e, item, "demo_status")
                                                                                                         }}
                                                                                                         className={`demo-status  
                                                                                                         ${item.demo_status == "Not Connected" ? "not-connected"
-                                                                                                        : item.demo_status || updatedStatus[item?.id]?.demo_status} `}>
+                                                                                                                : updatedStatus[item?.id]?.demo_status || item.demo_status} `}>
                                                                                                         <option value={"Pending"}>Pending</option>
                                                                                                         <option value={"Scheduled"}>Scheduled</option>
                                                                                                         <option value={"Not Connected"}>Not Connected</option>
@@ -355,7 +357,8 @@ function DemoRequest() {
                                                                                     </div>
 
                                                                                 </td>
-                                                                                <td>
+
+                                                                                {/*  <td>
                                                                                     <div>
                                                                                         <select
                                                                                             onChange={(e) => {
@@ -369,8 +372,7 @@ function DemoRequest() {
                                                                                         </select>
                                                                                     </div>
 
-                                                                                </td>
-
+                                                                                </td> */}
                                                                                 <td>
                                                                                     {item?.demo_date ? moment(item?.demo_date || "").format("DD/MMM/YYYY") : "NA"}, {item?.demo_time || ""}
                                                                                 </td>
@@ -389,28 +391,29 @@ function DemoRequest() {
                                                                                             title='View Details'>
                                                                                             <i className="ti ti-eye"></i>
                                                                                         </a>
-                                                                                        {
-                                                                                            !(item.demo_status == "Done") &&
-                                                                                            <a href={item?.meeting_link} className="me-2" target='_blank' >
-                                                                                                <i className="ti ti-device-tv" style={{ transform: "rotate(180deg)" }}></i>
-                                                                                            </a>
-                                                                                        }
-                                                                                        {
-                                                                                            (updatedStatus[item?.id]?.config || item?.config == "Yes") ? "" :
-                                                                                                <a href="#" className="me-2"
-                                                                                                    onClick={() => {
-                                                                                                        setModalData((prev) => ({
-                                                                                                            ...prev,
-                                                                                                            data: item,
-                                                                                                            isOpen: true,
-                                                                                                            type: "register",
-                                                                                                            onClose: onClose
-                                                                                                        }))
-                                                                                                    }}
-                                                                                                    title='Register' >
-                                                                                                    <i className="ti ti-user-edit"></i>
-                                                                                                </a>
-                                                                                        }
+
+                                                                                        <a href={
+                                                                                            isdemoStatus
+                                                                                                ? "#" : item?.meeting_link} className="me-2" target={isdemoStatus? "" : '_blank'} >
+                                                                                            <i className={`ti ti-device-tv ${isdemoStatus ? "disable-Color" : ""} `} style={{ transform: "rotate(180deg)" }}></i>
+                                                                                        </a>
+
+                                                                                        <a href="#" className="me-2"
+                                                                                            onClick={() => {
+                                                                                                if (isdemoStatus) {
+                                                                                                    setModalData((prev) => ({
+                                                                                                        ...prev,
+                                                                                                        data: item,
+                                                                                                        isOpen: true,
+                                                                                                        type: "register",
+                                                                                                        onClose: onClose
+                                                                                                    }))
+                                                                                                }
+                                                                                            }}
+                                                                                            title='Register' >
+                                                                                            <i className={`ti ti-user-edit ${isdemoStatus ? "disable-Color" : ""}`}></i>
+                                                                                        </a>
+
                                                                                         {/* <a href="#" className="me-2" title='Edit' ><i className="ti ti-edit"></i></a> */}
                                                                                         {/* <a href="javascript:void(0);" ><i className="ti ti-trash"></i></a> */}
                                                                                     </div>

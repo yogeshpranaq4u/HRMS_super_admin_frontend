@@ -23,7 +23,7 @@ export function* getCompanyAction(action) {
     }).toString();
 
     const queryUrl = `?${queryParams}`;
-    console.log(queryUrl);
+    // console.log(queryUrl);
     const response = yield call(
       callApi,
       Api?.GETCOMPANIES+queryUrl,
@@ -61,4 +61,47 @@ export function* getCompanyAction(action) {
 
 export function* watchGetCompanyAction() {
   yield takeLatest(types.GET_COMPANIES_REQUEST, getCompanyAction);
+}
+
+  
+export function* getPlanHistoryAction(action) {
+  try {
+    const response = yield call(
+      callApi,
+      `super-admin/companies/${action?.payload}/plans`,
+      "GET",
+      null,
+      userDetails?.token
+    );
+    // console.log("response response" ,response);
+    if (response?.authenticated) {
+      if (response?.valid) {
+        if (response?.success) {
+          yield put({
+            type: types.GET_PLANHISTORY_SUCCESS,
+            payload: response,
+          });
+        } else {
+          toast.error(response?.data?.mssg, {
+            position: "top-center",
+            autoClose: 1500,
+          });
+        }
+      } else {
+        toast.error(response?.data?.mssg[0], {
+          position: "top-center",
+          autoClose: 1500,
+        });
+      }
+    } else {
+      sessionStorage.removeItem("userDetails");
+      window.location.href = "/login";
+    }
+  } catch (error) {
+    yield put({ type: types.GET_PLANHISTORY_FAILED, error: error.response });
+  }
+}
+
+export function* watchGetPlanHistoryAction() {
+  yield takeLatest(types.GET_PLANHISTORY_REQUEST, getPlanHistoryAction);
 }

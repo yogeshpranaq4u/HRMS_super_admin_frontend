@@ -45,6 +45,7 @@ const Company = () => {
     "Contact Number",
     "Subscription Plan",
     "Start & End Date",
+    "Config",
     "Status",
     "Service Type"
   ];
@@ -60,6 +61,7 @@ const Company = () => {
     "contact_no",            // Contact Number
     "plan_id",               // Subscription Plan (can be replaced with actual plan name if needed)
     "plan_dates",            // Start & End Date (combine `plan_start_date` & `plan_end_date`)
+    "config",            // Start & End Date (combine `plan_start_date` & `plan_end_date`)
     // Start & End Date (combine `plan_start_date` & `plan_end_date`)
     "status",                // Status
     "service_type"           // Service Type (array stored as string)

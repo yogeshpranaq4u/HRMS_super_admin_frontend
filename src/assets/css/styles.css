@@ -62,6 +62,10 @@ background: #E887001A;
 color: #E88700;
 }
 
+.disable-Color{
+    color: #6b72804a;
+}
+
 .badge.badge-xs {
     padding: 4px 8px;
 }

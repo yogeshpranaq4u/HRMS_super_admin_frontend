@@ -26,42 +26,43 @@ const CompanyPlans = () => {
   })
   const plansData = useSelector((state) => state.commenData.allPlans)
 
+  const formateForPlans = companiesData?.data?.map((item)=>{
+    const {company_name ,company_logo,
+      current_plan ,service_type,id, ...rest} = item
+    return {
+      company_name,
+      company_logo,
+      service_type,
+      id,
+      ...current_plan
+    }
+  })
+
   useEffect(() => {
     dispatch(getAllPlans())
   }, [])
   const tableHeader = [
     "Company Name",
-    "Domain Name",
-    "Company Id",
-    "Company Size",
-    "DB Name",
-    // "Redirect URL",
-    "Admin Email",
-    "Contact Number",
+    "Service Type",
     "Subscription Plan",
-    "Start & End Date",
-    "Status",
-    "Service Type"
+    "Purchase Date",
+    "Expiry Date",
+    // "Plan Status",
+    "Amount",
   ];
 
   const dataKeys = [
     "company_name",          // Company Name
-    "company_domain",        // Domain Name
-    "company_id",            // Company Id
-    "team_size",             // Company Size
-    "id",                    // DB Name (assuming "id" is used for DB name)
-    // "redirect_url",          // Redirect URL
-    "admin_email",           // Admin Email
-    "contact_no",            // Contact Number
-    "plan_id",               // Subscription Plan (can be replaced with actual plan name if needed)
-    "plan_dates",            // Start & End Date (combine `plan_start_date` & `plan_end_date`)
-    // Start & End Date (combine `plan_start_date` & `plan_end_date`)
-    "status",                // Status
-    "service_type"           // Service Type (array stored as string)
+    "service_type" ,          // Service Type (array stored as string)
+    "plan_name",       
+    "start_date",       
+    "end_date",       
+    // "status",       
+    "price",       
   ];
 
 
-  // console.log("companiesData", companiesData);
+  console.log("companiesData ₹",formateForPlans);
 
   useEffect(() => {
     dispatch(getCompanies(filters))
@@ -74,8 +75,7 @@ const CompanyPlans = () => {
     }))
   }
   const handleActions = (data, type) => {
-    // console.log(data ,type);
-    if (type == "view") {
+   
       setModalData((prev) => ({
         ...prev,
         data: data,
@@ -85,24 +85,6 @@ const CompanyPlans = () => {
         onClose: onClose
       }))
 
-    } else if (type == "delete") {
-      setModalData((prev) => ({
-        ...prev,
-        data: data,
-        type: "delete",
-        isOpen: true,
-        onConfirm: "",
-        onClose: onClose
-      }))
-    } else {
-      setModalData((prev) => ({
-        ...prev,
-        data: data,
-        type: "edit",
-        isOpen: true,
-        onClose: onClose
-      }))
-    }
   }
 
   const handlePageChange = (page) => {
@@ -175,12 +157,13 @@ const CompanyPlans = () => {
                 <div className="card flex-fill">
                   <div className="card-body d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg bg-primary flex-shrink-0">
-                        <i className="ti ti-building fs-16" />
+                      <span className="avatar avatar-lg bg-info flex-shrink-0">
+                        {/* <i className="ti ti-building fs-16" /> */}
+                        <i className="ti ti-location-dollar fs-16"></i>
                       </span>
                       <div className="ms-2 overflow-hidden">
                         <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Total Companies
+                          Total Transaction
                         </p>
                         <h4>950</h4>
                       </div>
@@ -192,12 +175,29 @@ const CompanyPlans = () => {
                 <div className="card flex-fill">
                   <div className="card-body d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg bg-success flex-shrink-0">
-                        <i className="ti ti-building fs-16" />
+                      <span className="avatar avatar-lg flex-shrink-0" style={{background:"#00C7BE"}}>
+                        <i className="ti ti-users fs-16" />
                       </span>
                       <div className="ms-2 overflow-hidden">
                         <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Active Companies
+                          Total Subscribers
+                        </p>
+                        <h4>920</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-3 col-md-6 d-flex">
+                <div className="card flex-fill">
+                  <div className="card-body d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center overflow-hidden">
+                      <span className="avatar avatar-lg bg-success flex-shrink-0">
+                        <i className="ti ti-user-check fs-16" />
+                      </span>
+                      <div className="ms-2 overflow-hidden">
+                        <p className="fs-12 fw-medium mb-1 text-truncate">
+                          Active Subscribers
                         </p>
                         <h4>920</h4>
                       </div>
@@ -211,11 +211,11 @@ const CompanyPlans = () => {
                   <div className="card-body d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center overflow-hidden">
                       <span className="avatar avatar-lg bg-danger flex-shrink-0">
-                        <i className="ti ti-building fs-16" />
+                        <i className="ti ti-user-x fs-16" />
                       </span>
                       <div className="ms-2 overflow-hidden">
                         <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Inactive Companies
+                          Expired Subscribers
                         </p>
                         <h4>30</h4>
                       </div>
@@ -311,19 +311,17 @@ const CompanyPlans = () => {
                     <div className="custom-datatable-filter table-responsive">
                       <TableComponent
                         tableHeader={tableHeader}
-                        dataSource={companiesData?.data?.filter((item) => {
+                        dataSource={formateForPlans?.filter((item) => {
                           if (searchText) {
                             return item.company_name.toLowerCase().includes(searchText.toLowerCase()) ||
-                              item.company_domain.toLowerCase().includes(searchText.toLowerCase()) ||
-                              item.admin_email.toLowerCase().includes(searchText.toLowerCase())
+                              item.plan_name.toLowerCase().includes(searchText.toLowerCase()) 
                           }
                           return item
                         }) || []}
-                        historyLink={"#"}//here will be the history page link
+                        historyLink={"/plans-history"}//here will be the history page link
                         dataKeys={dataKeys || []}
-                        onEdit={handleActions}
-                        onView={handleActions}
-                        handleDelete={handleActions}
+                        pdfDownload={handleActions}
+                        pdfView={handleActions}
                       />
                     </div>
                   </div>
@@ -337,15 +335,15 @@ const CompanyPlans = () => {
         </div>
       </MainLayout>
 
-      {modalData.type == "view" && modalData.isOpen &&
+      {/* {modalData.type == "view" && modalData.isOpen &&
         <CompanyDetails handleData={modalData} />
       }
       {
         modalData.type == "delete" && modalData.isOpen ?
           <ConfirmDelete handleData={modalData} /> :
-          modalData.isOpen &&  modalData.type ==  "edit" &&
+          modalData.isOpen && modalData.type == "edit" &&
           <RegisterFromDemo handleData={modalData} />
-      }
+      } */}
     </React.Fragment>
   );
 };

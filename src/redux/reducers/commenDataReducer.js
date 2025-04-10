@@ -9,6 +9,7 @@ const initialState = {
   recentTransaction: [],
   demoRequestsData: [],
   companiesData: {},
+  planHistoryData: {},
   allPlans: {},
   profileData: {},
   loading: false,
@@ -173,6 +174,25 @@ const commenDataReducer = (state = initialState, action) => {
         companiesData: action.payload,
       };
     case types.GET_COMPANIES_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+
+
+    case types.GET_PLANHISTORY_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.GET_PLANHISTORY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        planHistoryData: action.payload,
+      };
+    case types.GET_PLANHISTORY_FAILED:
       return {
         ...state,
         loading: false,
