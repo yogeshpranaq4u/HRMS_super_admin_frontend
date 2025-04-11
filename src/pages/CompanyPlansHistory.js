@@ -17,7 +17,6 @@ const CompanyPlansHistory = () => {
   const [modalData, setModalData] = useState({ isOpen: false, data: "" })
   const isLoading = useSelector((state) => state.commenData.loading)
   const planHistoryData = useSelector((state) => state.commenData?.planHistoryData)
-  const serviceTypeData = useSelector((state) => state.data?.serviceTypeData)
   const [searchText, setSearchText] = useState("")
   const [filters, setFilters] = useState({
     limit: 10,
@@ -49,12 +48,12 @@ const CompanyPlansHistory = () => {
 
   const dataKeys = [
     "id",          // Company Name
-    "service_type" ,          // Service Type (array stored as string)
+    "services" ,          // Service Type (array stored as string)
     "plan_name",       
     "start_date",       
     "end_date",       
     "status",       
-    "price",       
+    "total_price",       
   ];
 
 
@@ -187,7 +186,7 @@ const CompanyPlansHistory = () => {
                         dataSource={planHistoryData?.data?.plans?.filter((item) => {
                           if (searchText) {
                             return item.plan_name.toLowerCase().includes(searchText.toLowerCase()) 
-                          }
+                          }                          
                           return item
                         }) || []}
                         dataKeys={dataKeys || []}
@@ -207,7 +206,10 @@ const CompanyPlansHistory = () => {
       </MainLayout>
 
       {modalData.type == "renew" && modalData.isOpen &&
-        <UpGradePlan handleData={modalData} />
+        <UpGradePlan handleData={{
+          ...modalData,
+          data:planHistoryData?.data
+        }} />
       } 
       
     </React.Fragment>

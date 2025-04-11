@@ -21,7 +21,7 @@ const Card2 = ({ data }) => {
 
           {data?.type !== "Plan Expired" ? (
             <a
-              href="purchase-transaction.html"
+              href={data?.redirectPath||"#"}
               className="btn btn-light btn-md mb-2"
             >
               View All

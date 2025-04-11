@@ -11,7 +11,7 @@ const userDetails = sessionStorage.getItem("userDetails")
   
 export function* getCompanyAction(action) {
   try {
-    const { limit = 5, page = 1, sort = 'last_7_days', plan_id, status } = action?.payload || {};
+    const { limit = 5, page = 1, sort = 'last_7_days', plan_id, status ,only_without_plan } = action?.payload || {};
 
     // You can also dynamically build this query string if deliver and demo_status are needed
     const queryParams = new URLSearchParams({
@@ -19,7 +19,8 @@ export function* getCompanyAction(action) {
       page,
       sort,
       ...(plan_id && { plan_id }),
-      ...(status && { status })
+      ...(status && { status }),
+      ...(only_without_plan && { only_without_plan })
     }).toString();
 
     const queryUrl = `?${queryParams}`;
@@ -117,7 +118,7 @@ function* getServiceTypeAction(action) {
       null,
       userDetails?.token
     );
-    console.log("response response" ,response);
+    // console.log("response response" ,response);
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {

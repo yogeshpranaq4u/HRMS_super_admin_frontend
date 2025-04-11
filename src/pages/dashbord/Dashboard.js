@@ -68,19 +68,16 @@ function Dashboard() {
                 <h2 className="mb-1 text-white">
                   Welcome Back,{details?.user?.name}{" "}
                 </h2>
-                <p className="text-light">
+                {/* <p className="text-light">
                   14 New Companies Subscribed Today !!!
-                </p>
+                </p> */}
               </div>
               <div className="d-flex align-items-center flex-wrap mb-1">
                 <a
-                  href="companies.html"
+                  href="/company"
                   className="btn btn-dark btn-md me-2 mb-2"
                 >
                   Companies
-                </a>
-                <a href="packages.html" className="btn btn-light btn-md mb-2">
-                  All Packages
                 </a>
               </div>
             </div>
@@ -117,6 +114,7 @@ function Dashboard() {
                 img: "ti ti-carousel-vertical fs-16",
                 value: profileData?.activeCompanies,
                 title: "Active Companies",
+
               }}
             />
             <Card
@@ -142,6 +140,7 @@ function Dashboard() {
                 title: "Recently Demo",
                 type: "Demo",
                 data: pendingDemoRequestsData,
+                redirectPath:"/demo-requests"
               }}
             />
           
@@ -150,6 +149,7 @@ function Dashboard() {
                 title: "Recently Registered",
                 type: "Registered",
                 data: recentRegistrations,
+                redirectPath:"/company"
               }}
             />
             <PlanChartCard data={purchaseSummaryData} />
@@ -168,6 +168,7 @@ function Dashboard() {
                 title: "Recent Plan Expired",
                 type: "Plan Expired",
                 data: planExpireData,
+                redirectPath:"/plans"
               
               }}
             />

@@ -35,6 +35,21 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                       </span>
                     </td>
                   )
+                } else if (key == "services") {
+                  return (
+                    <td key={colIndex}>
+                      <div className="d-flex align-items-center justify-content-between">
+                        {
+                          item[key]?.map((item, index) => {
+                            return (
+                              <p key={index} className='p-0 m-0 text-capitalize '>{item?.name},
+                                {index == 0 && item["services"]?.length > 1 && "/"}</p>
+                            )
+                          })
+                        }
+                      </div>
+                    </td>
+                  )
                 } else if (key == "service_type") {
                   const validSelection = Array.isArray(item[key])
                     ? item[key]
@@ -81,22 +96,10 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                     </td>
                   )
                 } else {
-                  // console.log(item ,item["company_logo"]);
-                  
                   return (
-
                     <td key={colIndex}>
                       {
-                        // item["company_logo"] !== undefined ?
-                        //   <div class="d-flex align-items-center file-name-icon">
-                        //     <a class="avatar avatar-md border rounded-circle" href="/react/template/super-admin/companies" data-discover="true">
-                        //       <img class="img-fluid" alt="img" src="/react/template/assets/img/company/company-01.svg" />
-                        //     </a><div class="ms-2"><h6 class="fw-medium">
-                        //       <a href="/react/template/super-admin/companies" data-discover="true">BrightWave Innovations</a></h6>
-                        //     </div>
-                        //   </div> :
-                          item[key] !== undefined && item[key] !== '' ? item[key] : '-' 
-
+                        item[key] !== undefined && item[key] !== '' ? item[key] : '-'
                       }
                     </td>
                   )
@@ -110,7 +113,7 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                     <a onClick={() => {
                       navigate(historyLink, { state: { data: item["id"] } })
                     }} className="me-2" title='view history' >
-                      <i class="ti ti-history"></i>
+                      <i className="ti ti-history"></i>
                     </a>
                   }
                   {

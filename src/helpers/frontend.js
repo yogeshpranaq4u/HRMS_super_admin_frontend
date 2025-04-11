@@ -86,7 +86,7 @@ export  const validatedFields = (formdata , inputArray ,setErrors) => {
                 positionFocus = positionFocus || inputname;
             }
         } else{
-            console.log(formdata ,inputname ,formdata[inputname] );
+            // console.log(formdata ,inputname ,formdata[inputname] );
             if (!formdata[inputname]) {
                 newError[inputname] = "Please fill Required field";
                 positionFocus = positionFocus || inputname

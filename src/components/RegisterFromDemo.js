@@ -21,7 +21,7 @@ function RegisterFromDemo({ handleData }) {
         contact_no: "",
         demo_status: "",
         config: "",
-        service_type: [],
+        service_type: ["hrms"],
         status: "",//active ,inactive
         plan_id: "",
         company_logo: ""//type will be file (binary)
@@ -69,7 +69,7 @@ function RegisterFromDemo({ handleData }) {
         } else {
             setFormData((prev) => ({ ...prev, [name]: value }));
         }
-        console.log("formData", formData);
+        // console.log("formData", formData);
     }
 
     const requiredFields = [
@@ -84,7 +84,7 @@ function RegisterFromDemo({ handleData }) {
             setLoading(true)
             let data = new FormData()
             Object.entries(formData)?.map(([key, value]) => {
-                if (key == "service_type") {
+                if (key == "service_type" || key == "current_plan") {
                     data.append(key, JSON.stringify(value))
                 } else if (key == "company_logo") {
                     if (typeof formData.company_logo == "string") {
@@ -284,13 +284,13 @@ function RegisterFromDemo({ handleData }) {
                                             <div className="mb-3">
                                                 <label className="form-label">DB Name</label>
                                                 <input type="text" className="form-control"
-                                                    value={formData.db_name}
+                                                    value={formData.database_name}
                                                     disabled
-                                                    name='db_name'
+                                                    name='database_name'
                                                     onChange={onTextChange}
                                                 />
-                                                {hasValidationError(errors, "db_name") && (
-                                                    <small className="text-danger pt-1">{validationError(errors, "db_name")}</small>
+                                                {hasValidationError(errors, "database_name") && (
+                                                    <small className="text-danger pt-1">{validationError(errors, "database_name")}</small>
                                                 )}
                                             </div>
                                         </div>
@@ -316,7 +316,7 @@ function RegisterFromDemo({ handleData }) {
                                         <div className="pass-group d-flex gap-2">
                                             <div className="form-check">
                                                 <input className="form-check-input" type="checkbox" name="service_type" value="hrms"
-                                                    checked={formData.service_type?.includes("hrms")} onChange={onTextChange} />
+                                                    checked={true} onChange={onTextChange} />
                                                 <label className="form-check-label">HRMS</label>
                                             </div>
                                             <div className="form-check">
@@ -404,6 +404,25 @@ function RegisterFromDemo({ handleData }) {
                                 {
                                     handleData.type == "edit" &&
                                     <>
+                                     <div className="col-md-4">
+                                    <div className="mb-3 ">
+                                        <label className="form-label">Config <span className="text-danger"> *</span></label>
+                                        <div className="pass-group">
+
+                                            <select value={formData.config}
+                                                name='config'
+                                                onChange={onTextChange} className="custom-select">
+                                                <option>Select</option>
+                                                <option value={"Yes"}>Yes</option>
+                                                <option value={"No"}>No</option>                                                
+                                            </select>
+                                        </div>
+                                        {hasValidationError(errors, "config") && (
+                                            <small className="text-danger pt-1">{validationError(errors, "config")}</small>
+                                        )}
+                                    </div>
+                                </div>
+
                                         <div className="col-md-4">
                                             <div className="mb-3">
                                                 <label className="form-label">Start Date</label>

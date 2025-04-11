@@ -9,6 +9,10 @@ import ConfirmDelete from "../modals/ConfirmDelete";
 import Loader from "../components/Loader";
 import Pagination from "../components/Pagination";
 import CompanyDetails from "../components/CompanyDetails";
+import UpGradePlan from "../modals/UpGradePlan";
+import { getServiceType } from "../redux/actions/otherActions";
+import { Api } from "../config/apiEndPoints";
+import { callApi } from "../config/apiCall";
 
 const CompanyPlans = () => {
   const dispatch = useDispatch()
@@ -16,6 +20,9 @@ const CompanyPlans = () => {
   const isLoading = useSelector((state) => state.commenData.loading)
   const companiesData = useSelector((state) => state.commenData?.companiesData)
   const [searchText, setSearchText] = useState("")
+  const [pageStats, setPageStats] = useState()
+  const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
+
   const [filters, setFilters] = useState({
     limit: 10,
     page: 1,
@@ -24,11 +31,10 @@ const CompanyPlans = () => {
     sort: "",
     currentPage: 1,
   })
-  const plansData = useSelector((state) => state.commenData.allPlans)
 
-  const formateForPlans = companiesData?.data?.map((item)=>{
-    const {company_name ,company_logo,
-      current_plan ,service_type,id, ...rest} = item
+  const formateForPlans = companiesData?.data?.map((item) => {
+    const { company_name, company_logo,
+      current_plan, service_type, id, ...rest } = item
     return {
       company_name,
       company_logo,
@@ -37,9 +43,13 @@ const CompanyPlans = () => {
       ...current_plan
     }
   })
-
+  useEffect(() => {
+    dispatch(getCompanies(filters))
+  }, [filters])
   useEffect(() => {
     dispatch(getAllPlans())
+    dispatch(getServiceType())
+    fetchStats()
   }, [])
   const tableHeader = [
     "Company Name",
@@ -53,20 +63,15 @@ const CompanyPlans = () => {
 
   const dataKeys = [
     "company_name",          // Company Name
-    "service_type" ,          // Service Type (array stored as string)
-    "plan_name",       
-    "start_date",       
-    "end_date",       
+    "service_type",          // Service Type (array stored as string)
+    "plan_name",
+    "start_date",
+    "end_date",
     // "status",       
-    "price",       
+    "total_price",
   ];
+  // console.log("companiesData ₹",formateForPlans);
 
-
-  console.log("companiesData ₹",formateForPlans);
-
-  useEffect(() => {
-    dispatch(getCompanies(filters))
-  }, [filters])
   const onClose = () => {
     setModalData((prev) => ({
       ...prev,
@@ -75,16 +80,27 @@ const CompanyPlans = () => {
     }))
   }
   const handleActions = (data, type) => {
-   
-      setModalData((prev) => ({
-        ...prev,
-        data: data,
-        type: "view",
-        isOpen: true,
-        onConfirm: "",
-        onClose: onClose
-      }))
+    // setModalData((prev) => ({
+    //   ...prev,
+    //   data: data,
+    //   type: "view",
+    //   isOpen: true,
+    //   onConfirm: "",
+    //   onClose: onClose
+    // }))
+  }
 
+  const fetchStats = async () => {
+    try {
+      const response = await callApi(Api.PLANSSTATS, "GET", "", details?.token)
+      if (response.authenticated && response.valid) {
+        // console.log(response);
+        setPageStats(response.data || {})
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const handlePageChange = (page) => {
@@ -110,6 +126,9 @@ const CompanyPlans = () => {
     }))
   }
 
+  // console.log("pageStats" ,pageStats);
+  
+
 
   return (
     <React.Fragment>
@@ -119,7 +138,7 @@ const CompanyPlans = () => {
             {/* Breadcrumb */}
             <div className="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
               <BreadCrums
-                title={"Plans"}
+                title={"Company Plans"}
                 data={[
                   { path: "/", title: "Superadmin" },
 
@@ -130,23 +149,23 @@ const CompanyPlans = () => {
                 <div className="me-2 mb-2">
 
                 </div>
-                {/* <div className="mb-2">
-                  <Link
+                <div className="mb-2">
+                  <a
                     to="#"
                     onClick={() => {
                       setModalData((prev) => ({
                         ...prev,
                         isOpen: true,
-                        type: "Register",
+                        type: "addPlan",
                         onClose: onClose
                       }))
                     }}
                     className="btn btn-primary d-flex align-items-center"
                   >
-                    <i className="ti ti-circle-plus me-2" />
-                    Add Company
-                  </Link>
-                </div> */}
+                    Add New Plan
+                    <i className="ti ti-circle-plus ml-1" />
+                  </a>
+                </div>
                 <div className="ms-2 head-icons"></div>
               </div>
             </div>
@@ -165,7 +184,7 @@ const CompanyPlans = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Total Transaction
                         </p>
-                        <h4>950</h4>
+                        <h4>{pageStats?.total_transactions || 0}</h4>
                       </div>
                     </div>
                   </div>
@@ -175,14 +194,14 @@ const CompanyPlans = () => {
                 <div className="card flex-fill">
                   <div className="card-body d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg flex-shrink-0" style={{background:"#00C7BE"}}>
+                      <span className="avatar avatar-lg flex-shrink-0" style={{ background: "#00C7BE" }}>
                         <i className="ti ti-users fs-16" />
                       </span>
                       <div className="ms-2 overflow-hidden">
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Total Subscribers
                         </p>
-                        <h4>920</h4>
+                        <h4>{pageStats?.total_subscribers || 950}</h4>
                       </div>
                     </div>
                   </div>
@@ -199,7 +218,7 @@ const CompanyPlans = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Active Subscribers
                         </p>
-                        <h4>920</h4>
+                        <h4>{pageStats?.active_subscribers || 950}</h4>
                       </div>
                     </div>
                   </div>
@@ -217,7 +236,7 @@ const CompanyPlans = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Expired Subscribers
                         </p>
-                        <h4>30</h4>
+                        <h4>{pageStats?.expired_subscribers| "NA"}</h4>
                       </div>
                     </div>
                   </div>
@@ -314,7 +333,7 @@ const CompanyPlans = () => {
                         dataSource={formateForPlans?.filter((item) => {
                           if (searchText) {
                             return item.company_name.toLowerCase().includes(searchText.toLowerCase()) ||
-                              item.plan_name.toLowerCase().includes(searchText.toLowerCase()) 
+                              item.plan_name.toLowerCase().includes(searchText.toLowerCase())
                           }
                           return item
                         }) || []}
@@ -335,10 +354,10 @@ const CompanyPlans = () => {
         </div>
       </MainLayout>
 
-      {/* {modalData.type == "view" && modalData.isOpen &&
-        <CompanyDetails handleData={modalData} />
+      {modalData.type == "addPlan" && modalData.isOpen &&
+        <UpGradePlan handleData={modalData} />
       }
-      {
+      {/* {
         modalData.type == "delete" && modalData.isOpen ?
           <ConfirmDelete handleData={modalData} /> :
           modalData.isOpen && modalData.type == "edit" &&

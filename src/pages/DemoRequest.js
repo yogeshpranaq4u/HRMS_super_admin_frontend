@@ -5,7 +5,6 @@ import { getAllPlans, getDemoRequestData } from '../redux/actions/dashBoardActio
 import moment from 'moment'
 import BreadCrums from '../components/BreadCrums'
 import Loader from '../components/Loader'
-import axios from 'axios'
 import { Api, BaseUrl } from '../config/apiEndPoints'
 import { callApi } from '../config/apiCall'
 import { toast } from 'react-toastify'
@@ -43,7 +42,6 @@ function DemoRequest() {
         try {
             const response = await callApi(Api.DEMOSTATS, "GET", "", details?.token)
             if (response.authenticated && response.valid) {
-                // console.log(response);
                 setdenoStats(response.data || {})
             }
 
@@ -358,21 +356,6 @@ function DemoRequest() {
 
                                                                                 </td>
 
-                                                                                {/*  <td>
-                                                                                    <div>
-                                                                                        <select
-                                                                                            onChange={(e) => {
-                                                                                                updataStatues(e, item, "config")
-                                                                                            }}
-                                                                                            defaultValue={item?.config}
-                                                                                            disabled={updatedStatus[item?.id]?.config || item?.config == "Yes"}
-                                                                                            className='demo-status '>
-                                                                                            <option value={"Yes"}>Yes</option>
-                                                                                            <option value={"No"}>No</option>
-                                                                                        </select>
-                                                                                    </div>
-
-                                                                                </td> */}
                                                                                 <td>
                                                                                     {item?.demo_date ? moment(item?.demo_date || "").format("DD/MMM/YYYY") : "NA"}, {item?.demo_time || ""}
                                                                                 </td>

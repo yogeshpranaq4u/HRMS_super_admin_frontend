@@ -8,6 +8,7 @@ export const Api = {
   //Admin Api End   Points
   LOGIN: "/super-admin/login", 
   DEMOSTATS: "super-admin/request-demo/stats", 
+  PLANSSTATS: "super-admin/companies/plans/stats", 
   COMPANIESSTATS: "super-admin/companies/stats", 
   VERIFYOTP: "/super-admin/verify-otp", 
   RESEND: "super-admin/resend-otp", 
