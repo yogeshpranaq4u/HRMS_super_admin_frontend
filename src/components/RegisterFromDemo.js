@@ -35,7 +35,7 @@ function RegisterFromDemo({ handleData }) {
     }, [])
     // console.log("serviceTypeData", serviceTypeData);
     useEffect(() => {
-        // console.log(handleData);
+        console.log(handleData);
         if (handleData?.type == "edit") {
             const service_ids = Array.isArray(handleData?.data?.service_ids)
                 ? handleData?.data?.service_ids
@@ -49,14 +49,15 @@ function RegisterFromDemo({ handleData }) {
             const service_ids = Array.isArray(handleData?.data?.selection)
                 ? handleData?.data?.selection
                 : JSON.parse(handleData?.data?.selection || "[]")
-            console.log(`"["1"]"`, service_ids);
+            // console.log(`"["1"]"`, service_ids);
             setFormData((prev) => ({
                 ...prev, ...handleData?.data,
                 team_size: handleData?.data?.company_size,
                 contact_no: handleData?.data?.phone_no,
                 admin_email: handleData?.data?.email,
                 admin_name: handleData?.data?.name,
-                service_ids: service_ids.length > 0 ? service_ids : ["1"],
+                service_ids: ["1"]
+                // service_ids.length > 0 ? service_ids : ["1"],
             }))
         }
     }, [handleData])
@@ -93,6 +94,9 @@ function RegisterFromDemo({ handleData }) {
             setLoading(true)
             let data = new FormData()
             Object.entries(formData)?.map(([key, value]) => {
+                if(key == "service_ids"){
+                    data.append("service_type", JSON.stringify(value))
+                }
                 if (key == "service_ids" || key == "current_plan") {
                     data.append(key, JSON.stringify(value))
 
@@ -458,8 +462,8 @@ function RegisterFromDemo({ handleData }) {
                                                         name='delivered'
                                                         onChange={onTextChange} className="custom-select">
                                                         <option>Select Deliver</option>
-                                                        <option value={"Yes"}>Yes</option>
-                                                        <option value={"No"}>No</option>
+                                                        <option value={"Pending"}>Pending </option>
+                                                        <option value={"Delivered"}>Delivered</option>
                                                     </select>
                                                 </div>
                                                 {hasValidationError(errors, "config") && (

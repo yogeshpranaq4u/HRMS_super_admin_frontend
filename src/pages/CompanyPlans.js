@@ -69,7 +69,7 @@ const CompanyPlans = () => {
     // "status",       
     "total_price",
   ];
-  // console.log("companiesData ₹",formateForPlans);
+  // console.log("companiesData ₹",formateForPlans,companiesData?.data);
 
   const onClose = () => {
     setModalData((prev) => ({
@@ -79,14 +79,14 @@ const CompanyPlans = () => {
     }))
   }
   const handleActions = (data, type) => {
-    // setModalData((prev) => ({
-    //   ...prev,
-    //   data: data,
-    //   type: "view",
-    //   isOpen: true,
-    //   onConfirm: "",
-    //   onClose: onClose
-    // }))
+    setModalData((prev) => ({
+      ...prev,
+      data: data,
+      type: type,
+      isOpen: true,
+      onConfirm: "",
+      onClose: onClose
+    }))
   }
 
   const fetchStats = async () => {
@@ -347,6 +347,9 @@ const CompanyPlans = () => {
       </MainLayout>
 
       {modalData.type == "addPlan" && modalData.isOpen &&
+        <UpGradePlan handleData={modalData} />
+      }
+      {modalData.type == "upgrade" && modalData.isOpen &&
         <UpGradePlan handleData={modalData} />
       }
       {/* {

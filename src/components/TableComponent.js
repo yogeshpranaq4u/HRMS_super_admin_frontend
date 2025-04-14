@@ -29,6 +29,7 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
             <tr key={rowIndex}>
               <td>{rowIndex+1}</td>
               {dataKeys?.map((key, colIndex) => {
+                
                 if (key == "status") {
                   return (
                     <td key={colIndex}>
@@ -39,7 +40,7 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                     </td>
                   )
                 } else if (key == "services" &&item["services"]) {
-                  console.log("debug 1" ,item[key]);
+                  // console.log("debug 1" ,item[key]);
 
                   return (
                     <td key={colIndex}>
@@ -47,13 +48,13 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                         {
                           item[key]?.map((item, index) => {
                             // console.log(index == 0  ,  item[key] );
-                            
                             return (
                               <p key={index} className='p-0 m-0 text-capitalize '>{item?.name} 
                                 {index == 0 ? "/":""}</p>
                             )
                           })
                         }
+
                       </div>
                     </td>
                   )
@@ -76,6 +77,8 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                     </td>
                   )
                 }  else if (key == "plan_id") {
+                  // console.log("findPlan?.name?.toLowerCase()" ,findPlan?.name?.toLowerCase());
+                  
                   const findPlan = plansData?.data?.find((planItem) => { return planItem?.id == item[key] }) || {}
                   return (
                     <td key={colIndex}>
@@ -83,6 +86,7 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                         <p className="mb-0 me-2">
                           {findPlan?.name}-({findPlan?.duration})
                         </p>
+                       
                       </div>
                     </td>
                   )
@@ -114,6 +118,13 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                           </div> :
                           item[key] !== undefined && item[key] !== '' ? item[key] : '-'
                       }
+                       {
+                        key == "plan_name" &&  item?.plan_name?.toLowerCase() == "basic" &&
+                            <a onClick={()=>{
+                              pdfView(item, "upgrade")
+                            }} className="pl-2 badge badge-purple badge-xs" >Upgrade</a>
+                          
+                        }
                     </td>
                   )
                 }

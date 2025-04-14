@@ -13,7 +13,7 @@ function UpGradePlan({ handleData }) {
     const plansData = useSelector((state) => state.commenData.allPlans)
     const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
     const serviceTypeData = useSelector((state) => state.data?.serviceTypeData)
-    const currentPlan = handleData?.data?.plans?.find((item) => item?.status == "Active")
+    const currentPlan = handleData?.type == "upgrade"? handleData?.data: handleData?.data?.plans?.find((item) => item?.status == "Active")
     const companiesData = useSelector((state) => state.commenData?.companiesData)
     const [selectedCompany, setSelectedCompany] = useState()
     const [errors, setErrors] = useState({});
@@ -25,14 +25,17 @@ function UpGradePlan({ handleData }) {
     const [isloading, setLoading] = useState(false)
 
     useEffect(() => {
-         dispatch(getServiceType())
+        dispatch(getServiceType())
         dispatch(getCompanies({
-            limit: 10,
-            page: 1,
+            // limit: 10,
+            // page: 1,
             only_without_plan: true
         }))
     }, []
     )
+
+    console.log("upgrade" ,handleData);
+    
 
     useEffect(() => {
         if (handleData?.type == "edit") {
@@ -323,7 +326,10 @@ function UpGradePlan({ handleData }) {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" onClick={handleData.onClose} className="btn btn-light me-2" >Cancel</button>
+                            <button type="button" onClick={()=>{
+                                // dispatch(getCompanies({limit:""}))
+                                handleData.onClose()
+                                }} className="btn btn-light me-2" >Cancel</button>
                             <button type="submit" className="btn btn-primary">
                                 {
                                     isloading ? "Loading..." : "Submit"

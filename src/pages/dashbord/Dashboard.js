@@ -127,7 +127,7 @@ function Dashboard() {
             <Card
               data={{
                 img: "ti ti-businessplan fs-16",
-                value: profileData?.totalEarnings,
+                value:"₹"+ profileData?.totalEarnings,
                 title: "Total Earnings",
               }}
             />
