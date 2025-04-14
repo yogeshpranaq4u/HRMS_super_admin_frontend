@@ -6,6 +6,7 @@ import { addCompany, getAllPlans, getCompanies, getPlanHistory, updateCompany } 
 import { formatDate, getFirstErrorMessage, hasValidationError, validatedFields, validationError } from '../helpers/frontend';
 import { toast } from 'react-toastify';
 import Select from "react-select";
+import { getServiceType } from '../redux/actions/otherActions';
 
 function UpGradePlan({ handleData }) {
     const dispatch = useDispatch()
@@ -24,6 +25,7 @@ function UpGradePlan({ handleData }) {
     const [isloading, setLoading] = useState(false)
 
     useEffect(() => {
+         dispatch(getServiceType())
         dispatch(getCompanies({
             limit: 10,
             page: 1,
@@ -62,7 +64,7 @@ function UpGradePlan({ handleData }) {
                     service_ids: checked
                         ? [...prev.service_ids, value]
                         : prev.service_ids.filter((s) => s !== value),
-                    price: finalPrice
+                    price: finalPrice.toFixed(2)
 
                 })
             });
@@ -81,7 +83,7 @@ function UpGradePlan({ handleData }) {
                 setFormData((prev) => ({ ...prev, [name]: value }));
             }
         }
-        console.log("formData", formData);
+        // console.log("formData", formData);
     }
 
 
@@ -93,9 +95,6 @@ function UpGradePlan({ handleData }) {
             let data = new FormData()
             data.append("service_ids", JSON.stringify(formData.service_ids))
             data.append("plan_id", formData.plan_id)
-            // if( formData?.company_id){
-            //     data.append("plan_id",  formData?.company_id)
-            // }
             const apiEndPoint = formData?.company_id? `super-admin/companies/${formData?.company_id}/plans`: `${handleData?.type == "renew" ? `super-admin/companies/${handleData.data.id}/plans` : ""}`
             const response = await callApi(apiEndPoint, "POST", data, details?.token)
             toast.success(response.data?.message || "Form submitted successfully!");

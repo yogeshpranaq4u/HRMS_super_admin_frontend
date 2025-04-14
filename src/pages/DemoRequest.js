@@ -73,9 +73,9 @@ function DemoRequest() {
                         [type]: response?.data?.[type] || "",
                         disable: true  // Or your desired logic for enabling/disabling
                     }
-
-
                 }))
+                dispatch(getDemoRequestData(filters))
+                fetchStats()
             }
 
         } catch (error) {
@@ -145,7 +145,7 @@ function DemoRequest() {
                                                     </span>
                                                     <div className="ms-2 overflow-hidden">
                                                         <p className="fs-12 fw-medium mb-1 text-truncate">Total Request</p>
-                                                        <h4>{denoStats?.total || 950}</h4>
+                                                        <h4>{denoStats?.total || 0}</h4>
                                                     </div>
                                                 </div>
 
@@ -161,7 +161,7 @@ function DemoRequest() {
                                                     </span>
                                                     <div className="ms-2 overflow-hidden">
                                                         <p className="fs-12 fw-medium mb-1 text-truncate">Total Demo Done</p>
-                                                        <h4>{denoStats?.done || 90}</h4>
+                                                        <h4>{denoStats?.done || 0}</h4>
                                                     </div>
                                                 </div>
 
@@ -177,7 +177,7 @@ function DemoRequest() {
                                                     </span>
                                                     <div className="ms-2 overflow-hidden">
                                                         <p className="fs-12 fw-medium mb-1 text-truncate">Total Config</p>
-                                                        <h4>{denoStats?.config || 50}</h4>
+                                                        <h4>{denoStats?.config || 0}</h4>
                                                     </div>
                                                 </div>
 
@@ -193,7 +193,7 @@ function DemoRequest() {
                                                     </span>
                                                     <div className="ms-2 overflow-hidden">
                                                         <p className="fs-12 fw-medium mb-1 text-truncate">Total Delivered</p>
-                                                        <h4>{denoStats?.delivered || 150}</h4>
+                                                        <h4>{denoStats?.delivered || 0}</h4>
                                                     </div>
                                                 </div>
 
@@ -223,7 +223,7 @@ function DemoRequest() {
                                                 </select>
                                             </div>
 
-                                            <div className="dropdown">
+                                            <div className="dropdown ">
                                                 <select value={filters?.sort} onChange={(e) => {
                                                     changeFilter(e.target.value, "sort")
                                                 }} className='select border py-2 px-2 rounded'>
@@ -239,6 +239,21 @@ function DemoRequest() {
                                                 </select>
 
                                             </div>
+                                            {
+                                                (filters.sort || filters?.demo_status) &&
+                                                <div className="dropdown ml-1">
+                                                    <button onClick={() => {
+                                                        setFilters((prev) => ({
+                                                            ...prev,
+                                                            deliver: "",
+                                                            demo_status: "",
+                                                            sort: "",
+                                                        }))
+                                                    }} className='btn btn-secondary py-1' > Clear</button>
+                                                </div>
+                                            }
+
+
                                         </div>
                                     </div>
                                     <div className="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
@@ -357,7 +372,7 @@ function DemoRequest() {
                                                                                 </td>
 
                                                                                 <td>
-                                                                                    {item?.demo_date ? moment(item?.demo_date || "").format("DD/MMM/YYYY") : "NA"}, {item?.demo_time || ""}
+                                                                                    {item?.demo_date ? moment(item?.demo_date || "").format("DD/MMM/YYYY") + "," : "NA"} {item?.demo_time || ""}
                                                                                 </td>
                                                                                 <td>
                                                                                     <div className="action-icon d-inline-flex">
@@ -377,13 +392,13 @@ function DemoRequest() {
 
                                                                                         <a href={
                                                                                             isdemoStatus
-                                                                                                ? "#" : item?.meeting_link} className="me-2" target={isdemoStatus? "" : '_blank'} >
+                                                                                                ? "#" : item?.meeting_link} className="me-2" target={isdemoStatus ? "" : '_blank'} >
                                                                                             <i className={`ti ti-device-tv ${isdemoStatus ? "disable-Color" : ""} `} style={{ transform: "rotate(180deg)" }}></i>
                                                                                         </a>
 
                                                                                         <a href="#" className="me-2"
                                                                                             onClick={() => {
-                                                                                                if (isdemoStatus) {
+                                                                                                if (!isdemoStatus) {
                                                                                                     setModalData((prev) => ({
                                                                                                         ...prev,
                                                                                                         data: item,

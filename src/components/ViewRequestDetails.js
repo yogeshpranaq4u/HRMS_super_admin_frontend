@@ -6,15 +6,15 @@ function ViewRequestDetails({ handleData }) {
     const d = handleData?.data
 
     const service_type = Array.isArray(d?.selection)
-    ? d.selection
-    : JSON.parse(d?.selection || "[]")
+        ? d.selection
+        : JSON.parse(d?.selection || "[]")
 
     return (
         <div
             style={handleData?.isOpen ? { display: "block" } : {}}
             class={`modal fade ${handleData?.isOpen ? "show" : ""} `}
             id="edit_company" >
-            <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-dialog modal-dialog-centered modal-lg shadow">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Request Demo Details</h4>
@@ -29,7 +29,7 @@ function ViewRequestDetails({ handleData }) {
                         <div className="company-info p-3 mb-3 rounded">
                             <h5 className="mb-1">{d.company_name || "NA"}</h5>
                             <p className="text-muted mb-1">{d.email || "NA"}</p>
-                            <span className="status-badge">● {d.deliver || "NA"}</span>
+                            {/* <span className="status-badge">● {d.deliver || "NA"}</span> */}
                         </div>
 
                         <h6 className="section-title">Basic Info</h6>
@@ -59,10 +59,10 @@ function ViewRequestDetails({ handleData }) {
                                 <p className='text-capitalize'>
                                     {
                                         service_type?.map((item, i) => {
-                                            return item + (i == 0 && service_type?.length > 1 ? "/":"")
+                                            return item + (i == 0 && service_type?.length > 1 ? "/" : "")
                                         })
                                     }
-                                          </p>
+                                </p>
                             </div>
                             <div className="col-md-4">
                                 <strong>Demo Status</strong>
@@ -75,7 +75,7 @@ function ViewRequestDetails({ handleData }) {
                             <div className="col-md-12">
                                 <strong>Meeting Time</strong>
                                 <p>
-                                    {d?.demo_date ? moment(d?.demo_date || "").format("DD/MMM/YYYY") : "NA"}, {d?.demo_time || ""}
+                                    {d?.demo_date ? moment(d?.demo_date || "").format("DD/MMM/YYYY")+"," : "NA"} {d?.demo_time || ""}
                                 </p>
                             </div>
                         </div>

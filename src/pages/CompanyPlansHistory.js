@@ -10,10 +10,12 @@ import { useLocation } from "react-router-dom";
 import UpGradePlan from "../modals/UpGradePlan";
 import { formatDate } from "../helpers/frontend";
 import { getServiceType } from "../redux/actions/otherActions";
+import InvoicePreview from "../modals/InvoicePreview";
+import { ImagePath } from "../config/apiEndPoints";
 
 const CompanyPlansHistory = () => {
   const dispatch = useDispatch()
-  const {state} = useLocation()
+  const { state } = useLocation()
   const [modalData, setModalData] = useState({ isOpen: false, data: "" })
   const isLoading = useSelector((state) => state.commenData.loading)
   const planHistoryData = useSelector((state) => state.commenData?.planHistoryData)
@@ -26,16 +28,16 @@ const CompanyPlansHistory = () => {
     sort: "",
     currentPage: 1,
   })
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getPlanHistory(state?.data))
     dispatch(getAllPlans(state?.data))
     dispatch(getServiceType())
 
-  },[])
-  const UpcomingPlans = planHistoryData?.data?.plans?.find((item)=>{
+  }, [])
+  const UpcomingPlans = planHistoryData?.data?.plans?.find((item) => {
     return item?.status == "Upcoming"
   })
-  
+
   const tableHeader = [
     "Invoice Number",
     "Service",
@@ -48,12 +50,12 @@ const CompanyPlansHistory = () => {
 
   const dataKeys = [
     "id",          // Company Name
-    "services" ,          // Service Type (array stored as string)
-    "plan_name",       
-    "start_date",       
-    "end_date",       
-    "status",       
-    "total_price",       
+    "services",          // Service Type (array stored as string)
+    "plan_name",
+    "start_date",
+    "end_date",
+    "status",
+    "total_price",
   ];
 
 
@@ -65,14 +67,14 @@ const CompanyPlansHistory = () => {
     }))
   }
   const handleActions = (data, type) => {
-      setModalData((prev) => ({
-        ...prev,
-        data: data,
-        type: "view",
-        isOpen: true,
-        onConfirm: "",
-        onClose: onClose
-      }))
+    setModalData((prev) => ({
+      ...prev,
+      data: data,
+      type: type,
+      isOpen: true,
+      onConfirm: "",
+      onClose: onClose
+    }))
 
   }
 
@@ -85,7 +87,7 @@ const CompanyPlansHistory = () => {
     }));
   };
 
- 
+
   const changeFilter = (value, key) => {
     setFilters((prev) => ({
       ...prev,
@@ -93,8 +95,8 @@ const CompanyPlansHistory = () => {
     }))
   }
 
-  // console.log("serviceTypeData" ,serviceTypeData);
-  
+  console.log("planHistoryData", planHistoryData);
+
   return (
     <React.Fragment>
       <MainLayout>
@@ -138,15 +140,20 @@ const CompanyPlansHistory = () => {
                 <Loader /> :
                 <div className="card">
                   <div className="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-                    <h5>Companies name with logo </h5>
+                    <div className="d-flex align-items-center gap-2">
+                      <span className="avatar">
+                      <img src={ImagePath + planHistoryData?.data?.company_logo || ""} alt="logo" className="img-fluid rounded-circle border" />
+                      </span>
+                      <h5>{planHistoryData?.data?.company_name || ""} </h5>
+                    </div>
                     <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
                       {
-                        UpcomingPlans  &&UpcomingPlans?.start_date&&
-                      <div className="dropdown me-3">
-                        <p className="d-flex gap-2 align-items-center"> 
-                          <i className="ti ti-clock-hour-3 fs-16" />
-                          Upcoming Plan:- {formatDate(UpcomingPlans?.start_date)}</p>
-                      </div>
+                        UpcomingPlans && UpcomingPlans?.start_date &&
+                        <div className="dropdown me-3">
+                          <p className="d-flex gap-2 align-items-center">
+                            <i className="ti ti-clock-hour-3 fs-16" />
+                            Upcoming Plan:- {formatDate(UpcomingPlans?.start_date)}</p>
+                        </div>
                       }
                     </div>
                   </div>
@@ -185,8 +192,8 @@ const CompanyPlansHistory = () => {
                         tableHeader={tableHeader}
                         dataSource={planHistoryData?.data?.plans?.filter((item) => {
                           if (searchText) {
-                            return item.plan_name.toLowerCase().includes(searchText.toLowerCase()) 
-                          }                          
+                            return item.plan_name.toLowerCase().includes(searchText.toLowerCase())
+                          }
                           return item
                         }) || []}
                         dataKeys={dataKeys || []}
@@ -208,10 +215,25 @@ const CompanyPlansHistory = () => {
       {modalData.type == "renew" && modalData.isOpen &&
         <UpGradePlan handleData={{
           ...modalData,
-          data:planHistoryData?.data
+          data: planHistoryData?.data
         }} />
-      } 
-      
+      }
+      {modalData.type == "pdfView" && modalData.isOpen &&
+        <InvoicePreview handleData={modalData} invoiceData={{
+          invoiceNo: 'INV-001',
+          invoiceDate: '2025-04-14',
+          dueDate: '2025-05-14',
+          placeOfSupply: 'Haryana (06)',
+          customer: {
+            name: 'Yogesh Rana',
+            company: 'Yogesh Pvt Ltd',
+            address: 'New Delhi 110059 Delhi',
+            email: 'sadqrfdv@kk.com'
+          },
+          items: [{ description: 'Mobile', qty: 1, rate: 599 }],
+          signatureName: 'Akash Singh'
+        }} /> }
+
     </React.Fragment>
   );
 };

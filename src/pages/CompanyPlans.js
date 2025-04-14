@@ -48,7 +48,6 @@ const CompanyPlans = () => {
   }, [filters])
   useEffect(() => {
     dispatch(getAllPlans())
-    dispatch(getServiceType())
     fetchStats()
   }, [])
   const tableHeader = [
@@ -63,7 +62,7 @@ const CompanyPlans = () => {
 
   const dataKeys = [
     "company_name",          // Company Name
-    "service_type",          // Service Type (array stored as string)
+    "services",          // Service Type (array stored as string)
     "plan_name",
     "start_date",
     "end_date",
@@ -112,13 +111,6 @@ const CompanyPlans = () => {
     }));
   };
 
-  const sortOptions = [
-    { title: "Recently Added", value: "recent_added" },
-    { title: "Descending", value: "descending" },
-    { title: "Ascending", value: "ascending" },
-    { title: "Last Month", value: "last_month" },
-    { title: "Last 7 Days", value: "last_7_days" },
-  ];
   const changeFilter = (value, key) => {
     setFilters((prev) => ({
       ...prev,
@@ -162,7 +154,7 @@ const CompanyPlans = () => {
                     }}
                     className="btn btn-primary d-flex align-items-center"
                   >
-                    Add New Plan
+                    Add Payment
                     <i className="ti ti-circle-plus ml-1" />
                   </a>
                 </div>
@@ -201,7 +193,7 @@ const CompanyPlans = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Total Subscribers
                         </p>
-                        <h4>{pageStats?.total_subscribers || 950}</h4>
+                        <h4>{pageStats?.total_subscribers || 0}</h4>
                       </div>
                     </div>
                   </div>
@@ -218,7 +210,7 @@ const CompanyPlans = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Active Subscribers
                         </p>
-                        <h4>{pageStats?.active_subscribers || 950}</h4>
+                        <h4>{pageStats?.active_subscribers || 0}</h4>
                       </div>
                     </div>
                   </div>
@@ -236,7 +228,7 @@ const CompanyPlans = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Expired Subscribers
                         </p>
-                        <h4>{pageStats?.expired_subscribers| "NA"}</h4>
+                        <h4>{pageStats?.expired_subscribers| "0"}</h4>
                       </div>
                     </div>
                   </div>

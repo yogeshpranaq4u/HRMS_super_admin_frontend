@@ -5,23 +5,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addCompany, getAllPlans, updateCompany } from '../redux/actions/dashBoardActions';
 import { getFirstErrorMessage, hasValidationError, validatedFields, validationError } from '../helpers/frontend';
 import { toast } from 'react-toastify';
+import { getServiceType } from '../redux/actions/otherActions';
 
 function RegisterFromDemo({ handleData }) {
     const dispatch = useDispatch()
+    const serviceTypeData = useSelector((state) => state.data?.serviceTypeData)
     const plansData = useSelector((state) => state.commenData.allPlans)
     const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         admin_name: "",
         admin_email: "",
-        company_email: "",
+        // company_email: "",
         company_name: " ",
         company_domain: "",
         team_size: "",
         contact_no: "",
         demo_status: "",
         config: "",
-        service_type: ["hrms"],
+        service_ids: ["1"],
         status: "",//active ,inactive
         plan_id: "",
         company_logo: ""//type will be file (binary)
@@ -29,28 +31,32 @@ function RegisterFromDemo({ handleData }) {
     const [isloading, setLoading] = useState(false)
 
     useEffect(() => {
+        dispatch(getServiceType())
+    }, [])
+    // console.log("serviceTypeData", serviceTypeData);
+    useEffect(() => {
         // console.log(handleData);
         if (handleData?.type == "edit") {
-            const service_type = Array.isArray(handleData?.data?.service_type)
-                ? handleData?.data?.service_type
-                : JSON.parse(handleData?.data?.service_type || "[]")
+            const service_ids = Array.isArray(handleData?.data?.service_ids)
+                ? handleData?.data?.service_ids
+                : JSON.parse(handleData?.data?.service_ids || "[]")
             setFormData((prev) => ({
                 ...handleData?.data,
-                service_type: Array.isArray(service_type) ? service_type: JSON.parse(service_type),
+                service_ids: Array.isArray(service_ids) ? service_ids : JSON.parse(service_ids),
             }))
 
         } else {
-            const service_type = Array.isArray(handleData?.data?.selection)
+            const service_ids = Array.isArray(handleData?.data?.selection)
                 ? handleData?.data?.selection
                 : JSON.parse(handleData?.data?.selection || "[]")
+            console.log(`"["1"]"`, service_ids);
             setFormData((prev) => ({
                 ...prev, ...handleData?.data,
                 team_size: handleData?.data?.company_size,
                 contact_no: handleData?.data?.phone_no,
                 admin_email: handleData?.data?.email,
                 admin_name: handleData?.data?.name,
-                service_type: service_type,
-
+                service_ids: service_ids.length > 0 ? service_ids : ["1"],
             }))
         }
     }, [handleData])
@@ -58,11 +64,12 @@ function RegisterFromDemo({ handleData }) {
     const onTextChange = (e) => {
         const { name, value, type, checked } = e.target;
         if (type === "checkbox") {
+            // console.log(name, value, type, checked);
             setFormData((prev) => ({
                 ...prev,
-                service_type: checked
-                    ? [...prev.service_type, value]
-                    : prev.service_type.filter((s) => s !== value),
+                service_ids: checked
+                    ? [...prev.service_ids, value]
+                    : prev.service_ids.filter((s) => s !== value),
             }));
         } else if (type == "file") {
             setFormData((prev) => ({ ...prev, [name]: e.target.files[0] }));
@@ -73,19 +80,22 @@ function RegisterFromDemo({ handleData }) {
     }
 
     const requiredFields = [
-        "admin_email", "company_email", "company_name",
-        "company_domain", "team_size", "contact_no", "service_type", "status", "plan_id"
+        "admin_email", "company_name",
+        "company_domain", "team_size", "contact_no", "service_ids", "status", "plan_id"
     ]
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("formData", errors);
         if (!validatedFields(formData, requiredFields, setErrors)) return;
         try {
+
             setLoading(true)
             let data = new FormData()
             Object.entries(formData)?.map(([key, value]) => {
-                if (key == "service_type" || key == "current_plan") {
+                if (key == "service_ids" || key == "current_plan") {
                     data.append(key, JSON.stringify(value))
+
                 } else if (key == "company_logo") {
                     if (typeof formData.company_logo == "string") {
                         data.append(key, "")
@@ -124,14 +134,14 @@ function RegisterFromDemo({ handleData }) {
         setFormData({
             admin_name: "",
             admin_email: "",
-            company_email: "",
+            // company_email: "",
             company_name: " ",
             company_domain: "",
             team_size: "",
             contact_no: "",
             demo_status: "",
             config: "",
-            service_type: [],
+            service_ids: [],
             status: "",//active ,inactive
             plan_id: "",
             company_logo: ""
@@ -145,7 +155,7 @@ function RegisterFromDemo({ handleData }) {
             className={`modal fade ${handleData?.isOpen ? "show" : ""} `}
             id="edit_company" >
             <div className="modal-dialog modal-dialog-centered modal-lg">
-                <div className="modal-content">
+                <div className="modal-content shadow">
                     <div className="modal-header">
                         <h4 className="modal-title">{handleData?.type == "edit" ? "Edit" : "Register"} Company</h4>
                         <button type="button"
@@ -209,9 +219,9 @@ function RegisterFromDemo({ handleData }) {
                                         )}
                                     </div>
                                 </div>
-                                <div className="col-md-6">
+                                {/* <div className="col-md-6">
                                     <div className="mb-3">
-                                        <label className="form-label" >Company Email <span className="text-danger"> *</span></label>
+                                        <label className="form-label" >Admin Email <span className="text-danger"> *</span></label>
                                         <input type="text"
                                             value={formData.company_email}
                                             name='company_email'
@@ -221,7 +231,7 @@ function RegisterFromDemo({ handleData }) {
                                             <small className="text-danger pt-1">{validationError(errors, "company_email")}</small>
                                         )}
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="col-md-6">
                                     <div className="mb-3">
                                         <label className="form-label">Email Address</label>
@@ -314,20 +324,37 @@ function RegisterFromDemo({ handleData }) {
                                     <div className="mb-3 ">
                                         <label className="form-label">Service Type</label>
                                         <div className="pass-group d-flex gap-2">
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" name="service_type" value="hrms"
+                                            {
+                                                serviceTypeData?.data?.map((item, index) => {
+                                                    // console.log(formData.service_ids);
+                                                    return (
+                                                        <div className="form-check" key={index}>
+                                                            <input className="form-check-input" type="checkbox"
+                                                                name="service_ids" value={item?.id}
+                                                                disabled={item?.id == "1"}
+                                                                checked={formData.service_ids.includes(String(item?.id))}
+                                                                onChange={(e) => {
+                                                                    onTextChange(e)
+                                                                }} />
+                                                            <label className="form-check-label">{item?.name}</label>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                            {/* <div className="form-check">
+                                                <input className="form-check-input" type="checkbox" name="service_ids" value="1"
                                                     checked={true} onChange={onTextChange} />
                                                 <label className="form-check-label">HRMS</label>
                                             </div>
                                             <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" name="service_type" value="invoice"
-                                                    checked={formData.service_type?.includes("invoice")} onChange={onTextChange} />
+                                                <input className="form-check-input" type="checkbox" name="service_ids" value="Invoice"
+                                                    checked={formData.service_ids?.includes("Invoice")} onChange={onTextChange} />
                                                 <label className="form-check-label">Invoice</label>
-                                            </div>
+                                            </div> */}
 
                                         </div>
-                                        {hasValidationError(errors, "service_type") && (
-                                            <small className="text-danger pt-1">{validationError(errors, "service_type")}</small>
+                                        {hasValidationError(errors, "service_ids") && (
+                                            <small className="text-danger pt-1">{validationError(errors, "service_ids")}</small>
                                         )}
                                     </div>
                                 </div>
@@ -404,31 +431,49 @@ function RegisterFromDemo({ handleData }) {
                                 {
                                     handleData.type == "edit" &&
                                     <>
-                                     <div className="col-md-4">
-                                    <div className="mb-3 ">
-                                        <label className="form-label">Config <span className="text-danger"> *</span></label>
-                                        <div className="pass-group">
+                                        <div className="col-md-4">
+                                            <div className="mb-3 ">
+                                                <label className="form-label">Config <span className="text-danger"> *</span></label>
+                                                <div className="pass-group">
 
-                                            <select value={formData.config}
-                                                name='config'
-                                                onChange={onTextChange} className="custom-select">
-                                                <option>Select</option>
-                                                <option value={"Yes"}>Yes</option>
-                                                <option value={"No"}>No</option>                                                
-                                            </select>
+                                                    <select value={formData.config}
+                                                        name='config'
+                                                        onChange={onTextChange} className="custom-select">
+                                                        <option>Select</option>
+                                                        <option value={"Yes"}>Yes</option>
+                                                        <option value={"No"}>No</option>
+                                                    </select>
+                                                </div>
+                                                {hasValidationError(errors, "config") && (
+                                                    <small className="text-danger pt-1">{validationError(errors, "config")}</small>
+                                                )}
+                                            </div>
                                         </div>
-                                        {hasValidationError(errors, "config") && (
-                                            <small className="text-danger pt-1">{validationError(errors, "config")}</small>
-                                        )}
-                                    </div>
-                                </div>
+                                        <div className="col-md-4">
+                                            <div className="mb-3 ">
+                                                <label className="form-label">Deliver <span className="text-danger"> *</span></label>
+                                                <div className="pass-group">
+
+                                                    <select value={formData.delivered}
+                                                        name='delivered'
+                                                        onChange={onTextChange} className="custom-select">
+                                                        <option>Select Deliver</option>
+                                                        <option value={"Yes"}>Yes</option>
+                                                        <option value={"No"}>No</option>
+                                                    </select>
+                                                </div>
+                                                {hasValidationError(errors, "config") && (
+                                                    <small className="text-danger pt-1">{validationError(errors, "config")}</small>
+                                                )}
+                                            </div>
+                                        </div>
 
                                         <div className="col-md-4">
                                             <div className="mb-3">
                                                 <label className="form-label">Start Date</label>
-                                                <input type="date"  
-                                                 min={new Date().toISOString().split("T")[0]}
-                                                value={formData?.plan_start_date}
+                                                <input type="date"
+                                                    min={new Date().toISOString().split("T")[0]}
+                                                    value={formData?.plan_start_date}
                                                     name='plan_start_date'
                                                     onChange={onTextChange} className="form-control" />
                                                 {hasValidationError(errors, "plan_start_date") && (

@@ -2,6 +2,7 @@
 import Company from "../pages/company/Company";
 import CompanyPlans from "../pages/CompanyPlans";
 import CompanyPlansHistory from "../pages/CompanyPlansHistory";
+import CreateInvoice from "../pages/CreateInvoice";
 import Dashboard from "../pages/dashbord/Dashboard";
 import DemoRequest from "../pages/DemoRequest";
 import Landing from "../pages/Landing";
@@ -51,6 +52,11 @@ const allRoutes = [
     {
         element:<CompanyPlansHistory/>,
         path:"/plans-history",
+        isPrivate:false
+    },
+    {
+        element:<CreateInvoice/>,
+        path:"/create-invoice",
         isPrivate:false
     },
     {

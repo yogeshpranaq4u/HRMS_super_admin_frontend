@@ -15,30 +15,26 @@ function SideBar() {
       iconName: "ti ti-building"
 
     },
-    // {
-    //   title: "Tickets",
-    //   pathname: "/tickets",
-    //   iconName: "ti ti-report"
-    // },
     {
       title: "Demo",
       pathname: "/demo-requests",
-      iconName: "ti ti-message-circle"
+      iconName: "ti ti-screen-share"
     },
     {
       title: "Payments",
-      pathname: "#",
+      // pathname: "#",
+      pathname: "/plans",
       iconName: "ti ti-credit-card-pay"
     },
-    {
-      title: "Plans",
-      pathname: "/plans",
-      iconName: "ti ti-circle-dotted-letter-p"
-    },
+    // {
+    //   title: "Plans",
+    //   pathname: "/plans",
+    //   iconName: "ti ti-circle-dotted-letter-p"
+    // },
     {
       title: "Manage Policy",
       pathname: "/manage-policy",
-      iconName: "ti ti-device-desktop-cog"
+      iconName: "ti ti-shield-cog "
     },
   ]
 

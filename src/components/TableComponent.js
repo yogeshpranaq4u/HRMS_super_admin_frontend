@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { formatDate } from "../helpers/frontend";
 import { useNavigate } from "react-router-dom";
+import { ImagePath } from "../config/apiEndPoints";
 
 const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKeys, onEdit, handleDelete, onView, historyLink }) => {
   const plansData = useSelector((state) => state.commenData.allPlans)
@@ -12,6 +13,7 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
       <table className="table datatable">
         <thead className="thead-light">
           <tr>
+          <th>Sr. No.</th>
             {
               tableHeader?.map((tableHead, index) => {
                 return (
@@ -25,6 +27,7 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
         <tbody>
           {dataSource?.map((item, rowIndex) => (
             <tr key={rowIndex}>
+              <td>{rowIndex+1}</td>
               {dataKeys?.map((key, colIndex) => {
                 if (key == "status") {
                   return (
@@ -35,41 +38,44 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                       </span>
                     </td>
                   )
-                } else if (key == "services") {
+                } else if (key == "services" &&item["services"]) {
+                  console.log("debug 1" ,item[key]);
+
                   return (
                     <td key={colIndex}>
                       <div className="d-flex align-items-center justify-content-between">
                         {
                           item[key]?.map((item, index) => {
+                            // console.log(index == 0  ,  item[key] );
+                            
                             return (
-                              <p key={index} className='p-0 m-0 text-capitalize '>{item?.name},
-                                {index == 0 && item["services"]?.length > 1 && "/"}</p>
+                              <p key={index} className='p-0 m-0 text-capitalize '>{item?.name} 
+                                {index == 0 ? "/":""}</p>
                             )
                           })
                         }
                       </div>
                     </td>
                   )
-                } else if (key == "service_type") {
-                  const validSelection = Array.isArray(item[key])
-                    ? item[key]
-                    : JSON.parse(item[key] || "[]");
-                  const reVlidate = !Array.isArray(validSelection) ? JSON.parse(validSelection || "[]") : validSelection
+                }else if (key == "service_type" && item['current_plan']) {
+                  // console.log("debug 2" ,item?.current_plan?.services);
+                  
                   return (
                     <td key={colIndex}>
                       <div className="d-flex align-items-center justify-content-between">
                         {
-                          reVlidate?.map((item, index) => {
+                          item['current_plan']?.services?.map((item, index) => {
+                            // console.log(index == 0  ,  item['current_plan']?.services?.length );
                             return (
-                              <p key={index} className='p-0 m-0 text-capitalize '>{item}
-                                {index == 0 && reVlidate?.length > 1 && "/"}</p>
+                              <p key={index} className='p-0 m-0 text-capitalize '>{item?.name}
+                                {index == 0 ?  "/":""}</p>
                             )
                           })
                         }
                       </div>
                     </td>
                   )
-                } else if (key == "plan_id") {
+                }  else if (key == "plan_id") {
                   const findPlan = plansData?.data?.find((planItem) => { return planItem?.id == item[key] }) || {}
                   return (
                     <td key={colIndex}>
@@ -77,10 +83,6 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                         <p className="mb-0 me-2">
                           {findPlan?.name}-({findPlan?.duration})
                         </p>
-                        {
-                          item[key] < 2 &&
-                          <a className="badge badge-purple badge-xs" >Upgrade</a>
-                        }
                       </div>
                     </td>
                   )
@@ -96,10 +98,21 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                     </td>
                   )
                 } else {
+                  // console.log(item?.company_logo);
                   return (
                     <td key={colIndex}>
+                      {["price", "total_price"]?.includes(key) && "₹"}
                       {
-                        item[key] !== undefined && item[key] !== '' ? item[key] : '-'
+                        key == "company_name" ?
+                          <div className="d-flex align-items-center gap-2">
+                            <span className="avatar ">
+                              <img src={item["company_logo"] ? ImagePath + item["company_logo"] : ""} className="img-fluid rounded-circle border " alt="logo" />
+                            </span>
+                            {
+                              item[key] !== undefined && item[key] !== '' ? item[key] : '-'
+                            }
+                          </div> :
+                          item[key] !== undefined && item[key] !== '' ? item[key] : '-'
                       }
                     </td>
                   )
@@ -136,7 +149,7 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                     pdfDownload &&
                     <a href="#" className="me-2"
                       onClick={() => { pdfDownload(item, "pdfDownload") }}
-                      title='View Invoice'>
+                      title='View download'>
                       <i className="ti ti-download"></i>
                     </a>
                   }

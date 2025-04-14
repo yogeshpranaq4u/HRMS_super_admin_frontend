@@ -60,14 +60,14 @@ export  const validatedFields = (formdata , inputArray ,setErrors) => {
     let positionFocus = "";
     inputArray?.map((inputname)=>{
         var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        if(inputname == "company_email" || inputname == "admin_email" ){
+        if( inputname == "admin_email" ){
             // console.log(regex.test(formdata["email"]) , "<<regex.test(formdata]");
-            if (!formdata["company_email"] || !formdata["company_email"].trim()) {
-                newError["company_email"] = "company email address required ";
+            if (!formdata["admin_email"] || !formdata["admin_email"].trim()) {
+                newError["admin_email"] = "Admin email address required ";
                 positionFocus = positionFocus || "email"
-            }else if(!regex.test(formdata["company_email"])){
-                newError["company_email"] = "Enter a valid email ";
-                positionFocus = positionFocus || "company_email"
+            }else if(!regex.test(formdata["admin_email"])){
+                newError["admin_email"] = "Enter a valid email ";
+                positionFocus = positionFocus || "admin_email"
             }
         }else if(inputname == "phone_no" || inputname == "contact_no"){
             var regex = /^[6-9]\d{9}$/;
@@ -86,7 +86,7 @@ export  const validatedFields = (formdata , inputArray ,setErrors) => {
                 positionFocus = positionFocus || inputname;
             }
         } else{
-            // console.log(formdata ,inputname ,formdata[inputname] );
+            console.log(formdata ,inputname ,formdata[inputname] );
             if (!formdata[inputname]) {
                 newError[inputname] = "Please fill Required field";
                 positionFocus = positionFocus || inputname
@@ -103,7 +103,7 @@ export  const validatedFields = (formdata , inputArray ,setErrors) => {
 }
 
 
-  export  const formatCurrency = (number, currencySymbol = 'Rs.') => {
+  export  const formatCurrency = (number, currencySymbol = '₹') => {
     // Check if the input is a valid number
     if (isNaN(number) || number === undefined || number === 0) { return ''; }
     // Convert the number to a string and split it into integer and decimal parts

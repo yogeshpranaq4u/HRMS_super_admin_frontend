@@ -198,7 +198,7 @@ const Company = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Total Companies
                         </p>
-                        <h4>{statsData?.total || 950}</h4>
+                        <h4>{statsData?.total || 0}</h4>
                       </div>
                     </div>
                   </div>
@@ -215,7 +215,7 @@ const Company = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Active Companies
                         </p>
-                        <h4>{statsData?.active || ""}</h4>
+                        <h4>{statsData?.active || "0"}</h4>
                       </div>
                     </div>
                   </div>
@@ -233,7 +233,7 @@ const Company = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Inactive Companies
                         </p>
-                        <h4>{statsData?.inactive || 30}</h4>
+                        <h4>{statsData?.inactive || 0}</h4>
                       </div>
                     </div>
                   </div>
@@ -251,7 +251,7 @@ const Company = () => {
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Hold
                         </p>
-                        <h4>{statsData?.hold || 180}</h4>
+                        <h4>{statsData?.hold || 0}</h4>
                       </div>
                     </div>
                   </div>
@@ -309,7 +309,19 @@ const Company = () => {
                           }
                         </select>
                       </div>
-
+                      {
+                        (filters.sort || filters?.status||filters?.plan_id) &&
+                        <div className="dropdown ml-1">
+                          <button onClick={() => {
+                            setFilters((prev) => ({
+                              ...prev,
+                              plan_id: "",
+                              status: "",
+                              sort: "",
+                            }))
+                          }} className='btn btn-secondary py-1' > Clear</button>
+                        </div>
+                      }
                     </div>
                   </div>
                   <div className="row align-items-center px-3">
@@ -357,7 +369,7 @@ const Company = () => {
                         dataKeys={dataKeys || []}
                         onEdit={handleActions}
                         onView={handleActions}
-                        // handleDelete={handleActions}
+                      // handleDelete={handleActions}
                       />
                     </div>
                   </div>

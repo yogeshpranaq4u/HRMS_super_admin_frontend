@@ -144,7 +144,7 @@ function ViewPolices({ handleData }) {
             style={handleData?.isOpen ? { display: "block" } : {}}
             className={`modal fade ${handleData?.isOpen ? "show" : ""} `}
             id="edit_company" >
-            <div className="modal-dialog modal-dialog-centered modal-lg">
+            <div className="modal-dialog modal-dialog-centered shadow modal-lg">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h4 className="modal-title">{handleData?.type == "edit" ? "Edit Policy" : "Add New Policy"} </h4>
