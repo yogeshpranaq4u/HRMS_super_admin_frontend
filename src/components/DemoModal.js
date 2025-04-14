@@ -12,7 +12,7 @@ const DemoRequestModal = ({ show, handleClose }) => {
     company_name: "",
     company_domain:"",
     company_size: "",
-    selection: [],
+    selection: ["1"],
   });
 
   // Error state
@@ -167,13 +167,13 @@ const DemoRequestModal = ({ show, handleClose }) => {
               <div className="mb-3">
                 <label className="form-label">selection</label>
                 <div className="form-check">
-                  <input className="form-check-input" type="checkbox" name="selection" value="HRMS"
-                    checked={formData.selection.includes("HRMS")} onChange={handleChange} />
+                  <input className="form-check-input" type="checkbox" name="selection" value="1"
+                    checked={formData.selection.includes("1")} onChange={handleChange} />
                   <label className="form-check-label">HRMS</label>
                 </div>
                 <div className="form-check">
-                  <input className="form-check-input" type="checkbox" name="selection" value="Invoice"
-                    checked={formData.selection.includes("Invoice")} onChange={handleChange} />
+                  <input className="form-check-input" type="checkbox" name="selection" value="2"
+                    checked={formData.selection.includes("2")} onChange={handleChange} />
                   <label className="form-check-label">Invoice</label>
                 </div>
               </div>

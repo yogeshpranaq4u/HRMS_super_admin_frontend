@@ -110,7 +110,7 @@ const BookingScheduler = () => {
       <div className="container mt-5 text-center book-appointment">
         <div className="py-4">
           <h2 className="m-0 pt-3">Schedule A Call With Us</h2>
-          <p className="py-2">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+          <p className="py-2">Ready to simplify HR? Book your free demo now!</p>
         </div>
         <div className="row main-content justify-content-center">
           <div className="calender-container">
