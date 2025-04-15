@@ -80,7 +80,7 @@ const Login = () => {
             setOpen((pre) => ({
               ...pre,
               isOpen: true,
-              message: error.response.data?.message || error.message,
+              message: error?.response?.data?.message || error.message,
               errortype: "error",
             }));
             // toast.error(error.response.data?.message || error.message)

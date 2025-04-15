@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./modals.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-// import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Api, BaseUrl } from "../config/apiEndPoints";
 
 const OtpModal = ({ data }) => {
     const [otp, setOtp] = useState("");
-    // const dispatch = useDispatch();
     const navigate = useNavigate();
     const [timeLeft, setTimeLeft] = useState(120);
     const [loading, setLoading] = useState(false);
@@ -112,7 +110,7 @@ const OtpModal = ({ data }) => {
                     autoClose: 1500,
                 });
                 // navigate("/");
-                window.location = "/"
+                window.location = "/superadmin"
             }
         } catch (error) {
             setLoading(false);

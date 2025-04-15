@@ -6,7 +6,6 @@ import CompanyPlansHistory from "../pages/CompanyPlansHistory";
 import CreateInvoice from "../pages/CreateInvoice";
 import Dashboard from "../pages/dashbord/Dashboard";
 import DemoRequest from "../pages/DemoRequest";
-import Landing from "../pages/Landing";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import PolicyManage from "../pages/PolicyManage";
@@ -17,58 +16,69 @@ const allRoutes = [
     {
         element:<Login/>,
         path:"/superadmin/login",
-        isPrivate:false
+        isPrivate:false,
+        isSuperAdmin:true
     },
     {
         element:<Dashboard/>,
         path:"/superadmin/",
-        isPrivate:true
+        isPrivate:true,
+        isSuperAdmin:true
     },
     {
         element:<Company/>,
         path:"/superadmin/company",
-        isPrivate:true
+        isPrivate:true,
+        isSuperAdmin:true
     },
     {
         element:<DemoRequest/>,
         path:"/superadmin/demo-requests",
-        isPrivate:true
+        isPrivate:true,
+        isSuperAdmin:true
     },
    
     {
         element:<Tickets/>,
         path:"/superadmin/tickets",
-        isPrivate:true
+        isPrivate:true,
+        isSuperAdmin:true
     },
     {
         element:<PolicyManage/>,
         path:"/superadmin/manage-policy",
-        isPrivate:false
+        isPrivate:false,
+        isSuperAdmin:true
     },
     {
         element:<CompanyPlans/>,
         path:"/superadmin/plans",
-        isPrivate:false
+        isPrivate:false,
+        isSuperAdmin:true
     },
     {
         element:<CompanyPlansHistory/>,
         path:"/superadmin/plans-history",
-        isPrivate:false
+        isPrivate:false,
+        isSuperAdmin:true
     },
     {
         element:<CreateInvoice/>,
         path:"/superadmin/create-invoice",
-        isPrivate:false
+        isPrivate:false,
+        isSuperAdmin:true
     },
     {
         element:<AdminsList/>,
         path:"/superadmin/admin-list",
-        isPrivate:false
+        isPrivate:false,
+        isSuperAdmin:true
     },
     {
         element:<NotFound/>,
         path:"*",
-        isPrivate:false
+        isPrivate:false,
+        // isSuperAdmin:true
     },
     
 ]

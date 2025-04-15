@@ -1,11 +1,13 @@
 import React from 'react'
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 function PrivateRoute({ element }) {
     const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
-    console.log("details" ,details);
+    const {pathname} = useLocation()
+    const isSuperAdmin = pathname?.includes("/superadmin/") && details.user.role?.includes("SuperAdmin")
+    // console.log("details" ,details ,isSuperAdmin, details.user.role);
     
-    return details.token ? element : <Navigate to="/login" />;
+    return details.token && isSuperAdmin ? element : <Navigate to="/login" />;
 };
 
 export default PrivateRoute
