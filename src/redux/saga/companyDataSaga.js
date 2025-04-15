@@ -52,7 +52,7 @@ export function* getCompanyAction(action) {
       }
     } else {
       sessionStorage.removeItem("userDetails");
-      window.location.href = "/login";
+      window.location.href = "superadmin/login";
     }
   } catch (error) {
     yield put({ type: types.GET_COMPANIES_FAILED, error: error.response });

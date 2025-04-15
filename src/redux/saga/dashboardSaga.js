@@ -40,7 +40,7 @@ export function* getDashDataAction(action) {
       }
     } else {
       sessionStorage.removeItem("userDetails");
-      window.location.href = "/login";
+      window.location.href = "superadmin/login";
     }
   } catch (error) {
     yield put({ type: types.GET_DASHBOARDATA_FAILED, error: error.response });
@@ -84,7 +84,7 @@ export function* getPurchaseSummaryAction(action) {
       }
     } else {
       sessionStorage.removeItem("userDetails");
-      window.location.href = "/login";
+      window.location.href = "superadmin/login";
     }
   } catch (error) {
     yield put({
@@ -134,7 +134,7 @@ export function* getPendingDemoRequestAction(action) {
       }
     } else {
       sessionStorage.removeItem("userDetails");
-      window.location.href = "/login";
+      window.location.href = "superadmin/login";
     }
   } catch (error) {
     yield put({
@@ -182,7 +182,7 @@ export function* getRecentRegistrationAction(action) {
       }
     } else {
       sessionStorage.removeItem("userDetails");
-      window.location.href = "/login";
+      window.location.href = "superadmin/login";
     }
   } catch (error) {
     yield put({
@@ -232,7 +232,7 @@ export function* getPlantExpireDataAction(action) {
       }
     } else {
       sessionStorage.removeItem("userDetails");
-      window.location.href = "/login";
+      window.location.href = "superadmin/login";
     }
   } catch (error) {
     yield put({
@@ -281,7 +281,7 @@ export function* getRecentTransactionAction(action) {
       }
     } else {
       sessionStorage.removeItem("userDetails");
-      window.location.href = "/login";
+      window.location.href = "superadmin/login";
     }
   } catch (error) {
     yield put({

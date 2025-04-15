@@ -1,4 +1,6 @@
 
+
+import AdminLogin from "../pages/admin/page/AdminLogin";
 import Company from "../pages/company/Company";
 import CompanyPlans from "../pages/CompanyPlans";
 import Dashboard from "../pages/dashbord/Dashboard";
@@ -12,8 +14,13 @@ import Tickets from "../pages/Tickets";
 
 const allRoutes = [
     {
-        element:<Login/>,
+        element:<AdminLogin/>,
         path:"/login",
+        isPrivate:false
+    },
+    {
+        element:<Login/>,
+        path:"superadmin/login",
         isPrivate:false
     },
     {

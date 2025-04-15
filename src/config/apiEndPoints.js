@@ -5,7 +5,7 @@ export const ImagePath =
   "https://development-hrms-services-2.cvinfotechserver.com/public/"; //New Live Server
 
 export const Api = {
-  //Admin Api End   Points
+  //SuPER Admin Api End   Points
   LOGIN: "/super-admin/login", 
   DEMOSTATS: "super-admin/request-demo/stats", 
   COMPANIESSTATS: "super-admin/companies/stats", 
@@ -23,4 +23,7 @@ export const Api = {
   DASHBOARD_RECENT_REGISTRATIONS: "super-admin/dashboard/recent-registrations",
   DASHBOARD_PLAN_EXPIRE: "super-admin/dashboard/near-expire-expired-companies",
   DASHBOARD_TRANSACTION: "super-admin/dashboard/get-recent-transactions",//done
+
+  //Admin-Employee Api End   Points
+  ADMINLOGIN: "login_hrms",
 };

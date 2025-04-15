@@ -181,7 +181,7 @@ function Header({handleTogel}) {
                                             <a className="dropdown-item d-inline-flex align-items-center p-0 py-2" 
                                             onClick={()=>{
                                                 sessionStorage.clear()
-                                                window.location = "/login"                                            }}
+                                                window.location = "superadmin/login"                                            }}
                                             ><i className="ti ti-login me-2"></i>Logout</a>
                                         </div>
                                     </div>
