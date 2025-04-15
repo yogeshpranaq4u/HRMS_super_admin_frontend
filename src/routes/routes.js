@@ -10,6 +10,7 @@ import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import PolicyManage from "../pages/PolicyManage";
 import Tickets from "../pages/Tickets";
+import Unauthorized from "../pages/Unauthorized";
 
 
 const allRoutes = [
@@ -17,6 +18,12 @@ const allRoutes = [
         element:<Login/>,
         path:"/superadmin/login",
         isPrivate:false,
+        isSuperAdmin:true
+    },
+    {
+        element:<Dashboard/>,
+        path:"/admin/test",
+        isPrivate:true,
         isSuperAdmin:true
     },
     {
@@ -77,6 +84,12 @@ const allRoutes = [
     {
         element:<NotFound/>,
         path:"*",
+        isPrivate:false,
+        // isSuperAdmin:true
+    },
+    {
+        element:<Unauthorized/>,
+        path:"/unauthorized",
         isPrivate:false,
         // isSuperAdmin:true
     },

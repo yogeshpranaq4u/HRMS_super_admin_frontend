@@ -40,39 +40,32 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                     </td>
                   )
                 } else if (key == "services" &&item["services"]) {
-                  // console.log("debug 1" ,item[key]);
-
                   return (
                     <td key={colIndex}>
                       <div className="d-flex align-items-center justify-content-between">
+                      <p className='p-0 m-0 text-capitalize '>
                         {
                           item[key]?.map((item, index) => {
-                            // console.log(index == 0  ,  item[key] );
-                            return (
-                              <p key={index} className='p-0 m-0 text-capitalize '>{item?.name} 
-                                {index == 0 ? "/":""}</p>
-                            )
-                          })
+                            return item?.name
+                          })?.join("/")
                         }
+                        </p>
 
                       </div>
                     </td>
                   )
-                }else if (key == "service_type" && item['current_plan']) {
-                  // console.log("debug 2" ,item?.current_plan?.services);
-                  
+                }else if (key == "service_type" && item['current_plan']) {                  
                   return (
                     <td key={colIndex}>
                       <div className="d-flex align-items-center justify-content-between">
+                      <p className='p-0 m-0 text-capitalize '>
                         {
                           item['current_plan']?.services?.map((item, index) => {
                             // console.log(index == 0  ,  item['current_plan']?.services?.length );
-                            return (
-                              <p key={index} className='p-0 m-0 text-capitalize '>{item?.name}
-                                {index == 0 ?  "/":""}</p>
-                            )
-                          })
+                            return item?.name
+                          }).join("/")
                         }
+                        </p>
                       </div>
                     </td>
                   )

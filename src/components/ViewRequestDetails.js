@@ -58,9 +58,9 @@ function ViewRequestDetails({ handleData }) {
                                 <strong>Service Type</strong>
                                 <p className='text-capitalize'>
                                     {
-                                        service_type?.map((item, i) => {
-                                            return item + (i == 0 && service_type?.length > 1 ? "/" : "")
-                                        })
+                                        service_type?.map((item, index) => {
+                                            return item?.name
+                                        })?.join("/")
                                     }
                                 </p>
                             </div>
@@ -75,7 +75,7 @@ function ViewRequestDetails({ handleData }) {
                             <div className="col-md-12">
                                 <strong>Meeting Time</strong>
                                 <p>
-                                    {d?.demo_date ? moment(d?.demo_date || "").format("DD/MMM/YYYY")+"," : "NA"} {d?.demo_time || ""}
+                                    {d?.demo_date ? moment(d?.demo_date || "").format("DD/MMM/YYYY") + "," : "NA"} {d?.demo_time || ""}
                                 </p>
                             </div>
                         </div>
