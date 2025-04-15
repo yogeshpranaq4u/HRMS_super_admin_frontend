@@ -105,26 +105,31 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                   // console.log(item?.company_logo);
                   return (
                     <td key={colIndex}>
-                      {["price", "total_price"]?.includes(key) && "₹"}
                       {
-                        key == "company_name" ?
-                          <div className="d-flex align-items-center gap-2">
-                            <span className="avatar ">
-                              <img src={item["company_logo"] ? ImagePath + item["company_logo"] : ""} className="img-fluid rounded-circle border " alt="logo" />
-                            </span>
-                            {
+                        key == "invoice" ? item?.invoice?.invoice_no :
+                        <React.Fragment>
+
+                          {["price", "total_price"]?.includes(key) && "₹"}
+                          {
+                            key == "company_name" ?
+                              <div className="d-flex align-items-center gap-2">
+                                <span className="avatar ">
+                                  <img src={item["company_logo"] ? ImagePath + item["company_logo"] : "/assets/img/user.png"} className="img-fluid rounded-circle border " alt="logo" />
+                                </span>
+                                {
+                                  item[key] !== undefined && item[key] !== '' ? item[key] : '-'
+                                }
+                              </div> :
                               item[key] !== undefined && item[key] !== '' ? item[key] : '-'
+                          }
+                           {
+                            key == "plan_name" &&  item?.plan_name?.toLowerCase() == "basic" &&
+                                <a onClick={()=>{
+                                  pdfView(item, "upgrade")
+                                }} className="ml-2 badge badge-purple badge-xs" >Upgrade</a>
                             }
-                          </div> :
-                          item[key] !== undefined && item[key] !== '' ? item[key] : '-'
+                        </React.Fragment>
                       }
-                       {
-                        key == "plan_name" &&  item?.plan_name?.toLowerCase() == "basic" &&
-                            <a onClick={()=>{
-                              pdfView(item, "upgrade")
-                            }} className="pl-2 badge badge-purple badge-xs" >Upgrade</a>
-                          
-                        }
                     </td>
                   )
                 }
@@ -134,43 +139,43 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                 <div className="action-icon d-inline-flex">
                   {
                     historyLink &&
-                    <a onClick={() => {
+                    <div onClick={() => {
                       navigate(historyLink, { state: { data: item["id"] } })
                     }} className="me-2" title='view history' >
                       <i className="ti ti-history"></i>
-                    </a>
+                    </div>
                   }
                   {
                     onView &&
-                    <a href="#" className="me-2"
+                    <div className="me-2"
                       onClick={() => { onView(item, "view") }}
                       title='View Details'>
                       <i className="ti ti-eye"></i>
-                    </a>
+                    </div>
                   }
                   {
                     pdfView &&
-                    <a href="#" className="me-2"
+                    <div className="me-2"
                       onClick={() => { pdfView(item, "pdfView") }}
                       title='View Invoice'>
                       <i className="ti ti-file-text"></i>
-                    </a>
+                    </div>
                   }
                   {
                     pdfDownload &&
-                    <a href="#" className="me-2"
+                    <div className="me-2"
                       onClick={() => { pdfDownload(item, "pdfDownload") }}
                       title='View download'>
                       <i className="ti ti-download"></i>
-                    </a>
+                    </div>
                   }
                   {
                     onEdit &&
-                    <a href="#" className="me-2"
+                    <div className="me-2"
                       onClick={() => { onEdit(item, "edit") }}
                       title='Register' >
                       <i className="ti ti-user-edit"></i>
-                    </a>
+                    </div>
                   }
                   {/* <a href="#" className="me-2" title='Edit' ><i className="ti ti-edit"></i></a> */}
                   {

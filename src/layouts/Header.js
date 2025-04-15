@@ -27,7 +27,7 @@ function Header({handleTogel}) {
                                 <a  className="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
                                     <span className="avatar avatar-sm online">
                                     <i className='ti ti-user fs-20 text-dark rounded-full border' />
-                                        {/* <img src="assets/img/profiles/avatar-12.jpg" alt="Img" className="img-fluid rounded-circle" /> */}
+                                        {/* <img src="/assets/img/profiles/avatar-12.jpg" alt="Img" className="img-fluid rounded-circle" /> */}
                                     </span>
                                 </a>
                                 <div className="dropdown-menu shadow-none">
@@ -36,7 +36,7 @@ function Header({handleTogel}) {
                                             <div className="d-flex align-items-center">
                                                 <span className="avatar avatar-lg me-2 avatar-rounded">
                                                     <i className='ti ti-user fs-26' />
-                                                    {/* <img src="assets/img/profiles/avatar-12.jpg" alt="img" /> */}
+                                                    {/* <img src="/assets/img/profiles/avatar-12.jpg" alt="img" /> */}
                                                 </span>
                                                 <div>
                                                     <h5 className="mb-0">{details?.user?.name}</h5>

@@ -12,6 +12,7 @@ import Pagination from "../../components/Pagination";
 import CompanyDetails from "../../components/CompanyDetails";
 import { Api } from "../../config/apiEndPoints";
 import { callApi } from "../../config/apiCall";
+import { getServiceType } from "../../redux/actions/otherActions";
 
 const Company = () => {
   const dispatch = useDispatch()
@@ -33,6 +34,7 @@ const Company = () => {
   useEffect(() => {
     dispatch(getAllPlans())
     fetchStats()
+     dispatch(getServiceType())
   }, [])
   const tableHeader = [
     "Company Name",

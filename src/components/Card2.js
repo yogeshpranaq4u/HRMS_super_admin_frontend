@@ -78,7 +78,7 @@ const Card2 = ({ data }) => {
                   <div className="d-flex align-items-center mb-2">
                     <a className="avatar avatar-md bg-gray-100 rounded-circle flex-shrink-0">
                       <img
-                        src="assets/img/company/company-02.svg"
+                        src="/assets/img/company/company-02.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img"
                       />
@@ -110,7 +110,7 @@ const Card2 = ({ data }) => {
                   <div className="d-flex align-items-center mb-2">
                     <a className="avatar avatar-md bg-gray-100 rounded-circle flex-shrink-0">
                       <img
-                        src="assets/img/company/company-02.svg"
+                        src="/assets/img/company/company-02.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img"
                       />
@@ -151,7 +151,7 @@ const Card2 = ({ data }) => {
                   <div className="d-flex align-items-center mb-2">
                     <a className="avatar avatar-md bg-gray-100 rounded-circle flex-shrink-0">
                       <img
-                        src="assets/img/company/company-02.svg"
+                        src="/assets/img/company/company-02.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img"
                       />
@@ -189,7 +189,7 @@ const Card2 = ({ data }) => {
                     <div className="d-flex align-items-center mb-2">
                       <a className="avatar avatar-md bg-gray-100 rounded-circle flex-shrink-0">
                         <img
-                          src="assets/img/company/company-02.svg"
+                          src="/assets/img/company/company-02.svg"
                           className="img-fluid w-auto h-auto"
                           alt="img"
                         />
@@ -218,7 +218,6 @@ const Card2 = ({ data }) => {
             )
           ) : (
             <>
-              {console.log("planExpireData", dataToShow)}
               {dataToShow?.length === 0 ? (
                 <p>No companies found in this category.</p>
               ) : (
@@ -230,7 +229,7 @@ const Card2 = ({ data }) => {
                     <div className="d-flex align-items-center mb-2">
                       <a className="avatar avatar-md bg-gray-100 rounded-circle flex-shrink-0">
                         <img
-                          src="assets/img/company/company-02.svg"
+                          src="/assets/img/company/company-02.svg"
                           className="img-fluid w-auto h-auto"
                           alt="img"
                         />

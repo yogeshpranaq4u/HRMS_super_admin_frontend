@@ -10,7 +10,7 @@ function Landing() {
                             <div class="main-menu-wrapper">
                                 <div class="menu-header">
                                     <a href="index.html" class="menu-logo">
-                                        <img src="assets/img/logo.png" class="img-fluid" alt="Logo" />
+                                        <img src="/assets/img/logo.png" class="img-fluid" alt="Logo" />
                                     </a>
                                     <a id="menu_close" class="menu-close" href="javascript:void(0);">
                                         <i class="fas fa-times"></i>
@@ -46,7 +46,7 @@ function Landing() {
                                             </span>
                                         </a>
                                         <div class="site-brand">
-                                            <a href="index.html" class="site-branding-logo"><img src="assets/img/logo.png" alt="logo" class="img-fluid" /></a>
+                                            <a href="index.html" class="site-branding-logo"><img src="/assets/img/logo.png" alt="logo" class="img-fluid" /></a>
                                         </div>
                                     </div>
                                 </div>
@@ -96,7 +96,7 @@ function Landing() {
                                 </div>
                                 <div class="col-lg-7 col-sm-7 col-12">
                                     <div class="main-sliders">
-                                        <img src="assets/img/home3.png" alt="main-slider" />
+                                        <img src="/assets/img/home3.png" alt="main-slider" />
                                     </div>
                                 </div>
                             </div>

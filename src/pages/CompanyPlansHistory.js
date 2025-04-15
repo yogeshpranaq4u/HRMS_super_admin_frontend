@@ -49,7 +49,7 @@ const CompanyPlansHistory = () => {
   ];
 
   const dataKeys = [
-    "id",          // Company Name
+    "invoice",          // Company Name
     "services",          // Service Type (array stored as string)
     "plan_name",
     "start_date",
@@ -67,15 +67,29 @@ const CompanyPlansHistory = () => {
     }))
   }
   const handleActions = (data, type) => {
-    setModalData((prev) => ({
-      ...prev,
-      data: data,
-      type: type,
-      isOpen: true,
-      onConfirm: "",
-      onClose: onClose
-    }))
-
+    // console.log(data, type);    
+    if(type == "pdfDownload"){
+      const url =`${ImagePath}${data?.invoice?.invoice_url}`;
+    if (url) {
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `invoice${data?.end_date}.pdf`); // You can customize the filename
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      console.error("Invoice URL not found.");
+    }
+    }else{
+      setModalData((prev) => ({
+        ...prev,
+        data: data,
+        type: type,
+        isOpen: true,
+        onConfirm: "",
+        onClose: onClose
+      }))
+    }
   }
 
   const handlePageChange = (page) => {
@@ -219,20 +233,7 @@ const CompanyPlansHistory = () => {
         }} />
       }
       {modalData.type == "pdfView" && modalData.isOpen &&
-        <InvoicePreview handleData={modalData} invoiceData={{
-          invoiceNo: 'INV-001',
-          invoiceDate: '2025-04-14',
-          dueDate: '2025-05-14',
-          placeOfSupply: 'Haryana (06)',
-          customer: {
-            name: 'Yogesh Rana',
-            company: 'Yogesh Pvt Ltd',
-            address: 'New Delhi 110059 Delhi',
-            email: 'sadqrfdv@kk.com'
-          },
-          items: [{ description: 'Mobile', qty: 1, rate: 599 }],
-          signatureName: 'Akash Singh'
-        }} /> }
+        <InvoicePreview handleData={modalData} companyData={planHistoryData?.data} /> }
 
     </React.Fragment>
   );

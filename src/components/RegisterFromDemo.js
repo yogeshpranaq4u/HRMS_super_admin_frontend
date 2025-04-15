@@ -30,16 +30,15 @@ function RegisterFromDemo({ handleData }) {
     })
     const [isloading, setLoading] = useState(false)
 
-    useEffect(() => {
-        dispatch(getServiceType())
-    }, [])
-    // console.log("serviceTypeData", serviceTypeData);
-    useEffect(() => {
+     useEffect(() => {
         console.log(handleData);
         if (handleData?.type == "edit") {
-            const service_ids = Array.isArray(handleData?.data?.service_ids)
-                ? handleData?.data?.service_ids
-                : JSON.parse(handleData?.data?.service_ids || "[]")
+            const ids = handleData?.data?.current_plan?.services?.map((item)=>item?.id.toString())
+            // console.log("services ids " , ids);
+            const service_ids = ids.length > 0 ?ids :["1"]
+            // Array.isArray(handleData?.data?.service_ids)
+            //     ? handleData?.data?.service_ids
+            //     : JSON.parse(handleData?.data?.service_ids || "[]")
             setFormData((prev) => ({
                 ...handleData?.data,
                 service_ids: Array.isArray(service_ids) ? service_ids : JSON.parse(service_ids),

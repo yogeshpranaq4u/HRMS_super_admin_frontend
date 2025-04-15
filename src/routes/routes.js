@@ -1,4 +1,5 @@
 
+import AdminsList from "../pages/AdminsList";
 import Company from "../pages/company/Company";
 import CompanyPlans from "../pages/CompanyPlans";
 import CompanyPlansHistory from "../pages/CompanyPlansHistory";
@@ -15,48 +16,53 @@ import Tickets from "../pages/Tickets";
 const allRoutes = [
     {
         element:<Login/>,
-        path:"/login",
+        path:"/superadmin/login",
         isPrivate:false
     },
     {
         element:<Dashboard/>,
-        path:"/",
+        path:"/superadmin/",
         isPrivate:true
     },
     {
         element:<Company/>,
-        path:"/company",
+        path:"/superadmin/company",
         isPrivate:true
     },
     {
         element:<DemoRequest/>,
-        path:"/demo-requests",
+        path:"/superadmin/demo-requests",
         isPrivate:true
     },
    
     {
         element:<Tickets/>,
-        path:"/tickets",
+        path:"/superadmin/tickets",
         isPrivate:true
     },
     {
         element:<PolicyManage/>,
-        path:"/manage-policy",
+        path:"/superadmin/manage-policy",
         isPrivate:false
     },
     {
         element:<CompanyPlans/>,
-        path:"/plans",
+        path:"/superadmin/plans",
         isPrivate:false
     },
     {
         element:<CompanyPlansHistory/>,
-        path:"/plans-history",
+        path:"/superadmin/plans-history",
         isPrivate:false
     },
     {
         element:<CreateInvoice/>,
-        path:"/create-invoice",
+        path:"/superadmin/create-invoice",
+        isPrivate:false
+    },
+    {
+        element:<AdminsList/>,
+        path:"/superadmin/admin-list",
         isPrivate:false
     },
     {

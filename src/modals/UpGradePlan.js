@@ -25,16 +25,13 @@ function UpGradePlan({ handleData }) {
     const [isloading, setLoading] = useState(false)
 
     useEffect(() => {
-        dispatch(getServiceType())
-        dispatch(getCompanies({
-            // limit: 10,
-            // page: 1,
-            only_without_plan: true
-        }))
+        if (handleData?.type == "addPlan"){
+            dispatch(getCompanies({only_without_plan: true}))
+        }
     }, []
     )
 
-    console.log("upgrade" ,handleData);
+    // console.log("upgrade" ,handleData);
     
 
     useEffect(() => {
@@ -98,7 +95,10 @@ function UpGradePlan({ handleData }) {
             let data = new FormData()
             data.append("service_ids", JSON.stringify(formData.service_ids))
             data.append("plan_id", formData.plan_id)
-            const apiEndPoint = formData?.company_id? `super-admin/companies/${formData?.company_id}/plans`: `${handleData?.type == "renew" ? `super-admin/companies/${handleData.data.id}/plans` : ""}`
+            const apiEndPoint = formData?.company_id? `super-admin/companies/${formData?.company_id}/plans`: 
+            `${(handleData?.type == "renew" || handleData?.type == "upgrade") ? `super-admin/companies/${handleData.data.id}/plans` : 
+                ""
+            }`
             const response = await callApi(apiEndPoint, "POST", data, details?.token)
             toast.success(response.data?.message || "Form submitted successfully!");
             // console.log("response", response);

@@ -4,15 +4,18 @@ import BreadCrums from "../components/BreadCrums";
 import TableComponent from "../components/TableComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPlans, getCompanies } from "../redux/actions/dashBoardActions";
+import RegisterFromDemo from "../components/RegisterFromDemo";
+import ConfirmDelete from "../modals/ConfirmDelete";
 import Loader from "../components/Loader";
 import Pagination from "../components/Pagination";
+import CompanyDetails from "../components/CompanyDetails";
 import UpGradePlan from "../modals/UpGradePlan";
+import { getServiceType } from "../redux/actions/otherActions";
 import { Api } from "../config/apiEndPoints";
 import { callApi } from "../config/apiCall";
 import InvoicePreview from "../modals/InvoicePreview";
-import { getServiceType } from "../redux/actions/otherActions";
 
-const CompanyPlans = () => {
+const AdminsList = () => {
   const dispatch = useDispatch()
   const [modalData, setModalData] = useState({ isOpen: false, data: "" })
   const isLoading = useSelector((state) => state.commenData.loading)
@@ -20,6 +23,7 @@ const CompanyPlans = () => {
   const [searchText, setSearchText] = useState("")
   const [pageStats, setPageStats] = useState()
   const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
+
   const [filters, setFilters] = useState({
     limit: 10,
     page: 1,
@@ -32,23 +36,20 @@ const CompanyPlans = () => {
   const formateForPlans = companiesData?.data?.map((item) => {
     const { company_name, company_logo,
       current_plan, service_type, id, ...rest } = item
-      // console.log("item" ,item);
     return {
       company_name,
       company_logo,
       service_type,
-      ...current_plan,
       id,
+      ...current_plan
     }
   })
   useEffect(() => {
     dispatch(getCompanies(filters))
-
   }, [filters])
   useEffect(() => {
     dispatch(getAllPlans())
     fetchStats()
-    dispatch(getServiceType())
   }, [])
   const tableHeader = [
     "Company Name",
@@ -79,8 +80,6 @@ const CompanyPlans = () => {
     }))
   }
   const handleActions = (data, type) => {
-    // console.log(data, type);
-    
     setModalData((prev) => ({
       ...prev,
       data: data,
@@ -120,6 +119,10 @@ const CompanyPlans = () => {
     }))
   }
 
+  // console.log("pageStats" ,pageStats);
+  
+
+
   return (
     <React.Fragment>
       <MainLayout>
@@ -128,11 +131,11 @@ const CompanyPlans = () => {
             {/* Breadcrumb */}
             <div className="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
               <BreadCrums
-                title={"Company Plans"}
+                title={"Super Admin"}
                 data={[
                   { path: "/", title: "Superadmin" },
 
-                  { path: "#", title: "Plans" },
+                  { path: "#", title: "Admins List" },
                 ]}
               />
               <div className="d-flex my-xl-auto right-content align-items-center flex-wrap ">
@@ -240,52 +243,7 @@ const CompanyPlans = () => {
                 <div className="card">
                   <div className="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
                     <h5>Companies Plans </h5>
-                    {/* <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
-                      <div className="dropdown me-3">
-                        <select value={filters?.status} onChange={(e) => {
-                          changeFilter(e.target.value, "status")
-                        }} className='select border py-2 px-2 rounded'>
-                          <option value={""}> Select Status</ option>
-                          {
-                            ["Active", "Hold", "Inactive"]?.map((item, i) => {
-                              return (
-                                <option key={i} value={item}> {item}</ option>
-                              )
-                            })
-                          }
-                        </select>
-                      </div>
-                      <div className="dropdown me-3">
-                        <select value={filters?.plan_id} onChange={(e) => {
-                          changeFilter(e.target.value, "plan_id")
-                        }} className='select border py-2 px-2 rounded'>
-                          <option value={""}> Sort By :Plan</ option>
-                          {
-                            plansData?.data?.map((item, index) => {
-                              return (
-                                <option key={index} value={item?.id}>{item?.name || ""}</option>
-                              )
-                            })
-                          }
-                        </select>
-
-                      </div>
-                      <div className="dropdown ">
-                        <select value={filters?.sort} onChange={(e) => {
-                          changeFilter(e.target.value, "sort")
-                        }} className='select border py-2 px-2 rounded'>
-                          <option value={""}> Sort</ option>
-                          {
-                            sortOptions?.map((item, i) => {
-                              return (
-                                <option key={i} value={item.value}> {item.title}</ option>
-                              )
-                            })
-                          }
-                        </select>
-                      </div>
-
-                    </div> */}
+                    
                   </div>
                   <div className="row align-items-center px-3">
                     <div className="col-sm-12 col-md-6">
@@ -327,10 +285,10 @@ const CompanyPlans = () => {
                           }
                           return item
                         }) || []}
-                        historyLink={"/superadmin/plans-history"}//here will be the history page link
+                        historyLink={"/plans-history"}//here will be the history page link
                         dataKeys={dataKeys || []}
                         // pdfDownload={handleActions}
-                        // pdfView={handleActions}
+                        pdfView={handleActions}
                       />
                     </div>
                   </div>
@@ -351,9 +309,23 @@ const CompanyPlans = () => {
         <UpGradePlan handleData={modalData} />
       }
       {modalData.type == "pdfView" && modalData.isOpen &&
-        <InvoicePreview handleData={modalData} companyData={modalData?.data} /> }
+        <InvoicePreview handleData={modalData} invoiceData={{
+          invoiceNo: 'INV-001',
+          invoiceDate: '2025-04-14',
+          dueDate: '2025-05-14',
+          placeOfSupply: 'Haryana (06)',
+          customer: {
+            name: 'Yogesh Rana',
+            company: 'Yogesh Pvt Ltd',
+            address: 'New Delhi 110059 Delhi',
+            email: 'sadqrfdv@kk.com'
+          },
+          items: [{ description: 'Mobile', qty: 1, rate: 599 }],
+          signatureName: 'Akash Singh'
+        }} /> }
+      
     </React.Fragment>
   );
 };
 
-export default CompanyPlans;
+export default AdminsList;

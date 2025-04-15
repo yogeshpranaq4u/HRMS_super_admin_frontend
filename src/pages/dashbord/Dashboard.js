@@ -74,7 +74,7 @@ function Dashboard() {
               </div>
               <div className="d-flex align-items-center flex-wrap mb-1">
                 <a
-                  href="/company"
+                  href="/superadmin/company"
                   className="btn btn-dark btn-md me-2 mb-2"
                 >
                   Companies
@@ -83,17 +83,17 @@ function Dashboard() {
             </div>
             <div className="welcome-bg">
               <img
-                src="assets/img/bg/welcome-bg-02.svg"
+                src="/assets/img/bg/welcome-bg-02.svg"
                 alt="img"
                 className="welcome-bg-01"
               />
               <img
-                src="assets/img/bg/welcome-bg-03.svg"
+                src="/assets/img/bg/welcome-bg-03.svg"
                 alt="img"
                 className="welcome-bg-02"
               />
               <img
-                src="assets/img/bg/welcome-bg-01.svg"
+                src="/assets/img/bg/welcome-bg-01.svg"
                 alt="img"
                 className="welcome-bg-03"
               />
@@ -140,7 +140,7 @@ function Dashboard() {
                 title: "Recently Demo",
                 type: "Demo",
                 data: pendingDemoRequestsData,
-                redirectPath:"/demo-requests"
+                redirectPath:"/superadmin/demo-requests"
               }}
             />
           
@@ -149,7 +149,7 @@ function Dashboard() {
                 title: "Recently Registered",
                 type: "Registered",
                 data: recentRegistrations,
-                redirectPath:"/company"
+                redirectPath:"/superadmin/company"
               }}
             />
             <PlanChartCard data={purchaseSummaryData} />
@@ -168,7 +168,7 @@ function Dashboard() {
                 title: "Recent Plan Expired",
                 type: "Plan Expired",
                 data: planExpireData,
-                redirectPath:"/plans"
+                redirectPath:"/superadmin/plans"
               
               }}
             />

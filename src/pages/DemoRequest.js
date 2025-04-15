@@ -11,6 +11,7 @@ import { toast } from 'react-toastify'
 import RegisterFromDemo from '../components/RegisterFromDemo'
 import ViewRequestDetails from '../components/ViewRequestDetails'
 import Pagination from '../components/Pagination'
+import { getServiceType } from '../redux/actions/otherActions'
 
 function DemoRequest() {
     const dispatch = useDispatch()
@@ -33,6 +34,7 @@ function DemoRequest() {
     useEffect(() => {
         dispatch(getAllPlans())
         fetchStats()
+         dispatch(getServiceType())
     }, [])
     useEffect(() => {
         dispatch(getDemoRequestData(filters))
@@ -321,7 +323,7 @@ function DemoRequest() {
                                                                                 <td>
                                                                                     <div className="d-flex align-items-center file-name-icon">
                                                                                         {/* <a href="#" className="avatar avatar-md border rounded-circle">
-                                                                                            <img src="assets/img/company/company-01.svg" className="img-fluid" alt="img" />
+                                                                                            <img src="/assets/img/company/company-01.svg" className="img-fluid" alt="img" />
                                                                                         </a> */}
                                                                                         <div className="ms-2">
                                                                                             <h6 className="fw-medium"><a href="#">{item?.company_domain || "NA"}</a></h6>
