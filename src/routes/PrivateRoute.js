@@ -4,9 +4,6 @@ import { Navigate, useLocation } from 'react-router-dom';
 function PrivateRoute({ element }) {
     const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
     const location = useLocation();
-    // const isSuperAdmin = pathname?.includes("/superadmin/") && details.user.role?.includes("SuperAdmin")
-    
-    // return details.token  ? element : <Navigate to="/login" />;
     const { token, user = {} } = details;
     const pathname = location.pathname;
     // Define role-based URL restrictions
@@ -22,7 +19,6 @@ function PrivateRoute({ element }) {
     }
     // Check if user's role matches the URL pattern
     const allowedPath = roleRoutes[userRole];
-    // console.log("details" ,pathname.startsWith(allowedPath) , user.role ,allowedPath , pathname);
     if (allowedPath && pathname.startsWith(allowedPath)) {
         return element;
     }
