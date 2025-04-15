@@ -40,7 +40,7 @@ const OtpModal = ({ data }) => {
         setLoading(true);
         try {
             const response = await axios.post(
-                `${BaseUrl}/resend-otp`,
+                `${BaseUrl}/${Api.RESEND}`,
                 { email: data.data.email },
                 {
                     headers: {
@@ -88,7 +88,7 @@ const OtpModal = ({ data }) => {
         try {
             let config = {
                 method: 'post',
-                url: `${BaseUrl}/verify_otp`,
+                url: `${BaseUrl}${Api.VERIFYOTP}`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${data?.data?.token || ""}`,

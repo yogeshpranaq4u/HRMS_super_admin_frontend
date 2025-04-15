@@ -65,6 +65,7 @@ export function* getPurchaseSummaryAction(action) {
       if (response?.valid) {
         if (response?.success) {
        
+
           yield put({
             type: types.GET_PURCHASE_SUMMARY_SUCCESS,
             payload: response?.data,
@@ -114,6 +115,7 @@ export function* getPendingDemoRequestAction(action) {
       if (response?.valid) {
         if (response?.success) {
    
+
           yield put({
             type: types.GET_PENDING_DEMO_REQUEST_SUCCESS,
             payload: response?.data,
@@ -147,6 +149,7 @@ export function* watchGetPendingDemoRequestAction() {
 }
 
 export function* getRecentRegistrationAction(action) {
+
   try {
     const response = yield call(
       callApi,
@@ -160,6 +163,7 @@ export function* getRecentRegistrationAction(action) {
       if (response?.valid) {
         if (response?.success) {
        
+
           yield put({
             type: types.GET_RECENT_REGISTRATIONS_REQUEST_SUCCESS,
             payload: response?.data,
@@ -209,6 +213,7 @@ export function* getPlantExpireDataAction(action) {
       if (response?.valid) {
         if (response?.success) {
         
+
           yield put({
             type: types.GET_PLAN_EXPIRE_REQUEST_SUCCESS,
             payload: response?.data,
@@ -251,10 +256,13 @@ export function* getRecentTransactionAction(action) {
       userDetails?.token
     );
 
+ 
+ 
+        
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
-        
+
           yield put({
             type: types.GET_RECENT_TRANSACTION_REQUEST_SUCCESS,
             payload: response?.data,
@@ -292,10 +300,23 @@ export function* watchGetRecentTransactionAction() {
 
 export function* getDemoRequestsAction(action) {
   try {
-        // console.log("userDetails" , userDetails);
+    const { limit = 5, page = 1, sort = 'last_7_days', deliver, demo_status } = action?.payload || {};
+    // You can also dynamically build this query string if deliver and demo_status are needed
+    const queryParams = new URLSearchParams({
+      limit,
+      page,
+      sort,
+      ...(deliver && { deliver }),
+      ...(demo_status && { demo_status })
+    }).toString();
+
+    const queryUrl = `?${queryParams}`;
+    // console.log(queryUrl);
+    
+    // const queryUrl = `?limit=5&page=1&sort=last_7_days`
     const response = yield call(
       callApi,
-      "request-demo",
+      Api.GETREQUESTDEMO+queryUrl,
       "GET",
       "",
       userDetails?.token
@@ -317,4 +338,36 @@ export function* getDemoRequestsAction(action) {
 
 export function* watchDemoRequestsAction() {
   yield takeLatest(types.GET_DEMOREQUEST_REQUEST, getDemoRequestsAction);
+}
+
+
+
+
+export function* getPlansAction(action) {
+  try {
+    // console.log("userDetails" , userDetails);
+    const response = yield call(
+      callApi,
+      Api.GETPLANS,
+      "GET",
+      "",
+      userDetails?.token
+    );
+
+    if (response.success && response.valid) {
+      yield put({
+        type: types.GET_PLANS_SUCCESS,
+        payload: response,
+      });
+    }
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message || error.message || "server error"
+    );
+    yield put({ type: types.GET_PLANS_FAILED, error: error.response });
+  }
+}
+
+export function* watchPlansAction() {
+  yield takeLatest(types.GET_PLANS_REQUEST, getPlansAction);
 }

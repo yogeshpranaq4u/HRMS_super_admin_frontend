@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 function BreadCrums({
     title, data
@@ -16,7 +17,9 @@ function BreadCrums({
                             data?.map((item, index) => {
                                 return (
                                     <li key={index} className="breadcrumb-item">
-                                        {item?.title||"test"}
+                                        <NavLink to={item?.path}>
+                                            {item?.title || "test"}
+                                        </NavLink>
                                     </li>
                                 )
                             })

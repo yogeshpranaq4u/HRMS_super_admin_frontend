@@ -5,35 +5,36 @@ function SideBar() {
   const sideBarContent = [
     {
       title: "Dashboard",
-      pathname: "/",
+      pathname: "/superadmin/",
       iconName: "ti ti-smart-home"
 
     },
     {
       title: "Companies",
-      pathname: "/company",
+      pathname: "/superadmin/company",
       iconName: "ti ti-building"
 
     },
     {
-      title: "Tickets",
-      pathname: "#",
-      iconName: "ti ti-report"
-    },
-    {
       title: "Demo",
-      pathname: "/demo-requests",
-      iconName: "ti ti-message-circle"
+      pathname: "/superadmin/demo-requests",
+      iconName: "ti ti-screen-share"
     },
     {
       title: "Payments",
-      pathname: "#",
+      // pathname: "/superadmin#",
+      pathname: "/superadmin/plans",
       iconName: "ti ti-credit-card-pay"
     },
     {
       title: "Manage Policy",
-      pathname: "#",
-      iconName: "ti ti-device-desktop-cog"
+      pathname: "/superadmin/manage-policy",
+      iconName: "ti ti-shield-cog "
+    },
+    {
+      title: "Admins",
+      pathname: "/superadmin/admin-list",
+      iconName: "ti ti-circle-dotted-letter-p"
     },
   ]
 
@@ -41,13 +42,13 @@ function SideBar() {
     <div className="sidebar" id="sidebar">
       <div className="sidebar-logo">
         <a href="/" className="logo logo-normal">
-          <img src="assets/img/logoNew.png" alt="Logo" style={{ width: 200, height: 50 }} />
+          <img src="/assets/img/logoNew.png" alt="Logo" style={{ width: 200, height: 50 }} />
         </a>
         <a href="/" className="logo-small">
-          <img src="assets/img/logoNew.png" alt="Logo" />
+          <img src="/assets/img/logoNew.png" alt="Logo" />
         </a>
         <a href="/" className="dark-logo">
-          <img src="assets/img/logoNew.png" alt="Logo" />
+          <img src="/assets/img/logoNew.png" alt="Logo" />
         </a>
       </div>
       <div className="sidebar-inner slimscroll mt-3">

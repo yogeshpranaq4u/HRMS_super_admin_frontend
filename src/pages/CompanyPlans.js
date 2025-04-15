@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from "react";
-import MainLayout from "../../layouts/MainLayout";
-import BreadCrums from "../../components/BreadCrums";
-import { Link } from "react-router-dom";
-import TableComponent from "../../components/TableComponent";
+import MainLayout from "../layouts/MainLayout";
+import BreadCrums from "../components/BreadCrums";
+import TableComponent from "../components/TableComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPlans, getCompanies } from "../../redux/actions/dashBoardActions";
-import RegisterFromDemo from "../../components/RegisterFromDemo";
-import ConfirmDelete from "../../modals/ConfirmDelete";
-import Loader from "../../components/Loader";
-import Pagination from "../../components/Pagination";
-import CompanyDetails from "../../components/CompanyDetails";
-import { Api } from "../../config/apiEndPoints";
-import { callApi } from "../../config/apiCall";
-import { getServiceType } from "../../redux/actions/otherActions";
+import { getAllPlans, getCompanies } from "../redux/actions/dashBoardActions";
+import Loader from "../components/Loader";
+import Pagination from "../components/Pagination";
+import UpGradePlan from "../modals/UpGradePlan";
+import { Api } from "../config/apiEndPoints";
+import { callApi } from "../config/apiCall";
+import InvoicePreview from "../modals/InvoicePreview";
+import { getServiceType } from "../redux/actions/otherActions";
 
-const Company = () => {
+const CompanyPlans = () => {
   const dispatch = useDispatch()
   const [modalData, setModalData] = useState({ isOpen: false, data: "" })
   const isLoading = useSelector((state) => state.commenData.loading)
   const companiesData = useSelector((state) => state.commenData?.companiesData)
-  const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
   const [searchText, setSearchText] = useState("")
-  const [statsData, setStatsData] = useState({})
+  const [pageStats, setPageStats] = useState()
+  const details = JSON.parse(sessionStorage.getItem("userDetails")) || {}
   const [filters, setFilters] = useState({
     limit: 10,
     page: 1,
@@ -30,51 +28,49 @@ const Company = () => {
     sort: "",
     currentPage: 1,
   })
-  const plansData = useSelector((state) => state.commenData.allPlans)
+
+  const formateForPlans = companiesData?.data?.map((item) => {
+    const { company_name, company_logo,
+      current_plan, service_type, id, ...rest } = item
+      // console.log("item" ,item);
+    return {
+      company_name,
+      company_logo,
+      service_type,
+      ...current_plan,
+      id,
+    }
+  })
+  useEffect(() => {
+    dispatch(getCompanies(filters))
+
+  }, [filters])
   useEffect(() => {
     dispatch(getAllPlans())
     fetchStats()
-     dispatch(getServiceType())
+    dispatch(getServiceType())
   }, [])
   const tableHeader = [
     "Company Name",
-    "Domain Name",
-    "Company Id",
-    "Company Size",
-    "DB Name",
-    // "Redirect URL",
-    "Admin Email",
-    "Contact Number",
+    "Service Type",
     "Subscription Plan",
-    "Start & End Date",
-    "Config",
-    "Deliver",
-    "Status",
-    "Service Type"
+    "Purchase Date",
+    "Expiry Date",
+    // "Plan Status",
+    "Amount",
   ];
 
   const dataKeys = [
     "company_name",          // Company Name
-    "company_domain",        // Domain Name
-    "company_id",            // Company Id
-    "team_size",             // Company Size
-    "database_name",                    // DB Name (assuming "id" is used for DB name)
-    // "redirect_url",          // Redirect URL
-    "admin_email",           // Admin Email
-    "contact_no",            // Contact Number
-    "plan_id",               // Subscription Plan (can be replaced with actual plan name if needed)
-    "plan_dates",            // Start & End Date (combine `plan_start_date` & `plan_end_date`)
-    "config",            // Start & End Date (combine `plan_start_date` & `plan_end_date`)
-    "delivered",            // Start & End Date (combine `plan_start_date` & `plan_end_date`)
-    // Start & End Date (combine `plan_start_date` & `plan_end_date`)
-    "status",                // Status
-    "service_type"           // Service Type (array stored as string)
+    "services",          // Service Type (array stored as string)
+    "plan_name",
+    "start_date",
+    "end_date",
+    // "status",       
+    "total_price",
   ];
+  // console.log("companiesData ₹",formateForPlans,companiesData?.data);
 
-
-  useEffect(() => {
-    dispatch(getCompanies(filters))
-  }, [filters])
   const onClose = () => {
     setModalData((prev) => ({
       ...prev,
@@ -83,34 +79,28 @@ const Company = () => {
     }))
   }
   const handleActions = (data, type) => {
-    // console.log(data ,type);
-    if (type == "view") {
-      setModalData((prev) => ({
-        ...prev,
-        data: data,
-        type: "view",
-        isOpen: true,
-        onConfirm: "",
-        onClose: onClose
-      }))
+    // console.log(data, type);
+    
+    setModalData((prev) => ({
+      ...prev,
+      data: data,
+      type: type,
+      isOpen: true,
+      onConfirm: "",
+      onClose: onClose
+    }))
+  }
 
-    } else if (type == "delete") {
-      setModalData((prev) => ({
-        ...prev,
-        data: data,
-        type: "delete",
-        isOpen: true,
-        onConfirm: "",
-        onClose: onClose
-      }))
-    } else {
-      setModalData((prev) => ({
-        ...prev,
-        data: data,
-        type: "edit",
-        isOpen: true,
-        onClose: onClose
-      }))
+  const fetchStats = async () => {
+    try {
+      const response = await callApi(Api.PLANSSTATS, "GET", "", details?.token)
+      if (response.authenticated && response.valid) {
+        // console.log(response);
+        setPageStats(response.data || {})
+      }
+
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -123,31 +113,11 @@ const Company = () => {
     }));
   };
 
-  const sortOptions = [
-    { title: "Recently Added", value: "recent_added" },
-    { title: "Descending", value: "descending" },
-    { title: "Ascending", value: "ascending" },
-    { title: "Last Month", value: "last_month" },
-    { title: "Last 7 Days", value: "last_7_days" },
-  ];
   const changeFilter = (value, key) => {
     setFilters((prev) => ({
       ...prev,
       [key]: value
     }))
-  }
-
-  const fetchStats = async () => {
-    try {
-      const response = await callApi(Api.COMPANIESSTATS, "GET", "", details?.token)
-      if (response.authenticated && response.valid) {
-        // console.log(response);
-        setStatsData(response.data || {})
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
   }
 
   return (
@@ -158,30 +128,33 @@ const Company = () => {
             {/* Breadcrumb */}
             <div className="d-md-flex d-block align-items-center justify-content-between page-breadcrumb mb-3">
               <BreadCrums
-                title={"Companies"}
+                title={"Company Plans"}
                 data={[
                   { path: "/", title: "Superadmin" },
 
-                  { path: "/company", title: "Company" },
+                  { path: "#", title: "Plans" },
                 ]}
               />
               <div className="d-flex my-xl-auto right-content align-items-center flex-wrap ">
+                <div className="me-2 mb-2">
+
+                </div>
                 <div className="mb-2">
-                  <Link
+                  <a
                     to="#"
                     onClick={() => {
                       setModalData((prev) => ({
                         ...prev,
                         isOpen: true,
-                        type: "Register",
+                        type: "addPlan",
                         onClose: onClose
                       }))
                     }}
                     className="btn btn-primary d-flex align-items-center"
                   >
-                    <i className="ti ti-circle-plus me-2" />
-                    Add Company
-                  </Link>
+                    Add Payment
+                    <i className="ti ti-circle-plus ml-1" />
+                  </a>
                 </div>
                 <div className="ms-2 head-icons"></div>
               </div>
@@ -193,14 +166,32 @@ const Company = () => {
                 <div className="card flex-fill">
                   <div className="card-body d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg bg-primary flex-shrink-0">
-                        <i className="ti ti-building fs-16" />
+                      <span className="avatar avatar-lg bg-info flex-shrink-0">
+                        {/* <i className="ti ti-building fs-16" /> */}
+                        <i className="ti ti-location-dollar fs-16"></i>
                       </span>
                       <div className="ms-2 overflow-hidden">
                         <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Total Companies
+                          Total Transaction
                         </p>
-                        <h4>{statsData?.total || 0}</h4>
+                        <h4>{pageStats?.total_transactions || 0}</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-3 col-md-6 d-flex">
+                <div className="card flex-fill">
+                  <div className="card-body d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center overflow-hidden">
+                      <span className="avatar avatar-lg flex-shrink-0" style={{ background: "#00C7BE" }}>
+                        <i className="ti ti-users fs-16" />
+                      </span>
+                      <div className="ms-2 overflow-hidden">
+                        <p className="fs-12 fw-medium mb-1 text-truncate">
+                          Total Subscribers
+                        </p>
+                        <h4>{pageStats?.total_subscribers || 0}</h4>
                       </div>
                     </div>
                   </div>
@@ -211,13 +202,13 @@ const Company = () => {
                   <div className="card-body d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center overflow-hidden">
                       <span className="avatar avatar-lg bg-success flex-shrink-0">
-                        <i className="ti ti-building fs-16" />
+                        <i className="ti ti-user-check fs-16" />
                       </span>
                       <div className="ms-2 overflow-hidden">
                         <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Active Companies
+                          Active Subscribers
                         </p>
-                        <h4>{statsData?.active || "0"}</h4>
+                        <h4>{pageStats?.active_subscribers || 0}</h4>
                       </div>
                     </div>
                   </div>
@@ -229,45 +220,27 @@ const Company = () => {
                   <div className="card-body d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center overflow-hidden">
                       <span className="avatar avatar-lg bg-danger flex-shrink-0">
-                        <i className="ti ti-building fs-16" />
+                        <i className="ti ti-user-x fs-16" />
                       </span>
                       <div className="ms-2 overflow-hidden">
                         <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Inactive Companies
+                          Expired Subscribers
                         </p>
-                        <h4>{statsData?.inactive || 0}</h4>
+                        <h4>{pageStats?.expired_subscribers| "0"}</h4>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="col-lg-3 col-md-6 d-flex">
-                <div className="card flex-fill">
-                  <div className="card-body d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg bg-skyblue flex-shrink-0">
-                        <i className="ti ti-map-pin-check fs-16" />
-                      </span>
-                      <div className="ms-2 overflow-hidden">
-                        <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Hold
-                        </p>
-                        <h4>{statsData?.hold || 0}</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* /Company Location */}
             </div>
             {
               isLoading ?
                 <Loader /> :
                 <div className="card">
                   <div className="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-                    <h5>Companies List</h5>
-                    <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
+                    <h5>Companies Plans </h5>
+                    {/* <div className="d-flex my-xl-auto right-content align-items-center flex-wrap row-gap-3">
                       <div className="dropdown me-3">
                         <select value={filters?.status} onChange={(e) => {
                           changeFilter(e.target.value, "status")
@@ -311,20 +284,8 @@ const Company = () => {
                           }
                         </select>
                       </div>
-                      {
-                        (filters.sort || filters?.status||filters?.plan_id) &&
-                        <div className="dropdown ml-1">
-                          <button onClick={() => {
-                            setFilters((prev) => ({
-                              ...prev,
-                              plan_id: "",
-                              status: "",
-                              sort: "",
-                            }))
-                          }} className='btn btn-secondary py-1' > Clear</button>
-                        </div>
-                      }
-                    </div>
+
+                    </div> */}
                   </div>
                   <div className="row align-items-center px-3">
                     <div className="col-sm-12 col-md-6">
@@ -359,19 +320,17 @@ const Company = () => {
                     <div className="custom-datatable-filter table-responsive">
                       <TableComponent
                         tableHeader={tableHeader}
-                        dataSource={companiesData?.data?.filter((item) => {
+                        dataSource={formateForPlans?.filter((item) => {
                           if (searchText) {
                             return item.company_name.toLowerCase().includes(searchText.toLowerCase()) ||
-                              item.company_domain.toLowerCase().includes(searchText.toLowerCase()) ||
-                              item.admin_email.toLowerCase().includes(searchText.toLowerCase())
+                              item.plan_name.toLowerCase().includes(searchText.toLowerCase())
                           }
                           return item
                         }) || []}
-                        historyLink={"#"}//here will be the history page link
+                        historyLink={"/superadmin/plans-history"}//here will be the history page link
                         dataKeys={dataKeys || []}
-                        onEdit={handleActions}
-                        onView={handleActions}
-                      // handleDelete={handleActions}
+                        // pdfDownload={handleActions}
+                        // pdfView={handleActions}
                       />
                     </div>
                   </div>
@@ -385,17 +344,16 @@ const Company = () => {
         </div>
       </MainLayout>
 
-      {modalData.type == "view" && modalData.isOpen &&
-        <CompanyDetails handleData={modalData} />
+      {modalData.type == "addPlan" && modalData.isOpen &&
+        <UpGradePlan handleData={modalData} />
       }
-      {
-        modalData.type == "delete" && modalData.isOpen ?
-          <ConfirmDelete handleData={modalData} /> :
-          modalData.isOpen && (modalData.type == "edit" || modalData.type == "Register") &&
-          <RegisterFromDemo handleData={modalData} />
+      {modalData.type == "upgrade" && modalData.isOpen &&
+        <UpGradePlan handleData={modalData} />
       }
+      {modalData.type == "pdfView" && modalData.isOpen &&
+        <InvoicePreview handleData={modalData} companyData={modalData?.data} /> }
     </React.Fragment>
   );
 };
 
-export default Company;
+export default CompanyPlans;
