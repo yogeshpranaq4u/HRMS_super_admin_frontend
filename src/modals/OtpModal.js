@@ -110,7 +110,7 @@ const OtpModal = ({ data }) => {
                     autoClose: 1500,
                 });
                 // navigate("/");
-                window.location = "/superadmin"
+                window.location = "/superadmin/"
             }
         } catch (error) {
             setLoading(false);
