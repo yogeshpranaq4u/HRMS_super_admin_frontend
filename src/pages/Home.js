@@ -9,6 +9,7 @@ import TestimonialOne from "../components/TestimonialOne";
 import DemoRequestModal from "../components/DemoModal";
 import Features from "../components/Features";
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 function Home() {
   const [show, setShow] = useState(false)
@@ -202,10 +203,12 @@ function Home() {
         {/* main news */}
         <MainNews />
         <DemoRequestModal show={show} handleClose={() => { setShow(false) }} />
+          <Footer/>
       </main>
       <div className="back-to-top">
         <a className={`back-to-top-icon align-items-center justify-content-center d-flex ${showBackToTop ? "show" : ""}`} href="#top"><i className="fa-solid fa-arrow-up"></i></a>
       </div>
+
     </React.Fragment>
   );
 }
