@@ -2,7 +2,7 @@
 //Debug api  Base  URL
 export const BaseUrl = "https://development-hrms-services-2.cvinfotechserver.com/hrms-backend/public/api"
 export const ImagePath =
-  "https://development-hrms-services-2.cvinfotechserver.com/public/"; //New Live Server
+  "https://development-hrms-services-2.cvinfotechserver.com/hrms-backend/public/"; //New Live Server
 
 export const Api = {
   //Admin Api End   Points

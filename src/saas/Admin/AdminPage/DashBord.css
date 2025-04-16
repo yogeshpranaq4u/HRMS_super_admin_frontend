@@ -1,0 +1,55 @@
+.mainDashbordContainer {
+  /* display: flex; */
+  flex-direction: column;
+  padding: 5px;
+/* overflow-x:auto;
+  overflow-y: auto;
+  max-height: 680px; */
+}
+
+.mainDashbord {
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+  padding-bottom: 30px;
+
+}
+
+.card {
+  display: flex;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  /* max-width: 1500px; */
+  align-items: center;
+}
+
+.card2 {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+
+  border: 1px solid #e0e0e0;
+  /* overflow-y: auto; */
+}
+
+.mainDashbordContainer>div {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-bottom: 30px;
+
+
+  /* max-height: 850px; */
+}.card3 {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+  width: 650px;
+  border: 1px solid #e0e0e0;
+  height: 0px; /* Fixed height */
+  overflow-y: auto; /* Enable vertical scrolling */
+}

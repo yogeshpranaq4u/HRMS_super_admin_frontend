@@ -4,7 +4,7 @@ import { formatDate } from "../helpers/frontend";
 import { useNavigate } from "react-router-dom";
 import { ImagePath } from "../config/apiEndPoints";
 
-const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKeys, onEdit, handleDelete, onView, historyLink }) => {
+const TableComponent = ({ tableHeader, pdfView,externalLink, pdfDownload, dataSource, dataKeys, onEdit, handleDelete, onView, historyLink }) => {
   const plansData = useSelector((state) => state.commenData.allPlans)
   const navigate = useNavigate()
   // console.log("plansData" ,plansData);
@@ -129,7 +129,7 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
               })}
 
               <td>
-                <div className="action-icon d-inline-flex">
+                <div className="action-icon d-inline-flex align-items-center">
                   {
                     historyLink &&
                     <div onClick={() => {
@@ -174,6 +174,11 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                   {
                     handleDelete &&
                     <div onClick={() => { handleDelete(item, "delete") }} ><i className="ti ti-trash"></i></div>
+                  }
+                  {
+                    externalLink &&
+                    <a style={{cursor:"pointer"}} href={`${externalLink}?dbid=${item?.id}&company_id=${item.company_id}`} target="_blank" >
+                      <i className="ti ti-external-link fs-15"></i></a>
                   }
                 </div>
               </td>

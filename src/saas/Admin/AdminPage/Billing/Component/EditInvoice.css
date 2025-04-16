@@ -1,0 +1,331 @@
+.custom-modal {
+  max-width: 1200px !important;
+  width: 95%;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+
+
+.contentedit {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  overflow: hidden;
+}
+
+
+
+
+/* Invoice container */
+.invoice-container111 {
+  width: 100%;
+  border: 1px solid #ccc;
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: 8px;
+
+}
+
+/* Header fields */
+.invoice-header input {
+  width: 50%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+
+
+.add-row-btn {
+  width: 20%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: flex-start;
+
+  margin-left: 0;
+}
+
+.add-row-btn:hover {
+  background-color: #0056b3;
+}
+
+.invoice-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.invoice-summary {
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-title {
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.summary-title small {
+  font-weight: normal;
+  color: hsl(0, 4%, 44%);
+  font-size: 15px;
+}
+
+.summary-value {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: right;
+}
+
+.discount-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.discount-input input {
+  width: 40px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.discountamount-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.discountamount-input input {
+  width: 150px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.summary-row.total {
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+.invoice-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: transparent;
+
+  font-weight: 600;
+  color: #047eff;
+  border: none;
+
+  padding: 10px 20px;
+
+  cursor: pointer;
+
+}
+
+.cancel-btn:hover {
+  background-color: transparent;
+
+}
+
+.save-draft-btn {
+  background-color: #007bff;
+  font-weight: 600;
+  color: white;
+}
+
+.save-send-btn {
+  background-color: #28a745;
+  color: white;
+  font-weight: 600;
+}
+
+.save-draft-btn:hover {
+  background-color: #0056b3;
+}
+
+.save-send-btn:hover {
+  background-color: #218838;
+}
+
+.form-gridinvoice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.form-groupinvoice {
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - 10px);
+}
+
+.form-groupinvoice label {
+  font-size: 15px;
+  font-weight: 500;
+  color: black;
+
+  margin-bottom: 5px;
+}
+
+.form-groupinvoice input,
+.form-groupinvoice select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+
+
+}
+
+.form-groupinvoice input:focus,
+.form-groupinvoice select:focus {
+  border-color: initial;
+  box-shadow: none;
+  outline: none;
+}
+
+
+.invoice-tableedit {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+th {
+  background-color: #f4f4f4;
+  
+}
+.invoice-tableedit th {
+  text-align: center; /* This might not apply if overridden */
+}
+
+.invoice-tableedit th:nth-child(1),
+td:nth-child(1) {
+  width: 30%;
+}
+
+.invoice-tableedit th:nth-child(2),
+td:nth-child(2) {
+  width: 7%;
+}
+
+.invoice-tableedit th:nth-child(3),
+td:nth-child(3) {
+  width: 10%;
+}
+
+.invoice-tableedit th:nth-child(4),
+td:nth-child(4) {
+  width: 10%;
+}
+
+.invoice-tableedit th:nth-child(5),
+td:nth-child(5) {
+  width: 12%;
+}
+
+.invoice-tableedit th:nth-child(6),
+td:nth-child(6) {
+  width: 5%;
+}
+
+
+.invoice-tableedit td:nth-child(2) input,
+.invoice-tableedit td:nth-child(3) input,
+.invoice-tableedit td:nth-child(4) input,
+.invoice-tableedit td:nth-child(5) input {
+  text-align: center;
+  width: 80%;
+}
+
+
+.invoice-tableedit input,
+.invoice-tableedit select {
+  width: 100%;
+  padding: 4px;
+}
+
+.invoice-tableedit input {
+  width: 100%;
+  padding: 8px;
+
+}
+
+
+
+
+@media (max-width: 768px) {
+
+  .invoice-tableedit th,
+  .invoice-tableedit td {
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+
+  .invoice-actions button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+.invoice-tableedit input:focus,
+.invoice-tableedit select:focus {
+  border-color: initial;
+  box-shadow: none;
+  outline: none;
+}
+
+
+td {
+  width: 20%;
+}

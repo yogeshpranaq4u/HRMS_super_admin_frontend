@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin-top: 10px;
+}
+
+.invoice-container {
+  font-family: Arial, sans-serif;
+
+  max-width: 800px;
+  border: 1px solid #333;
+
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.invoice-header {
+
+  margin-bottom: 20px;
+  flex-direction: row;
+  display: flex;
+  padding: 10px;
+  margin-top: -5px;
+  align-items: center;
+
+}
+
+.invoice-supply,
+.invoice-billing,
+.invoice-items,
+.invoice-summary,
+.invoice-notes,
+.invoice-signature {
+  margin-bottom: 20px;
+}
+
+.invoice-billing h3,
+.invoice-notes h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.invoice-items table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-items th,
+.invoice-items td {
+  border: 1.5px solid #8e8e8e;
+  padding: 8px;
+  text-align: left;
+}
+
+.invoice-items th {
+  background-color: #f4f4f4;
+}
+
+.subtotal-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px;
+
+}
+
+.subtotal-label {
+  display: flex;
+  flex-direction: column; 
+
+}
+
+
+
+

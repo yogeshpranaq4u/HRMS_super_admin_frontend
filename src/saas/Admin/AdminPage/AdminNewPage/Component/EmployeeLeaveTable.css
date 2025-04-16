@@ -1,0 +1,73 @@
+
+.table-container {
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+    width: 100%;
+  }
+  
+ 
+  .table-title {
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+
+  .dotted-border-table .ant-table {
+    border-collapse: collapse;
+  }
+  
+
+  .dotted-border-table .ant-table-thead > tr > th,
+  .dotted-border-table .ant-table-tbody > tr > td {
+    border-bottom: 2px dotted #E5E7EB !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    color: #071437;
+    
+  }
+  
+
+  .dotted-border-table .ant-table-container {
+    border: none !important;
+  }
+  
+
+  .custom-row {
+    font-size: 14px;
+  }
+  
+
+  .see-all-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .dotted-border-table .ant-table-thead > tr > th {
+  
+    color: #9CA3AF !important;
+    font-weight: 500;
+    
+
+  }
+  .dotted-border-table .ant-table-cell {
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .custom-no-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust height as needed */
+    font-size: 16px;
+    font-weight: 500;
+    color: #888; /* Adjust color if needed */
+  }
+  

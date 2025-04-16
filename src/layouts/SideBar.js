@@ -1,42 +1,53 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { sideBarContentEmployee, sideBarContentSuperAdmin } from "../helpers/sideBarContent";
+import { Api, BaseUrl } from "../saas/Config/Api";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 function SideBar() {
-  const sideBarContent = [
-    {
-      title: "Dashboard",
-      pathname: "/superadmin/",
-      iconName: "ti ti-smart-home"
+  const userRole = JSON.parse(sessionStorage.getItem("userDetails")) || {}
+  const role = userRole?.user?.role?.toLowerCase() || userRole?.user?.type?.toLowerCase() || "guest";
+  const sideBarContent = userRole?.user?.type?.toLowerCase() == "employee" ? sideBarContentEmployee : sideBarContentSuperAdmin
+  // console.log("userRole" ,userRole);
+  const [profileData, setProfileData] = useState();
+  const employeeId = sessionStorage.getItem("employeeId");
+  const token = sessionStorage.getItem("authToken");
+  useEffect(() => {
+    if (employeeId) {
+      fetchEmployeProfile();
+    }
+  }, []);
 
-    },
-    {
-      title: "Companies",
-      pathname: "/superadmin/company",
-      iconName: "ti ti-building"
+  const fetchEmployeProfile = useCallback(async () => {
+    try {
+      const responseData = await axios.get(
+        `${BaseUrl}${Api.GET_EMPLOYEE_PROFILE}?employee_id=${employeeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (responseData?.data?.authenticated === false) {
+        toast.error(responseData?.data?.mssg[0]);
+        // logout();
+      } else {
+        if (responseData?.data?.valid === false) {
+          toast.error(responseData?.data?.mssg[0]);
+        } else {
+          setProfileData(responseData?.data?.data);
+        }
+      }
+    } catch (error) {
+      console.error("API call failed:", error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+    }
+  }, [token]);
 
-    },
-    {
-      title: "Demo",
-      pathname: "/superadmin/demo-requests",
-      iconName: "ti ti-screen-share"
-    },
-    {
-      title: "Payments",
-      // pathname: "/superadmin#",
-      pathname: "/superadmin/plans",
-      iconName: "ti ti-credit-card-pay"
-    },
-    {
-      title: "Manage Policy",
-      pathname: "/superadmin/manage-policy",
-      iconName: "ti ti-shield-cog "
-    },
-    {
-      title: "Admins",
-      pathname: "/superadmin/admin-list",
-      iconName: "ti ti-circle-dotted-letter-p"
-    },
-  ]
+
 
   return (
     <div className="sidebar" id="sidebar">
@@ -55,20 +66,15 @@ function SideBar() {
         <div id="sidebar-menu" className="sidebar-menu">
           <ul>
             <li className="menu-title">
-              <span>Super Admin</span>
+              <span>{role || "Super Admin"}</span>
             </li>
             <li>
               <ul>
                 {
                   sideBarContent?.map((item, index) => {
                     return (
-                      <li
-                        key={index}
-                        className={`submenu ${item?.pathname == window.location.pathname ? "active" : ""}  `}
-                      >
-                        <Link
-                          to={item?.pathname}
-                        >
+                      <li key={index} className={`submenu ${item?.pathname == window.location.pathname ? "active" : ""}  `}>
+                        <Link to={item?.pathname}>
                           <i className={item?.iconName}></i>
                           <span>{item?.title}</span>
                         </Link>

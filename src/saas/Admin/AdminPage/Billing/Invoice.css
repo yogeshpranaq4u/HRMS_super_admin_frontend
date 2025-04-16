@@ -1,0 +1,226 @@
+/* .mainDivInvoice {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100vh;
+}
+
+.mainDivInvoice2 {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.card-containerInvoice {
+  width: 100%;
+  height: 100vh;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 2px 2px 4px rgba(1, 1, 1, 0.1);
+  overflow-y: auto;
+}
+.button-invoicecontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.myInvoiceButton {
+  background-color: #3378ff;
+  border: none;
+  color: white;
+  padding: 12px 25px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.myInvoiceButton:hover {
+  background-color: #2862d1;
+}
+
+.invoicesearchBar-wrapper {
+  position: relative;
+
+  width: 100%;
+}
+.invoicesearchBar-input {
+  width: 100%;
+  padding: 5px 35px 5px 5px;
+
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+.table-invoice_container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-height: 70vh;
+
+  overflow-y: auto;
+}
+
+.material-table-header {
+  background-color: #f1f1f1;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: center;
+}
+
+.invoice-table th {
+  background-color: #f4f4f4;
+  text-align: center;
+  padding: 8px;
+  position: sticky;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.invoice-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
+} */
+.mainDivInvoice {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  /* height: 100vh; */
+}
+
+.mainDivInvoice2 {
+  display: flex;
+  flex-direction: row;
+  /* flex: 1; */
+  box-sizing: border-box;
+  overflow: hidden;
+  /* height: calc(100vh - 100px); */
+}
+
+.card-containerInvoice {
+  width: 100%;
+  /* height: 90vh; */
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: white;
+  padding: 20px;
+  padding-bottom: 30px;
+  box-shadow: 2px 2px 4px rgba(1, 1, 1, 0.1);
+  overflow: hidden;
+
+}
+
+.button-invoicecontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.myInvoiceButton {
+  background-color: #3378ff;
+  border: none;
+  color: white;
+  padding: 12px 25px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.myInvoiceButton:hover {
+  background-color: #2862d1;
+}
+
+.invoicesearchBar-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.invoicesearchBar-input {
+  width: 100%;
+  padding: 5px 35px 5px 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* Updated table container */
+.table-invoice_container {
+  /* border: 1px solid #ddd; */
+  border-radius: 8px;
+  /* height: 80vh; */
+  overflow-y: auto; /* Enable scroll if the table overflows */
+}
+
+.material-table-header {
+  background-color: #f1f1f1;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: center;
+}
+
+.invoice-table th {
+  background-color: #f4f4f4;
+  text-align: center;
+  padding: 8px;
+  position: sticky;
+  top: 0; /* Sticky header at the top */
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.invoice-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  text-align: center;
+}
+
+.invoice-header-hover:hover {
+ justify-content: center;
+ align-items: center;
+ display: flex;
+  color: blue;  /* Change text color to blue */
+  font-weight: bold;  /* Optional: make text bold */
+}
+.sub1 {
+  overflow:  hidden!important;
+}

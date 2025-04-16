@@ -1,0 +1,120 @@
+.org-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.leadership {
+  justify-content: center;
+}
+
+.management {
+  justify-content: space-around;
+  width: 100%;
+  max-width: 400px;
+}
+
+.node {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 4px;
+
+  border: 5px solid white;
+}
+
+.connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20px;
+  font-weight: bold;
+  margin-top: -20px;
+}
+
+.connector span {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 5px 10px;
+}
+
+.connector-line {
+  display: flex;
+  justify-content: center;
+}
+
+.vertical-line {
+  width: 2px;
+  height: 120px;
+  background-color: #00000033;
+  margin-top: -40px;
+}
+
+.label {
+
+  font-size: 14px;
+  padding: 5px;
+  padding-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 2px solid #000000;
+  border-radius: 100px;
+  font-weight: bold;
+  width: 120px;
+  margin-left: 20px;
+  height: 35px;
+  background-color: white;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.vertical-line2 {
+  width: 200px;
+  height: 2px;
+  z-index: 1;
+  background-color: #00000033;
+
+}
+
+.vertical-line3 {
+  width: 90%;
+  height: 2px;
+  background-color: #00000033;
+
+}
+
+.vertical-line24 {
+  width: 50px;
+  height: 2px;
+  z-index: 1;
+
+  background-color: #00000033;
+
+}
+
+.vertical-line25 {
+  width: 50px;
+  height: 2px;
+  z-index: 1;
+
+  background-color: #00000033;
+
+}

@@ -1,0 +1,66 @@
+.mainDivleave1 {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100vh;
+  /* Set the fixed height of the main view */
+}
+
+.detailContainer1 {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.form-group2 {
+  display: flex;
+  margin-left: 10px;
+  border-width: 1px;
+  border-color: gray;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+  padding-top: 5px;
+  align-items: center;
+}
+
+.employee-table23 {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.employee-table23 th,
+.employee-table23 td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+
+}
+
+.employee-table23 th {
+  background-color: #f4f4f4;
+  text-align: center;
+  width: 90px;
+}
+
+.employee-table23 td:nth-child(3),
+.employee-table23 td:nth-child(1),
+.employee-table23 td:nth-child(4),
+.employee-table23 td:nth-child(6),
+.employee-table23 td:nth-child(7),
+.employee-table23 td:nth-child(8),
+.employee-table23 td:nth-child(9) {
+  text-align: center;
+}
+
+.employee-table23 th:nth-child(1) {
+  width: 50px;
+  text-align: center;
+}
+
+
+

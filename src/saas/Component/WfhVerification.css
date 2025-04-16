@@ -1,0 +1,89 @@
+/* Modal Styling */
+.custom-modal1345 {
+    max-width: 400px !important;
+    width: 50%;
+    background-color: white !important;
+    border-radius: 10px;
+
+}
+
+/* Fixing the overlay background */
+.react-responsive-modal-overlay {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Modal Container */
+.otp1-modal-container {
+    border-radius: 8px;
+
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+    background-color: #fff;
+}
+
+/* Heading */
+.otp1-modal-container h2 {
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Webcam Container */
+.webcam-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Captured Image Container */
+.image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Captured Image */
+.captured-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 8px;
+
+    margin-top: 10px;
+}
+
+/* Button Styles */
+.otp1-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.cancel1-btn,
+.verify1-btn {
+    flex: 1;
+    margin: 0 4px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.cancel1-btn {
+    background: #f5f5f5;
+    color: #333;
+}
+
+.verify1-btn {
+    background: #007bff;
+    color: white;
+}
+
+.verify1-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}

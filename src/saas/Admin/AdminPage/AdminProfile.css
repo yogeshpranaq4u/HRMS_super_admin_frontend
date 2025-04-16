@@ -1,0 +1,177 @@
+.mainDiv11 {
+    flex-direction: column;
+    padding: 5px;
+}
+
+.prrofileCard {
+    max-height: 700px;
+
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+
+
+
+}
+
+.dialog-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.dialog {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+.dialog input {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.dialog-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.confirm-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.employee-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    background: var(--background-image) no-repeat center center;
+    background-size: cover;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+}
+
+.profile-picture {
+    width: 100px;
+    height: 100px;
+
+    object-fit: cover;
+    
+   
+
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+}
+
+.employee-name {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.role-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.role {
+    display: flex; 
+    align-items: center;
+    background-color: #e0f7ff; 
+    color: #007acc; 
+    padding: 5px 10px;
+    border-radius: 20px; 
+    font-size: 0.9rem;
+    font-weight: 600;
+    gap: 5px; 
+  }
+
+
+.badge {
+    font-size: 1.2rem;
+}
+
+.awards-section {
+    text-align: right;
+    
+}
+
+.award {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 5px 0;
+    color:'#3D3D3D'
+}
+
+.award-count {
+    font-weight: bold;
+}
+
+.mainDashbord123 {
+    max-height:100vh;
+    overflow-y: auto;
+    padding-bottom: 30px;
+  
+  }
+
+.card23 {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   
+  
+    border: 1px solid #e0e0e0;
+   
+  }
+  

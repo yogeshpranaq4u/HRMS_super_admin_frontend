@@ -1,0 +1,63 @@
+.p-multiselect {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0px 8px;
+    background-color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+
+.p-multiselect:focus-within {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(51, 75, 100, 0.5);
+    outline: none;
+}
+
+
+.p-multiselect-token {
+    background-color: #007BFF;
+    color: white;
+    border-radius: 3px;
+    margin: 2px;
+}
+
+
+.p-multiselect-panel {
+    border: 2px solid #007BFF;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.p-multiselect-item:hover {
+    background-color: #007BFF;
+    color: white;
+}
+.p-multiselect .p-checkbox {
+    margin-right: 8px;        
+    vertical-align: middle;    
+  }
+  
+ 
+  .p-checkbox-box {
+    width: 18px;               
+    height: 18px;              
+    border: 1px solid #ccc;    
+  }
+ 
+  .p-checkbox-box.p-highlight {
+    border-color: #007BFF;     
+    background-color: #007BFF; 
+  }
+  
+ 
+  .p-checkbox-icon {
+    font-size: 14px;          
+    color: white;             
+  }
+  
+  
+  .p-checkbox-box:hover {
+    border-color: #007BFF;     
+  }

@@ -1,0 +1,60 @@
+.leavehistory-card {
+    padding: 5px;
+    border-radius: 10px;
+    text-align: center;
+    width: 180px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    align-items: center;
+
+
+
+}
+
+.annualhistory-leaves {
+    background-color: #FFF5E6;
+    border: 2px dotted orange !important;
+
+}
+.collectedhistory-leaves {
+    background-color: #EBFAEF;
+    border: 2px dotted #34C759 !important;
+
+}
+
+.paidhistory-collected {
+    background-color: #FFFAE6;
+    border: 2px dotted #FFCC00 !important;
+}
+
+.unpaidhistory-leaves {
+    background-color: #F7EEFC;
+    border: 2px dotted #AF52DE !important;
+}
+
+
+
+.apply-wfh-btn {
+    padding: 4px 8px;
+    /* Reduce vertical padding */
+
+    border-radius: 6px;
+    /* Keep rounded corners */
+    background-color: #007bff;
+
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter';
+    font-size: 12px;
+    /* Reduce text size */
+    color: white;
+    font-weight: 600;
+    line-height: 18px;
+}
+
+.apply-wfh-btn:hover {
+    background-color: #0056b3;
+}

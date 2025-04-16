@@ -1,0 +1,236 @@
+.custom-modal1322 {
+    max-width: 500px !important;
+    border-radius: 10px;
+    width: 80%;
+    justify-content: center;
+    align-items: content;
+}
+
+.wfh-container {
+    width: 100%;
+
+    border-radius: 10px;
+    text-align: center;
+    justify-content: center;
+    align-items: content;
+
+}
+
+
+.wfh-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.wfh-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    margin-bottom: 15px;
+    
+}
+
+.radio-option {
+    font-size: 14px;
+    color: #444;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+   
+}
+
+.radio-option input {
+    margin-right: 5px;
+    vertical-align: middle;
+
+}
+
+.radio-option.selected {
+    font-weight: bold;
+    color: #047EFF;
+}
+
+
+.input-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.input-label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.input-field {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+
+    transition: border 0.3s ease-in-out;
+
+}
+
+
+.input-field:focus {
+    border: 2px solid #047EFF;
+
+    box-shadow: 0px 0px 5px rgba(4, 126, 255, 0.3);
+
+}
+
+.date-wrapper .input-field:focus {
+    border: 2px solid #047EFF;
+
+}
+
+.textarea {
+    height: 80px;
+    resize: none;
+}
+
+
+.date-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.date-wrapper {
+  
+    width: 220px;
+}
+
+.calendar-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.date-wrapper .input-field {
+    padding-left: 30px;
+}
+
+
+.button-group {
+    display: flex;
+    justify-content: right;
+    margin-top: 20px;
+}
+
+.btn {
+    width: 30%;
+    padding: 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+
+    border-radius: 5px;
+}
+
+.cancel {
+    background: none;
+    color: #047EFF;
+    border: 1px solid transparent;
+    margin-left: 20px;
+
+    cursor: pointer;
+}
+
+.submit {
+    background: #047EFF;
+    color: white;
+    border: 1px solid transparent;
+
+    cursor: pointer;
+}
+
+.btn:hover {
+    opacity: 1;
+}
+
+.cancel:hover {
+    background: none !important;
+
+    color: #666 !important;
+  
+}
+
+.leave-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.leave-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.checkbox-group input {
+    width: 18px;
+    height: 18px;
+}
+
+.date-wrapper1 {
+  
+    width: 460px;
+}
+
+
+
+.date-wrapper1 .input-field {
+    padding-left: 30px;
+}
+
+.container-checkbox1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .checkbox1-group,
+  .radio1-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  
+  label {
+    font-size: 16px;
+    color: #000;
+    cursor: pointer;
+  }
+  

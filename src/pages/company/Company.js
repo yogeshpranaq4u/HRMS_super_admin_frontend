@@ -371,6 +371,7 @@ const Company = () => {
                         dataKeys={dataKeys || []}
                         onEdit={handleActions}
                         onView={handleActions}
+                        externalLink={"/login"}
                       // handleDelete={handleActions}
                       />
                     </div>

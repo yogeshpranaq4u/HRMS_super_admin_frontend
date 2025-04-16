@@ -1,0 +1,133 @@
+.form-gridAsset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.form-groupAsset {
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - 5px);
+
+}
+
+.form-groupAsset label {
+  font-size: 18px;
+  font-weight: 500;
+  color: black;
+  
+  margin-bottom: 5px;
+}
+
+.form-groupAsset input,
+.form-groupAsset select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.form-groupAsset input:focus,
+.form-groupAsset select:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 30px;
+}
+
+.input-wrapper .icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.form-groupAsset1 {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 2px);
+
+}
+
+.form-groupAsset1 textarea {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  resize: vertical;
+  min-height: 70px;
+
+}
+
+.form-groupAsset1 textarea:focus,
+.form-groupAsset1 textarea:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+
+}
+
+.buttonAsset {
+  display: flex;
+  justify-content: end;
+  width: 30%;
+
+  margin-top: 20px;
+}
+
+
+.myButton22 {
+  width: 50%;
+  padding: 5px;
+  border-radius: 5px;
+  background: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+
+}
+
+.myButton33 {
+  width: 50%;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  color: #007BFF;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: -230px;
+  margin-top: 30px;
+  font-weight: 700;
+
+}
+
+.myButton2:hover {
+  background-color: #2862d1;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+
+}

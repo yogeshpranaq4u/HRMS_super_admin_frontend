@@ -12,8 +12,10 @@ function PrivateRoute({ element }) {
         Admin: '/admin/',
         Employee: '/employee/',
     };
-    const userRole = user.role;
+    const userRole = user.role || user?.type;
     // If not logged in, redirect to login
+    // console.log("userRole" ,userRole,token);
+    
     if (!token) {
         return <Navigate to="/login" replace />;
     }

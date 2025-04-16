@@ -1,0 +1,414 @@
+.addinvoicecontainer {
+  margin: 0px;
+  padding-top: 0px;
+  position: relative;
+  height: 100vh;
+  /* Ensures the container takes up the full viewport height */
+  overflow: hidden;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 30px;
+  color: black;
+
+  text-align: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  z-index: 10;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+.section1 {
+  flex: 100%;
+  border-radius: 8px;
+  height: 100%;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .section1,
+  .section2 {
+    flex: 1 0 100%;
+  }
+}
+
+.section1 h1 {
+  font-size: 24px;
+  text-align: center;
+}
+
+.section1 p {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Invoice container */
+.invoice-container11 {
+  width: 100%;
+  border: 1px solid #ccc;
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid #333;
+
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header fields */
+.invoice-header input {
+  width: 22%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+
+
+.add-row-btn {
+  width: 20%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: flex-start;
+  /* Ensures button is aligned to the left */
+  margin-left: 0;
+}
+
+.add-row-btn:hover {
+  background-color: #0056b3;
+}
+
+.invoice-actions12 {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  align-items: flex-end;
+ 
+}
+
+.invoice-summary {
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-title {
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.summary-title small {
+  font-weight: normal;
+  color: hsl(0, 4%, 44%);
+  font-size: 15px;
+}
+
+.summary-value {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: right;
+}
+
+.discount-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.discount-input input {
+  width: 40px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.discountamount-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.discountamount-input input {
+  width: 150px;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.summary-row.total {
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+.invoice-actions12 button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: transparent;
+
+  font-weight: 600;
+  color: #047eff;
+  border: none;
+
+  padding: 10px 20px;
+
+  cursor: pointer;
+
+}
+
+.cancel-btn:hover {
+  background-color: transparent;
+
+}
+
+.save-draft-btn {
+  background-color: #007bff;
+  font-weight: 600;
+  color: white;
+}
+
+.save-send-btn {
+  background-color: #28a745;
+  color: white;
+  font-weight: 600;
+}
+
+.save-draft-btn:hover {
+  background-color: #0056b3;
+}
+
+.save-send-btn:hover {
+  background-color: #218838;
+}
+
+.form-gridinvoice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.form-groupinvoice {
+  display: flex;
+  flex-direction: column;
+  width: calc(45% - 10px);
+}
+
+.form-groupinvoice label {
+  font-size: 15px;
+  font-weight: 500;
+  color: black;
+
+  margin-bottom: 5px;
+}
+
+.form-groupinvoice input,
+.form-groupinvoice textarea,
+.form-groupinvoice textarea:focus,
+
+.form-groupinvoice select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+
+
+}
+
+.form-groupinvoice input:focus,
+.form-groupinvoice select:focus {
+  border-color: initial;
+  box-shadow: none;
+  outline: none;
+}
+
+
+.invoice-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+
+.invoice-table th:nth-child(1),
+td:nth-child(1) {
+  width: 30%;
+}
+
+.invoice-table th:nth-child(2),
+td:nth-child(2) {
+  width: 7%;
+}
+
+.invoice-table th:nth-child(3),
+td:nth-child(3) {
+  width: 10%;
+}
+
+.invoice-table th:nth-child(4),
+td:nth-child(4) {
+  width: 15%;
+}
+
+.invoice-table th:nth-child(5),
+td:nth-child(5) {
+  width: 10%;
+}
+
+.invoice-table th:nth-child(6),
+td:nth-child(6) {
+  width: 10%;
+}
+
+
+.invoice-table td:nth-child(2) input,
+.invoice-table td:nth-child(3) input,
+.invoice-table td:nth-child(4) input,
+.invoice-table td:nth-child(5) input {
+  text-align: center;
+  width: 80%;
+}
+
+
+.invoice-table input,
+.invoice-table select {
+  width: 100%;
+  padding: 4px;
+}
+
+.invoice-table input {
+  width: 100%;
+  padding: 8px;
+
+}
+
+
+
+
+@media (max-width: 768px) {
+
+  .invoice-table th,
+  .invoice-table td {
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  /* Make the action buttons stack vertically on smaller screens */
+  .invoice-actions12 button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+.invoice-table input:focus,
+.invoice-table select:focus {
+  border-color: initial;
+  box-shadow: none;
+  outline: none;
+}
+
+
+td {
+  width: 20%;
+}
+
+.email-input-containerinvoice {
+  width: calc(100% - 5px);
+  margin: auto;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.email-input-wrapperinvoice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  /* padding: 5px; */
+  border-radius: 5px;
+ 
+  min-height: 40px;
+}
+
+.email-input-wrapperinvoice input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.email-input-wrapperinvoice input::placeholder {
+  color: #aaa;
+}
+
+.email-input-wrapperinvoice input:focus {
+  outline: none;
+}
