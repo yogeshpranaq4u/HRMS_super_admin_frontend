@@ -7,7 +7,7 @@ import { getAllPlans, getCompanies } from "../redux/actions/dashBoardActions";
 import Loader from "../components/Loader";
 import Pagination from "../components/Pagination";
 import UpGradePlan from "../modals/UpGradePlan";
-import { Api } from "../config/apiEndPoints";
+import { Api, ImagePath } from "../config/apiEndPoints";
 import { callApi } from "../config/apiCall";
 import InvoicePreview from "../modals/InvoicePreview";
 import { getServiceType } from "../redux/actions/otherActions";
@@ -32,7 +32,7 @@ const CompanyPlans = () => {
   const formateForPlans = companiesData?.data?.map((item) => {
     const { company_name, company_logo,
       current_plan, service_type, id, ...rest } = item
-      // console.log("item" ,item);
+    // console.log("item" ,item);
     return {
       company_name,
       company_logo,
@@ -52,6 +52,7 @@ const CompanyPlans = () => {
   }, [])
   const tableHeader = [
     "Company Name",
+    "#invoice",
     "Service Type",
     "Subscription Plan",
     "Purchase Date",
@@ -62,6 +63,7 @@ const CompanyPlans = () => {
 
   const dataKeys = [
     "company_name",          // Company Name
+    "invoice",          // Company Name
     "services",          // Service Type (array stored as string)
     "plan_name",
     "start_date",
@@ -79,16 +81,30 @@ const CompanyPlans = () => {
     }))
   }
   const handleActions = (data, type) => {
-    // console.log(data, type);
-    
-    setModalData((prev) => ({
-      ...prev,
-      data: data,
-      type: type,
-      isOpen: true,
-      onConfirm: "",
-      onClose: onClose
-    }))
+    console.log(data, type);
+
+    if (type == "pdfDownload") {
+      const url = `${ImagePath}${data?.invoice?.invoice_url}`;
+      if (url) {
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `invoice${data?.end_date}.pdf`); // You can customize the filename
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        console.error("Invoice URL not found.");
+      }
+    } else {
+      setModalData((prev) => ({
+        ...prev,
+        data: data,
+        type: type,
+        isOpen: true,
+        onConfirm: "",
+        onClose: onClose
+      }))
+    }
   }
 
   const fetchStats = async () => {
@@ -165,17 +181,16 @@ const CompanyPlans = () => {
               <div className="col-lg-3 col-md-6 d-flex">
                 <div className="card flex-fill">
                   <div className="card-body d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg bg-info flex-shrink-0">
-                        {/* <i className="ti ti-building fs-16" /> */}
-                        <i className="ti ti-location-dollar fs-16"></i>
-                      </span>
+                    <div className="d-flex align-items-center justify-content-between w-100 px-1 overflow-hidden">
                       <div className="ms-2 overflow-hidden">
                         <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Total Transaction
+                          Total Revenue
                         </p>
-                        <h4>{pageStats?.total_transactions || 0}</h4>
+                        <h4>₹{pageStats?.total_transactions || 0}</h4>
                       </div>
+                      <span className="avatar avatar-lg bg-info flex-shrink-0">
+                        <i className="ti ti-location-dollar fs-16"></i>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -183,16 +198,33 @@ const CompanyPlans = () => {
               <div className="col-lg-3 col-md-6 d-flex">
                 <div className="card flex-fill">
                   <div className="card-body d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg flex-shrink-0" style={{ background: "#00C7BE" }}>
-                        <i className="ti ti-users fs-16" />
+                    <div className="d-flex align-items-center justify-content-between w-100 px-1 overflow-hidden">
+                      <div className="ms-2 overflow-hidden">
+                        <p className="fs-12 fw-medium mb-1 text-truncate">
+                          Most Used Plan
+                        </p>
+                        <h4>{pageStats?.most_purchased_plan}</h4>
+                      </div>
+                      <span className="avatar avatar-lg  flex-shrink-0" style={{ background: "#AF52DE" }}>
+                        <i className="ti ti-calendar-week fs-16"></i>
                       </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-3 col-md-6 d-flex">
+                <div className="card flex-fill">
+                  <div className="card-body d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center justify-content-between w-100 px-1 overflow-hidden">
                       <div className="ms-2 overflow-hidden">
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Total Subscribers
                         </p>
                         <h4>{pageStats?.total_subscribers || 0}</h4>
                       </div>
+                      <span className="avatar avatar-lg flex-shrink-0" style={{ background: "#00C7BE" }}>
+                        <i className="ti ti-users fs-16" />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -200,16 +232,16 @@ const CompanyPlans = () => {
               <div className="col-lg-3 col-md-6 d-flex">
                 <div className="card flex-fill">
                   <div className="card-body d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg bg-success flex-shrink-0">
-                        <i className="ti ti-user-check fs-16" />
-                      </span>
+                    <div className="d-flex align-items-center justify-content-between w-100 px-1 overflow-hidden">
                       <div className="ms-2 overflow-hidden">
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Active Subscribers
                         </p>
                         <h4>{pageStats?.active_subscribers || 0}</h4>
                       </div>
+                      <span className="avatar avatar-lg bg-success flex-shrink-0">
+                        <i className="ti ti-user-check fs-16" />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -218,16 +250,16 @@ const CompanyPlans = () => {
               <div className="col-lg-3 col-md-6 d-flex">
                 <div className="card flex-fill">
                   <div className="card-body d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg bg-danger flex-shrink-0">
-                        <i className="ti ti-user-x fs-16" />
-                      </span>
+                    <div className="d-flex align-items-center justify-content-between w-100 px-1 overflow-hidden">
                       <div className="ms-2 overflow-hidden">
                         <p className="fs-12 fw-medium mb-1 text-truncate">
                           Expired Subscribers
                         </p>
-                        <h4>{pageStats?.expired_subscribers| "0"}</h4>
+                        <h4>{pageStats?.expired_subscribers | "0"}</h4>
                       </div>
+                      <span className="avatar avatar-lg bg-danger flex-shrink-0">
+                        <i className="ti ti-user-x fs-16" />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -322,15 +354,16 @@ const CompanyPlans = () => {
                         tableHeader={tableHeader}
                         dataSource={formateForPlans?.filter((item) => {
                           if (searchText) {
-                            return item.company_name.toLowerCase().includes(searchText.toLowerCase()) ||
-                              item.plan_name.toLowerCase().includes(searchText.toLowerCase())
+                            return item?.company_name?.toLowerCase().includes(searchText?.toLowerCase()) ||
+                              item?.plan_name?.toLowerCase().includes(searchText?.toLowerCase())
                           }
                           return item
                         }) || []}
-                        historyLink={"/superadmin/plans-history"}//here will be the history page link
+                        historyLink={"/superadmin/plans-history"}
                         dataKeys={dataKeys || []}
-                        // pdfDownload={handleActions}
-                        // pdfView={handleActions}
+                        pdfDownload={handleActions}
+                        pdfView={handleActions}
+                        // indexStartFrom={((companiesData?.pagination?.currentPage - 1) * companiesData?.pagination?.limit + 1)||0}
                       />
                     </div>
                   </div>
@@ -351,7 +384,7 @@ const CompanyPlans = () => {
         <UpGradePlan handleData={modalData} />
       }
       {modalData.type == "pdfView" && modalData.isOpen &&
-        <InvoicePreview handleData={modalData} companyData={modalData?.data} /> }
+        <InvoicePreview handleData={modalData} companyData={modalData?.data} />}
     </React.Fragment>
   );
 };

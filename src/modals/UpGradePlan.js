@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Api, BaseUrl, ImagePath } from '../config/apiEndPoints';
 import { callApi } from '../config/apiCall';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCompany, getAllPlans, getCompanies, getPlanHistory, updateCompany } from '../redux/actions/dashBoardActions';
+import { getCompanies, getPlanHistory, updateCompany } from '../redux/actions/dashBoardActions';
 import { formatDate, getFirstErrorMessage, hasValidationError, validatedFields, validationError } from '../helpers/frontend';
 import { toast } from 'react-toastify';
 import Select from "react-select";
@@ -31,7 +31,11 @@ function UpGradePlan({ handleData }) {
     }, []
     )
 
-    // console.log("upgrade" ,handleData);
+    const AddonPrice = serviceTypeData?.data?.find((item)=>{
+        return item?.name?.toLowerCase() == "invoice"
+    })
+    console.log("upgrade" ,handleData);
+    // console.log("AddonPrice" ,AddonPrice);
     
 
     useEffect(() => {
@@ -57,8 +61,8 @@ function UpGradePlan({ handleData }) {
         const { name, value, type, checked } = e.target;
         if (type === "checkbox") {
             setFormData((prev) => {
-                let finalPrice = checked && value == 2 ? parseFloat(prev.price) + 100
-                    : !checked && value == 2 ? parseFloat(prev.price) - 100 : prev.price
+                let finalPrice = checked && value == 2 ? parseFloat(prev.price) + parseFloat(AddonPrice?.price)||0
+                    : !checked && value == 2 ? parseFloat(prev.price) - parseFloat(AddonPrice?.price)||0 : prev.price
                 return ({
                     ...prev,
                     service_ids: checked
@@ -106,6 +110,9 @@ function UpGradePlan({ handleData }) {
                 if (response?.authenticated && response?.valid) {
                    dispatch(getPlanHistory(handleData.data.id))
                 }
+            }
+            if (handleData?.type == "addPlan"){
+                dispatch(getCompanies({limit:10}))
             }
             
             setLoading(false)

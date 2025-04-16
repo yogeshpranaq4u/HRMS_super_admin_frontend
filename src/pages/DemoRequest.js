@@ -322,9 +322,6 @@ function DemoRequest() {
                                                                             <tr key={index}>
                                                                                 <td>
                                                                                     <div className="d-flex align-items-center file-name-icon">
-                                                                                        {/* <a href="#" className="avatar avatar-md border rounded-circle">
-                                                                                            <img src="/assets/img/company/company-01.svg" className="img-fluid" alt="img" />
-                                                                                        </a> */}
                                                                                         <div className="ms-2">
                                                                                             <h6 className="fw-medium"><a href="#">{item?.company_domain || "NA"}</a></h6>
                                                                                         </div>
@@ -400,7 +397,7 @@ function DemoRequest() {
 
                                                                                         <a href="#" className="me-2"
                                                                                             onClick={() => {
-                                                                                                if (!isdemoStatus) {
+                                                                                                if (isdemoStatus) {
                                                                                                     setModalData((prev) => ({
                                                                                                         ...prev,
                                                                                                         data: item,
@@ -411,7 +408,7 @@ function DemoRequest() {
                                                                                                 }
                                                                                             }}
                                                                                             title='Register' >
-                                                                                            <i className={`ti ti-user-edit ${isdemoStatus ? "disable-Color" : ""}`}></i>
+                                                                                            <i className={`ti ti-user-edit ${isdemoStatus ? "" : "disable-Color"}`}></i>
                                                                                         </a>
 
                                                                                         {/* <a href="#" className="me-2" title='Edit' ><i className="ti ti-edit"></i></a> */}

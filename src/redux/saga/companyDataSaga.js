@@ -52,8 +52,8 @@ export function* getCompanyAction(action) {
         });
       }
     } else {
-      sessionStorage.removeItem("userDetails");
-      window.location.href = "/login";
+      // sessionStorage.removeItem("userDetails");
+      // window.location.href = "/login";
     }
   } catch (error) {
     yield put({ type: types.GET_COMPANIES_FAILED, error: error.response });
@@ -95,8 +95,8 @@ export function* getPlanHistoryAction(action) {
         });
       }
     } else {
-      sessionStorage.removeItem("userDetails");
-      window.location.href = "/login";
+      // sessionStorage.removeItem("userDetails");
+      // window.location.href = "/login";
     }
   } catch (error) {
     yield put({ type: types.GET_PLANHISTORY_FAILED, error: error.response });

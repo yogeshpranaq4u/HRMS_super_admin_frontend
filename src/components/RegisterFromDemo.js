@@ -344,16 +344,7 @@ function RegisterFromDemo({ handleData }) {
                                                     )
                                                 })
                                             }
-                                            {/* <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" name="service_ids" value="1"
-                                                    checked={true} onChange={onTextChange} />
-                                                <label className="form-check-label">HRMS</label>
-                                            </div>
-                                            <div className="form-check">
-                                                <input className="form-check-input" type="checkbox" name="service_ids" value="Invoice"
-                                                    checked={formData.service_ids?.includes("Invoice")} onChange={onTextChange} />
-                                                <label className="form-check-label">Invoice</label>
-                                            </div> */}
+                                          
 
                                         </div>
                                         {hasValidationError(errors, "service_ids") && (

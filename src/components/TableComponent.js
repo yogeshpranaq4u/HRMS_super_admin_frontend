@@ -166,14 +166,14 @@ const TableComponent = ({ tableHeader, pdfView, pdfDownload, dataSource, dataKey
                     onEdit &&
                     <div className="me-2"
                       onClick={() => { onEdit(item, "edit") }}
-                      title='Register' >
-                      <i className="ti ti-user-edit"></i>
+                       >
+                      <i className="ti ti-edit"></i>
                     </div>
                   }
                   {/* <a href="#" className="me-2" title='Edit' ><i className="ti ti-edit"></i></a> */}
                   {
                     handleDelete &&
-                    <a onClick={() => { handleDelete(item, "delete") }} ><i className="ti ti-trash"></i></a>
+                    <div onClick={() => { handleDelete(item, "delete") }} ><i className="ti ti-trash"></i></div>
                   }
                 </div>
               </td>

@@ -52,13 +52,13 @@ const AdminsList = () => {
     fetchStats()
   }, [])
   const tableHeader = [
-    "Company Name",
-    "Service Type",
-    "Subscription Plan",
-    "Purchase Date",
-    "Expiry Date",
+    "Name",
+    "Email",
+    "Phone",
+    "Password",
+    // "Expiry Date",
     // "Plan Status",
-    "Amount",
+    // "Amount",
   ];
 
   const dataKeys = [
@@ -66,9 +66,9 @@ const AdminsList = () => {
     "services",          // Service Type (array stored as string)
     "plan_name",
     "start_date",
-    "end_date",
-    // "status",       
-    "total_price",
+    // "end_date",
+    // // "status",       
+    // "total_price",
   ];
   // console.log("companiesData ₹",formateForPlans,companiesData?.data);
 
@@ -155,7 +155,7 @@ const AdminsList = () => {
                     }}
                     className="btn btn-primary d-flex align-items-center"
                   >
-                    Add Payment
+                    Create Super Admin
                     <i className="ti ti-circle-plus ml-1" />
                   </a>
                 </div>
@@ -163,80 +163,6 @@ const AdminsList = () => {
               </div>
             </div>
 
-            <div className="row">
-              {/* Total Companies */}
-              <div className="col-lg-3 col-md-6 d-flex">
-                <div className="card flex-fill">
-                  <div className="card-body d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg bg-info flex-shrink-0">
-                        {/* <i className="ti ti-building fs-16" /> */}
-                        <i className="ti ti-location-dollar fs-16"></i>
-                      </span>
-                      <div className="ms-2 overflow-hidden">
-                        <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Total Transaction
-                        </p>
-                        <h4>{pageStats?.total_transactions || 0}</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-3 col-md-6 d-flex">
-                <div className="card flex-fill">
-                  <div className="card-body d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg flex-shrink-0" style={{ background: "#00C7BE" }}>
-                        <i className="ti ti-users fs-16" />
-                      </span>
-                      <div className="ms-2 overflow-hidden">
-                        <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Total Subscribers
-                        </p>
-                        <h4>{pageStats?.total_subscribers || 0}</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-3 col-md-6 d-flex">
-                <div className="card flex-fill">
-                  <div className="card-body d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg bg-success flex-shrink-0">
-                        <i className="ti ti-user-check fs-16" />
-                      </span>
-                      <div className="ms-2 overflow-hidden">
-                        <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Active Subscribers
-                        </p>
-                        <h4>{pageStats?.active_subscribers || 0}</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* Inactive Companies */}
-              <div className="col-lg-3 col-md-6 d-flex">
-                <div className="card flex-fill">
-                  <div className="card-body d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center overflow-hidden">
-                      <span className="avatar avatar-lg bg-danger flex-shrink-0">
-                        <i className="ti ti-user-x fs-16" />
-                      </span>
-                      <div className="ms-2 overflow-hidden">
-                        <p className="fs-12 fw-medium mb-1 text-truncate">
-                          Expired Subscribers
-                        </p>
-                        <h4>{pageStats?.expired_subscribers| "0"}</h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
             {
               isLoading ?
                 <Loader /> :
@@ -285,10 +211,11 @@ const AdminsList = () => {
                           }
                           return item
                         }) || []}
-                        historyLink={"/plans-history"}//here will be the history page link
+                        // historyLink={"/plans-history"}//here will be the history page link
                         dataKeys={dataKeys || []}
-                        // pdfDownload={handleActions}
-                        pdfView={handleActions}
+                        onEdit={handleActions}
+                        onView={handleActions}
+                        handleDelete={handleActions}
                       />
                     </div>
                   </div>

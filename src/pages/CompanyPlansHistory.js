@@ -67,7 +67,7 @@ const CompanyPlansHistory = () => {
     }))
   }
   const handleActions = (data, type) => {
-    // console.log(data, type);    
+    console.log(data, type);    
     if(type == "pdfDownload"){
       const url =`${ImagePath}${data?.invoice?.invoice_url}`;
     if (url) {
@@ -109,7 +109,7 @@ const CompanyPlansHistory = () => {
     }))
   }
 
-  console.log("planHistoryData", planHistoryData);
+  // console.log("planHistoryData", planHistoryData);
 
   return (
     <React.Fragment>
@@ -226,7 +226,7 @@ const CompanyPlansHistory = () => {
         </div>
       </MainLayout>
 
-      {modalData.type == "renew" && modalData.isOpen &&
+      {(modalData.type == "renew" || modalData.type == "upgrade") && modalData.isOpen &&
         <UpGradePlan handleData={{
           ...modalData,
           data: planHistoryData?.data

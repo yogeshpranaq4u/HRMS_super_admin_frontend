@@ -121,7 +121,7 @@ function Dashboard() {
               data={{
                 img: "ti ti-chalkboard-off fs-16",
                 value: profileData?.totalRequests,
-                title: "Total Subscribers",
+                title: "Total Demo Request",
               }}
             />
             <Card
