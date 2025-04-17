@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 import allRoutes, { getRoutesByRole } from "./routes/routes";
 import { ToastContainer } from "react-toastify";
@@ -7,13 +7,19 @@ import PrivateRoute from "./routes/PrivateRoute";
 
 function App() {
 
-  const details = JSON.parse(sessionStorage.getItem("userDetails"))||{};
+  const details = JSON.parse(sessionStorage.getItem("userDetails")) || {};
   const role = details?.user?.role?.toLowerCase() || details?.user?.type?.toLowerCase() || "guest";
 
   // Get role-based routes
   const roleRoutes = getRoutesByRole(role);
+  useEffect(() => {
+    if( window.location.pathname == "/superadmin/login"){return}
+    if (!details?.token && window.location.pathname != "/login") {
+      window.location = "/login"
+    }
+  }, [])
   // console.log("roleRoutes",roleRoutes ,role ,details);
-  
+
   return (
     <React.Fragment>
       <ToastContainer position="top-center" autoClose={1500} />
