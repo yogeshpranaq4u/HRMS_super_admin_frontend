@@ -6,14 +6,9 @@ import { MdOutlineHomeWork } from "react-icons/md";
 import { AiOutlineMail } from "react-icons/ai";
 import { HiOutlinePhone } from "react-icons/hi2";
 import { PiDeviceMobileSpeakerThin } from "react-icons/pi";
-import Select from "react-select";
 import { CiMoneyBill } from "react-icons/ci";
-import { CiLocationOn } from "react-icons/ci";
 import { MdOutlinePinDrop } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { useAuth } from "../../../../Component/Authentication/AuthContext";
-import countryToCurrency from "country-to-currency";
-import { State } from "country-state-city";
 import axios from "axios";
 import { Api, BaseUrl } from "../../../../Config/Api";
 import { toast } from "react-toastify";
@@ -25,7 +20,8 @@ const EditCustomer = ({ open, onClose, customerDetails }) => {
   const [currentEmail, setCurrentEmail] = useState("");
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const initialFormData = {

@@ -2,10 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./Invoice.css";
 import { FaEdit, FaPlus, FaSearch } from "react-icons/fa";
 import { BsPlusCircle } from "react-icons/bs";
-import MaterialTable from "material-table";
 import { Navigate, useNavigate, Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useAuth } from "../../../Component/Authentication/AuthContext";
 import axios from "axios";
 import { Api, BaseUrl } from "../../../Config/Api";
 import { toast } from "react-toastify";
@@ -19,9 +17,11 @@ import Pencile from "../../../Assets/pencil.png";
 import Delete from "../../../Assets/Color.png";
 import InvoicePic from "../../../Assets/Invoices.png";
 import { Table } from "antd";
+import MainLayout from "../../../../layouts/MainLayout";
 
 const Invoice = () => {
-  const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const getAllinvoice = useSelector((state) => state.getAllinvoice);
   const [query, setQuery] = useState("");
   const [invoiceData, setInvoiceData] = useState([]);
@@ -308,7 +308,7 @@ const Invoice = () => {
       dataIndex: "invoice_date",
       width: 150,
     },
- 
+
     {
       title: "NAME & COMPANY",
       dataIndex: "company_name",
@@ -399,7 +399,7 @@ const Invoice = () => {
           }}
         >
           {rowData?.payment_receiveed <= 0 ||
-          rowData?.payment_receiveed == null ? (
+            rowData?.payment_receiveed == null ? (
             <img
               src={NotRec}
               alt="Payment Received"
@@ -452,7 +452,7 @@ const Invoice = () => {
         </div>
       ),
     }
-,    
+    ,
     { title: "DUE DATE", dataIndex: "due_date", width: 150 },
 
     {
@@ -541,59 +541,62 @@ const Invoice = () => {
   };
 
   return (
-    <div className="mainDivInvoice" style={{maxHeight:'95vh'}}>
-      <h1
-        style={{
-          fontWeight: "700",
-          fontSize: 30,
-          color: "black",
-          padding: 15,
-          textAlign: "left",
-        }}
-      >
-        Invoice
-      </h1>
-      <div className="mainDivInvoice2">
-        <div className="card-containerInvoice">
-          <div
-            style={{
-              marginBottom: 20,
-              justifyContent: "space-between",
-              flexDirection: "row",
-              display: "flex",
-            }}
-          >
-            <div
+    <MainLayout>
+      <div className="page-wrapper">
+        <div className="content">
+          <div className="mainDivInvoice" style={{ maxHeight: '95vh' }}>
+            <h1
               style={{
-                width: 250,
-                height: 30,
-                justifyContent: "center",
-                alignItems: "center",
-                display: "flex",
+                fontWeight: "700",
+                fontSize: 30,
+                color: "black",
+                padding: 15,
+                textAlign: "left",
               }}
             >
-              <div className="invoicesearchBar-wrapper">
-                <input
-                  type="text"
-                  id="search-query"
-                  name="query"
-                  value={query}
-                  onChange={handleInputChange}
-                  placeholder="Search..."
-                  autoComplete="current-query"
-                  className="invoicesearchBar-input"
-                />
-                <FaSearch className="search-icon" />
-              </div>
-            </div>
-            <div className="button-invoicecontainer">
-              <button className="myInvoiceButton" onClick={handleClick}>
-                <BsPlusCircle style={{ marginRight: "10px" }} />
-                Create Invoice
-              </button>
-            </div>
-          </div>
-          {/* <div className="table-invoice_container">
+              Invoice
+            </h1>
+            <div className="mainDivInvoice2">
+              <div className="card-containerInvoice">
+                <div
+                  style={{
+                    marginBottom: 20,
+                    justifyContent: "space-between",
+                    flexDirection: "row",
+                    display: "flex",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 250,
+                      height: 30,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    <div className="invoicesearchBar-wrapper">
+                      <input
+                        type="text"
+                        id="search-query"
+                        name="query"
+                        value={query}
+                        onChange={handleInputChange}
+                        placeholder="Search..."
+                        autoComplete="current-query"
+                        className="invoicesearchBar-input"
+                      />
+                      <FaSearch className="search-icon" />
+                    </div>
+                  </div>
+                  <div className="button-invoicecontainer">
+                    <button className="myInvoiceButton" onClick={handleClick}>
+                      <BsPlusCircle style={{ marginRight: "10px" }} />
+                      Create Invoice
+                    </button>
+                  </div>
+                </div>
+                {/* <div className="table-invoice_container">
             <table className="invoice-table">
               <MaterialTable
                 columns={columns}
@@ -637,42 +640,45 @@ const Invoice = () => {
               />
             </table>
           </div> */}
-          <div
-            style={{
-              marginTop: "50px",
-              width: "100%",
-              maxHeight: "75vh",
-              overflowX: "auto",
-            }}
-          >
-            <Table
-              dataSource={filterInvoice}
-              className="dotted-border-table"
-              columns={columns}
-              pagination={{ pageSize: 7, position: ["bottomRight"] }}
-              rowClassName={() => "custom-row"}
-              bordered={false}
-              // style={{ tableLayout: "auto" }}
-              tableLayout="fixed"
-              rowKey="key"
-              scroll={{ x: 1000 }} // Ensures proper scrolling behavior
-              locale={{
-                emptyText: (
-                  <div className="custom-no-data">No Employee Data Found</div>
-                ),
-              }}
+                <div
+                  style={{
+                    marginTop: "50px",
+                    width: "100%",
+                    maxHeight: "75vh",
+                    overflowX: "auto",
+                  }}
+                >
+                  <Table
+                    dataSource={filterInvoice}
+                    className="dotted-border-table"
+                    columns={columns}
+                    pagination={{ pageSize: 7, position: ["bottomRight"] }}
+                    rowClassName={() => "custom-row"}
+                    bordered={false}
+                    // style={{ tableLayout: "auto" }}
+                    tableLayout="fixed"
+                    rowKey="key"
+                    scroll={{ x: 1000 }} // Ensures proper scrolling behavior
+                    locale={{
+                      emptyText: (
+                        <div className="custom-no-data">No Employee Data Found</div>
+                      ),
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <Outlet />
+            <EditInvoice
+              open={modalOpen}
+              onClose={() => setModalOpen(false)}
+              invoiceData={invoiceData}
             />
           </div>
         </div>
       </div>
-
-      <Outlet />
-      <EditInvoice
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        invoiceData={invoiceData}
-      />
-    </div>
+    </MainLayout>
   );
 };
 

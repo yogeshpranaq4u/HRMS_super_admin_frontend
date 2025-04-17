@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Modal } from "react-responsive-modal";
-import { useAuth } from "../../Component/Authentication/AuthContext";
 import { useDispatch } from "react-redux";
 import "./AddHoliday.css";
 import { Api, BaseUrl } from "../../Config/Api";
@@ -9,7 +8,9 @@ import axios from "axios";
 import { setEmployeeHoliday } from "../../Redux/Action";
 
 const AddHoliday = ({ open, onClose }) => {
-  const { setLoading, logout } = useAuth();
+  // const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
   const [file, setFile] = useState(null);

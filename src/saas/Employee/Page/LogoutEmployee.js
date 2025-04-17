@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useAuth } from "../../Component/Authentication/AuthContext";
+import "../../Admin/AdminPage/AdminProfile.css"
 import { useNavigate } from "react-router-dom";
 import { Api, BaseUrl } from "../../Config/Api";
 import { toast } from "react-toastify";
@@ -9,10 +9,9 @@ import { useDispatch } from "react-redux";
 import { persistor } from "../../Redux/Store";
 import Modal from "react-responsive-modal";
 import Webcam from "react-webcam";
-import useClearSessionStorage from "../../useClearSessionStorage";
 
 const LogoutModal = ({ open, onClose, employeeData }) => {
-  const { setLoading } = useAuth();
+  // const { setLoading } = useAuth();
   const dispatch = useDispatch();
 
   const webcamRef = useRef(null);
@@ -33,7 +32,7 @@ const LogoutModal = ({ open, onClose, employeeData }) => {
   };
 
   const submitDetails = async () => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("email", employeeData?.email);
@@ -55,19 +54,19 @@ const LogoutModal = ({ open, onClose, employeeData }) => {
       );
  
       if (response?.data?.valid == false) {
-        setLoading(false);
+        // setLoading(false);
         toast.error(response?.data?.mssg, {
           position: "top-center",
           autoClose: 1500,
         });
       } else if (response?.data?.success == false) {
-        setLoading(false);
+        // setLoading(false);
         toast.error(response?.data?.mssg, {
           position: "top-center",
           autoClose: 1500,
         });
       } else {
-        setLoading(false);
+        // setLoading(false);
         toast.success(response?.data?.mssg, {
           position: "top-center",
           autoClose: 1000,
@@ -79,7 +78,7 @@ const LogoutModal = ({ open, onClose, employeeData }) => {
         window.location.reload();
       }
     } catch (error) {
-      setLoading(false);
+      // setLoading(false);
       onClose();
       console.error("Login error:", error);
       toast.error("An unexpected error occurred.", {
@@ -88,7 +87,7 @@ const LogoutModal = ({ open, onClose, employeeData }) => {
       });
     } finally {
       onClose();
-      setLoading(false);
+      // setLoading(false);
     }
   };
   return (
@@ -148,7 +147,7 @@ const LogoutModal = ({ open, onClose, employeeData }) => {
   );
 };
 const LogoutEmployee = () => {
-  const { logout, setLoading } = useAuth();
+  // const { logout, setLoading } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const navigate = useNavigate();
@@ -193,7 +192,9 @@ const LogoutEmployee = () => {
     }
   };
   const employeeLogout = async () => {
-    setLoading(true);
+    // setLoading(true);
+    console.log("profileData" ,profileData);
+    
     try {
       const responseData = await axios(`${BaseUrl}${Api.LOG_OUT_WFHLOCATION}`, {
         method: "POST",
@@ -207,12 +208,12 @@ const LogoutEmployee = () => {
         },
       });
       if (responseData?.data?.valid === false) {
-        setLoading(false);
+        // setLoading(false);
         toast.error(responseData?.data?.mssg[0], {
           position: "top-center",
           autoClose: 1000,
         });
-        setLoading(false);
+        // setLoading(false);
         toast.success(responseData?.data?.mssg, {
           position: "top-center",
           autoClose: 1000,
@@ -220,7 +221,7 @@ const LogoutEmployee = () => {
    
       } else {
         if (responseData?.data?.mssg === "Logout successfully") {
-          setLoading(false);
+          // setLoading(false);
           toast.success(responseData?.data?.mssg, {
             position: "top-center",
             autoClose: 1000,
@@ -230,8 +231,8 @@ const LogoutEmployee = () => {
           sessionStorage.removeItem("authToken");
           await persistor.flush();
           await persistor.purge();
-          window.location.reload();
-          // sessionStorage.clear();
+          window.location ="/login"
+          sessionStorage.clear();
           // useClearSessionStorage();
         } else {
           setShowDialog(false);
@@ -251,7 +252,7 @@ const LogoutEmployee = () => {
       // await persistor.purge();
       // window.location.reload();
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -269,7 +270,7 @@ const LogoutEmployee = () => {
               <button
                 onClick={() => {
                   setShowDialog(false);
-                  navigate("/home/dashboard");
+                  navigate("/employee/");
                 }}
                 className="cancel-btn"
               >

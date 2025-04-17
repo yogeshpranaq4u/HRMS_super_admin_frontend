@@ -1,19 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import { useAuth } from "../../../../Component/Authentication/AuthContext";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { Api, BaseUrl } from "../../../../Config/Api";
 import { toast } from "react-toastify";
 import { setAssetsAssignData, setAssetsData } from "../../../../Redux/Action";
-// import { Edit } from "@mui/icons-material";
 import { COLOR, IMAGE } from "../../../../Config/Color";
 import Assign from "../../../../Assets/assign.png";
 import { Table } from "antd";
-import { Dialog, DialogContent } from "@material-ui/core";
-import { IoCaretBackCircleSharp } from "react-icons/io5";
-import { IoCaretForwardCircle } from "react-icons/io5";
+// import { Dialog, DialogContent } from "@material-ui/core";
+// import { IoCaretBackCircleSharp } from "react-icons/io5";
+// import { IoCaretForwardCircle } from "react-icons/io5";
 import AddAssets from "../../../AdminComponent/AddAssets";
 import UpdateAssets from "../../../AdminComponent/UpdateAssets";
 import AssetAssign from "../../../AdminComponent/AssetAssign";
@@ -23,7 +21,8 @@ const AddShowAssets = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const getAssetesData = useSelector((state) => state.getAssetesData);
   const [filterAsset, setFilterAsset] = useState(getAssetesData);
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [assignModalOpen, setAssignModalOpen] = useState(false);
   const [editmodalOpen, setEditModalOpen] = useState(false);
   const [assetsDetail, setAssetsDetail] = useState();
@@ -663,11 +662,10 @@ const handleClearFilter=()=>{
             }}
           />
         </div>
-        <Dialog open={open} onClose={handleClose}>
+        {/* <Dialog open={open} onClose={handleClose}>
           <DialogContent style={{ padding: 0, position: "relative" }}>
             {selectedImage && selectedImage.length > 0 ? (
               <>
-                {/* Display the current image */}
                 <img
                   src={selectedImage[count]?.image}
                   style={{
@@ -677,13 +675,11 @@ const handleClearFilter=()=>{
                   }}
                   alt="Selected"
                 />
-
-                {/* Navigation Controls */}
                 <IoCaretBackCircleSharp
                   size={50}
                   onClick={() => {
                     if (count > 0) {
-                      setCount(count - 1); // Navigate to the previous image
+                      setCount(count - 1); 
                     }
                   }}
                   style={{
@@ -702,7 +698,7 @@ const handleClearFilter=()=>{
                   size={50}
                   onClick={() => {
                     if (count < selectedImage.length - 1) {
-                      setCount(count + 1); // Navigate to the next image
+                      setCount(count + 1); 
                     }
                   }}
                   style={{
@@ -721,7 +717,6 @@ const handleClearFilter=()=>{
                 />
               </>
             ) : (
-              /* Display placeholder when no image is selected */
               <img
                 src={IMAGE.NOIMAGE}
                 style={{ width: 500, height: 500 }}
@@ -729,7 +724,7 @@ const handleClearFilter=()=>{
               />
             )}
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
       </div>
       <AddAssets open={modalOpen} onClose={() => setModalOpen(false)} />
       <UpdateAssets

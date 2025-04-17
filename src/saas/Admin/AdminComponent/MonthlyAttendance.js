@@ -30,7 +30,8 @@ const MonthlyAttendance = () => {
   const employeeId = sessionStorage.getItem("employeeId");
 
   const [test1, setTest1] = useState([]);
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const token = sessionStorage.getItem("authToken");
   const getDaysInMonth = (year, monthIndex) => {
     return new Date(year, monthIndex + 1, 0).getDate();

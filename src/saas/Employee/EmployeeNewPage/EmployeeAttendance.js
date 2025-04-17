@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useAuth } from "../../Component/Authentication/AuthContext";
 import { Api, BaseUrl, ImagePath, ImagePath1 } from "../../Config/Api";
 import { toast } from "react-toastify";
 import axios from "axios";
+import "../../Admin/AdminPage/AdminNewPage/Style/SingleEmployeeAttendance.css"
 import { COLOR, FONT, IMAGE } from "../../Config/Color";
 import PullToRefresh from "react-simple-pull-to-refresh";
-import { Table, Avatar, Select, Button, Pagination } from "antd";
+import { Table } from "antd";
 import MainLayout from "../../../layouts/MainLayout";
 // import { Dialog, DialogContent } from "@material-ui/core";
 const EmployeeAttendance = () => {

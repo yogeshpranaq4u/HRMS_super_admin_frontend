@@ -29,7 +29,8 @@ import EditWHFComponnent from "../AdminComponent/EditWHFComponnent";
 
 const AdminLeaves = () => {
   const [query, setQuery] = useState("");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [editmodalOpen, setEditModalOpen] = useState(false);
   const [editWHFOpen, setEditWHFOpen] = useState(false);
   const [employeeLeave, setEmployeeLeave] = useState();

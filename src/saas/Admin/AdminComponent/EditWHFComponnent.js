@@ -13,7 +13,8 @@ const EditWHFComponnent = ({ open, onClose, user, wdfData }) => {
   const getEmployeeindex = useSelector((state) => state.getEmployeeindex);
   const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const initialFormData = {
     start_date: "",
     end_date: "",

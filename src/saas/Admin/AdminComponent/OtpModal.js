@@ -25,7 +25,7 @@ const OtpModal = ({ open, onClose, employeeData }) => {
 
     return () => clearInterval(timer);
   }, [open]);
-  
+
   const handleChange = (event) => {
     const value = event.target.value;
     if (/^\d*$/.test(value) && value.length <= 6) {
@@ -55,24 +55,15 @@ const OtpModal = ({ open, onClose, employeeData }) => {
       );
 
       if (response?.data?.success) {
-        toast.success(response?.data?.message, {
-          position: "top-center",
-          autoClose: 1500,
-        });
+        toast.success(response?.data?.message);
 
         setTimeLeft(120);
       } else {
-        toast.error(response?.data?.message, {
-          position: "top-center",
-          autoClose: 1500,
-        });
+        toast.error(response?.data?.message);
       }
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("An unexpected error occurred.", {
-        position: "top-center",
-        autoClose: 1500,
-      });
+      toast.error("An unexpected error occurred.");
     } finally {
       // setLoading(false);
     }
@@ -106,37 +97,26 @@ const OtpModal = ({ open, onClose, employeeData }) => {
 
       if (response?.data?.valid == false) {
         // setLoading(false);
-        toast.error(response?.data?.mssg, {
-          position: "top-center",
-          autoClose: 1500,
-        });
+        toast.error(response?.data?.mssg);
       } else if (response?.data?.success == false) {
         // setLoading(false);
-        toast.error(response?.data?.mssg, {
-          position: "top-center",
-          autoClose: 1500,
-        });
+        toast.error(response?.data?.mssg);
       } else {
         // setLoading(false);
         setOtp("");
         const token = response?.data?.token;
         sessionStorage.setItem("authToken", token);
-        // dispatch(setEmployeeAuth(true));
-        // dispatch(setEmployeeAllDetails(response?.data));
+        sessionStorage.setItem("userDetails", JSON.stringify({
+          token,user:response?.data
+        }));
         sessionStorage.setItem("employeeId", response?.data?.id);
-        toast.success(response?.data?.mssg, {
-          position: "top-center",
-          autoClose: 1500,
-        });
-        navigate("/adminhome/admindashboard");
+        toast.success(response?.data?.mssg);
+        window.location = "/admin/"
       }
     } catch (error) {
       // setLoading(false);
       console.error("Login error:", error);
-      toast.error("An unexpected error occurred.", {
-        position: "top-center",
-        autoClose: 1500,
-      });
+      toast.error("An unexpected error occurred.");
     } finally {
       // setLoading(false);
     }

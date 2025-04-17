@@ -12,7 +12,6 @@ function App() {
 
   // Get role-based routes
   const roleRoutes = getRoutesByRole(role);
-
   // console.log("roleRoutes",roleRoutes ,role ,details);
   
   return (

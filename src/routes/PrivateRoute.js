@@ -14,7 +14,7 @@ function PrivateRoute({ element }) {
     };
     const userRole = user.role || user?.type;
     // If not logged in, redirect to login
-    // console.log("userRole" ,userRole,token);
+    console.log("userRole" ,userRole,token);
     
     if (!token) {
         return <Navigate to="/login" replace />;

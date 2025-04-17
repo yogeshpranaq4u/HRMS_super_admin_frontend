@@ -10,9 +10,9 @@ import { FaSearch } from "react-icons/fa";
 import { COLOR, IMAGE } from "../../../../Config/Color";
 import { Table } from "antd";
 
-import { Dialog, DialogContent } from "@material-ui/core";
-import { IoCaretBackCircleSharp } from "react-icons/io5";
-import { IoCaretForwardCircle } from "react-icons/io5";
+// import { Dialog, DialogContent } from "@material-ui/core";
+// import { IoCaretBackCircleSharp } from "react-icons/io5";
+// import { IoCaretForwardCircle } from "react-icons/io5";
 import AssetReturn from "../../AssetReturn";
 const AssignAssetsDetails = () => {
   const [query, setQuery] = useState("");
@@ -21,7 +21,8 @@ const AssignAssetsDetails = () => {
   const [retuenModal, setRetuenModal] = useState(false);
   const getAssetsAssignData = useSelector((state) => state.getAssetsAssignData);
   const [filterAsset, setFilterAsset] = useState(getAssetsAssignData);
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const token = sessionStorage.getItem("authToken");
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(false);
@@ -560,11 +561,10 @@ const AssignAssetsDetails = () => {
           onClose={handleModalClose}
           assetsData={assetReturn}
         />
-        <Dialog open={open} onClose={handleClose}>
+        {/* <Dialog open={open} onClose={handleClose}>
           <DialogContent style={{ padding: 0, position: "relative" }}>
             {selectedImage && selectedImage.length > 0 ? (
               <>
-                {/* Display the current image */}
                 <img
                   src={selectedImage[count]?.image}
                   style={{
@@ -574,13 +574,11 @@ const AssignAssetsDetails = () => {
                   }}
                   alt="Selected"
                 />
-
-                {/* Navigation Controls */}
                 <IoCaretBackCircleSharp
                   size={50}
                   onClick={() => {
                     if (count > 0) {
-                      setCount(count - 1); // Navigate to the previous image
+                      setCount(count - 1); 
                     }
                   }}
                   style={{
@@ -590,7 +588,6 @@ const AssignAssetsDetails = () => {
                     transform: "translateY(-70%)",
                     cursor: count > 0 ? "pointer" : "not-allowed",
                     opacity: count > 0 ? 1 : 0.5,
-                    // zIndex: 10, // Ensure the icons appear above the image
                     color: "black",
                   }}
                 />
@@ -599,7 +596,7 @@ const AssignAssetsDetails = () => {
                   size={50}
                   onClick={() => {
                     if (count < selectedImage.length - 1) {
-                      setCount(count + 1); // Navigate to the next image
+                      setCount(count + 1); 
                     }
                   }}
                   style={{
@@ -612,13 +609,11 @@ const AssignAssetsDetails = () => {
                         ? "pointer"
                         : "not-allowed",
                     opacity: count < selectedImage.length - 1 ? 1 : 0.5,
-                    // zIndex: 10, // Ensure the icons appear above the image
-                    color: "black", // Optional: make icons stand out
+                    color: "black",
                   }}
                 />
               </>
             ) : (
-              /* Display placeholder when no image is selected */
               <img
                 src={IMAGE.NOIMAGE}
                 style={{ width: 500, height: 500 }}
@@ -626,7 +621,7 @@ const AssignAssetsDetails = () => {
               />
             )}
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
       </div>
     </div>
   );

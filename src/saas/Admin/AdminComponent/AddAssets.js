@@ -12,7 +12,8 @@ import { TfiLocationPin } from "react-icons/tfi";
 
 const AddAssets = ({ open, onClose }) => {
   const employeeId = sessionStorage.getItem("employeeId");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
   const [selectedImages, setSelectedImages] = useState([]);

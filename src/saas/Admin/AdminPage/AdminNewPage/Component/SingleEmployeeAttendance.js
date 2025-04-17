@@ -13,7 +13,7 @@ import "../Style/SingleEmployeeAttendance.css";
 import PullToRefresh from "react-simple-pull-to-refresh";
 import EditEmployeeAttendance from "../../../AdminComponent/EditEmployeeAttendance";
 import { CSVLink } from "react-csv";
-import { Dialog, DialogContent } from "@material-ui/core";
+// import { Dialog, DialogContent } from "@material-ui/core";
 import WHFComponnent from "../../../AdminComponent/WHFComponnent";
 const SingleEmployeeAttendance = ({ data }) => {
   const dispatch = useDispatch();
@@ -26,7 +26,8 @@ const SingleEmployeeAttendance = ({ data }) => {
   const [open, setOpen] = useState(false);
   const [employee, setEmployee] = useState();
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [test1, setTest1] = useState([]);
   const [filteredCategories, setFilteredCategories] =
     useState(getEmployeeDetails);
@@ -1258,7 +1259,7 @@ const SingleEmployeeAttendance = ({ data }) => {
               />
             </div>
 
-            <Dialog open={open} onClose={handleClose}>
+            {/* <Dialog open={open} onClose={handleClose}>
               <DialogContent style={{ padding: 0 }}>
                 {selectedImage ? (
                   <img
@@ -1275,7 +1276,7 @@ const SingleEmployeeAttendance = ({ data }) => {
                   />
                 )}
               </DialogContent>
-            </Dialog>
+            </Dialog> */}
             <EditEmployeeAttendance
               open={editmodalOpen}
               onClose={() => setEditModalOpen(false)}

@@ -22,7 +22,8 @@ import WHFComponnent from "../../AdminComponent/WHFComponnent";
 import EditWHFComponnent from "../../AdminComponent/EditWHFComponnent";
 const NewLeaveHistory = () => {
   const dispatch = useDispatch();
-  const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const token = sessionStorage.getItem("authToken");
   const [employeeLeave, setEmployeeLeave] = useState();
   const [query, setQuery] = useState("");

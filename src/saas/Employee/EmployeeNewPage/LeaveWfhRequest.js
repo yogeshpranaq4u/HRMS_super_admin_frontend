@@ -17,7 +17,6 @@ import { setLeaveWfhRequest, setWorkFromHome } from "../../Redux/Action";
 import MainLayout from "../../../layouts/MainLayout";
 
 const LeaveWfhRequest = () => {
-  const getWorkFromHome = useSelector((state) => state.getWorkFromHome);
   const employeeId = sessionStorage.getItem("employeeId");
   const token = sessionStorage.getItem("authToken");
   // const { setLoading, logout } = useAuth();
@@ -25,15 +24,10 @@ const LeaveWfhRequest = () => {
   const logout = () => { };
   const [profileData, setProfileData] = useState([]);
   const [leaveData, setLeaveData] = useState([]);
-  const [filteredLeaveData, setFilteredLeaveData] = useState([]);
   const [totalleaveData, setTotalLeaveData] = useState([]);
-  const [selectedText, setSelectedText] = useState("Leaves");
-  const [modalOpen, setModalOpen] = useState(false);
   const dispatch = useDispatch();
-  const getLeaveWfhRequest = useSelector((state) => state.getLeaveWfhRequest);
   const [activeTab, setActiveTab] = useState("Leaves");
   const tabs = ["Leaves", "WFH", "Leave Request", "WFH Request"];
-
   const fetchEmployeProfile = useCallback(async () => {
     setLoading(true);
 

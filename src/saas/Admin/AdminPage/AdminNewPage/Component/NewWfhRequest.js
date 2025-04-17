@@ -15,7 +15,8 @@ import { useDispatch } from "react-redux";
 
 const NewWfhRequest = () => {
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const employeeId = sessionStorage.getItem("employeeId");
   const [leaveData, setLeaveData] = useState([]);
   const navigate = useNavigate();

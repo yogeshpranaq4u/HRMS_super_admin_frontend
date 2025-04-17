@@ -17,7 +17,8 @@ const EmployeeLeaveApplyHistory = () => {
   const employeeId = sessionStorage.getItem("employeeId");
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const getLeaveWfhRequest = useSelector((state) => state.getLeaveWfhRequest);
   const currentYear = new Date().getFullYear();
   const [isFilterApplied, setIsFilterApplied] = useState(false);

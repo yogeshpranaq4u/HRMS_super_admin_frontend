@@ -2,24 +2,23 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { COLOR, FONT, IMAGE } from "../../../Config/Color";
 import { Api, BaseUrl, ImagePath } from "../../../Config/Api";
-import { FaSearch } from "react-icons/fa";
 import { setEmployeeindex } from "../../../Redux/Action";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useAuth } from "../../../Component/Authentication/AuthContext";
-import { Table, Avatar, Select, Button, Pagination } from "antd";
-import { TbRefresh } from "react-icons/tb";
+import { Table } from "antd";
 import AllEmployeeSalaryPage from "./Component/AllEmployeeSalaryPage";
+
 const NewSalaryPage = () => {
   const employeeId = sessionStorage.getItem("employeeId");
   const dispatch = useDispatch();
   const inputRef = useRef(null);
-  const { setLoading, logout } = useAuth();
+  // const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const token = sessionStorage.getItem("authToken");
   const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
   const getEmployeeindex = useSelector((state) => state.getEmployeeindex);
-  const [filteredCategories, setFilteredCategories] =
-    useState(getEmployeeDetails);
+  const [filteredCategories, setFilteredCategories] =useState(getEmployeeDetails);
   const [employeeSalary, setEmployeeSalary] = useState([]);
   const [query, setQuery] = useState("");
   const [salaryCount, setSalaerCount] = useState([]);
@@ -30,6 +29,7 @@ const NewSalaryPage = () => {
   const [lateCount, setLateCount] = useState(0);
   const [weekOn, setWeekOn] = useState(false);
   const [EmployeeSalaryHistory, setEmployeeSalaryHistory] = useState([]);
+
   const getEmployeeSalaryDetails = useCallback(
     async (data) => {
       setLoading(true);
@@ -71,7 +71,8 @@ const NewSalaryPage = () => {
         setLoading(false);
       }
     },
-    [token, dispatch, setLoading, logout]
+    [token, dispatch]
+    // [token, dispatch, setLoading, logout]
   );
   const getEmployeeSalary = useCallback(
     async (data) => {
@@ -114,7 +115,7 @@ const NewSalaryPage = () => {
         setLoading(false);
       }
     },
-    [token, dispatch, setLoading, logout]
+    [token, dispatch]
   );
   useEffect(() => {
     if (getEmployeeDetails.length > 0) {
@@ -1185,8 +1186,8 @@ const NewSalaryPage = () => {
                     className="searchBar-input"
                     autoComplete="current-query"
                   />
+                  <i className="ti ti-search " />
 
-                  <FaSearch className="search-icon" />
                 </div>
               </div>
               {filteredCategories?.map((emp, index) => (

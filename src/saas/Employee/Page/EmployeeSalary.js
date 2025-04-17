@@ -24,7 +24,8 @@ const commonTextStyle = {
 const EmployeeSalary = () => {
   const employeeId = sessionStorage.getItem("employeeId");
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [profileData, setProfileData] = useState([]);
   const [employeeSalary, setEmployeeSalary] = useState([]);
 

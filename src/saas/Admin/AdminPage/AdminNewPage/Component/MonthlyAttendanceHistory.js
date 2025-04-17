@@ -3,12 +3,10 @@ import { COLOR, FONT, IMAGE } from "../../../../Config/Color";
 import { FaSearch } from "react-icons/fa";
 import PullToRefresh from "react-simple-pull-to-refresh";
 import { Api, BaseUrl, ImagePath } from "../../../../Config/Api";
-import MaterialTable from "material-table";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Table, Avatar, Select, Button, Pagination } from "antd";
 import { setMonthlyAttendance } from "../../../../Redux/Action";
-import { useAuth } from "../../../../Component/Authentication/AuthContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { CSVLink } from "react-csv";
@@ -30,7 +28,8 @@ const MonthlyAttendanceHistory = ({ data }) => {
   const employeeId = sessionStorage.getItem("employeeId");
 
   const [test1, setTest1] = useState([]);
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const token = sessionStorage.getItem("authToken");
   const getMonthlyAttendance = useSelector(
     (state) => state.getMonthlyAttendance

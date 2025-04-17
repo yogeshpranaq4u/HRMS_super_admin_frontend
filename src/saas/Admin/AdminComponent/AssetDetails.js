@@ -24,7 +24,8 @@ const AssetDetails = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const getAssetesData = useSelector((state) => state.getAssetesData);
   const [filterAsset, setFilterAsset] = useState(getAssetesData);
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [assignModalOpen, setAssignModalOpen] = useState(false);
   const [editmodalOpen, setEditModalOpen] = useState(false);
   const [assetsDetail, setAssetsDetail] = useState();

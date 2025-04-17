@@ -11,7 +11,8 @@ const AdminPasswordUpdate = () => {
   const token = sessionStorage.getItem("authToken");
   const employeeId = sessionStorage.getItem("employeeId");
   const [profileData, setProfileData] = useState();
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
 
   const fetchEmployeProfile = useCallback(async () => {
     setLoading(true);

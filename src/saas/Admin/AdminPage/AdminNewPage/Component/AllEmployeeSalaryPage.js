@@ -17,7 +17,7 @@ const months = [
   "December",
 ];
 const AllEmployeeSalaryPage = ({ sallaryHistory }) => {
-  console.log("sallaryHistory", sallaryHistory);
+  // console.log("sallaryHistory", sallaryHistory);
   const currentYear = new Date().getFullYear();
   const currentMonthIndex = new Date().getMonth();
   const [filterSalaryData, setFilteredSalaryData] = useState([]);

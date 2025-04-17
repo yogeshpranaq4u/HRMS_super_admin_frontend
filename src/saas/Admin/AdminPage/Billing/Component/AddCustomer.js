@@ -8,13 +8,11 @@ import { HiOutlinePhone } from "react-icons/hi2";
 import { PiDeviceMobileSpeakerThin } from "react-icons/pi";
 import Select from "react-select";
 import { CiMoneyBill } from "react-icons/ci";
-import { CiLocationOn } from "react-icons/ci";
 import { MdOutlinePinDrop } from "react-icons/md";
 
 import countryToCurrency from "country-to-currency";
 import { State } from "country-state-city";
 import { useDispatch } from "react-redux";
-import { useAuth } from "../../../../Component/Authentication/AuthContext";
 import { toast } from "react-toastify";
 import { Api, BaseUrl } from "../../../../Config/Api";
 import axios from "axios";
@@ -30,7 +28,8 @@ const AddCustomer = ({ open, onClose }) => {
   const [selectedState, setSelectedState] = useState({});
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const initialFormData = {
     customerName: "",
     companyName: "",

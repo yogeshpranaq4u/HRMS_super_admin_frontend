@@ -17,7 +17,9 @@ const CurrentEmployee = () => {
   const getDepartement = useSelector((state) => state.getDepartement);
   const [editmodalOpen, setEditModalOpen] = useState(false);
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+  // const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const [modalOpen, setModalOpen] = useState(false);
   const [employee, setEmployee] = useState();
   const [showDialog, setShowDialog] = useState(false);

@@ -156,7 +156,8 @@ const AdminDashbord = () => {
   useEffect(() => {
     setFilteredCategories(getEmployeeDetails);
   }, [dispatch, getEmployeeDetails]);
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);

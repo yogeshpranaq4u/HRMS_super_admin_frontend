@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { sideBarContentEmployee, sideBarContentSuperAdmin } from "../helpers/sideBarContent";
+import { sideBarContentAdmin, sideBarContentEmployee, sideBarContentSuperAdmin } from "../helpers/sideBarContent";
 import { Api, BaseUrl } from "../saas/Config/Api";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 function SideBar() {
   const userRole = JSON.parse(sessionStorage.getItem("userDetails")) || {}
   const role = userRole?.user?.role?.toLowerCase() || userRole?.user?.type?.toLowerCase() || "guest";
-  const sideBarContent = userRole?.user?.type?.toLowerCase() == "employee" ? sideBarContentEmployee : sideBarContentSuperAdmin
+  const sideBarContent = userRole?.user?.type?.toLowerCase() == "employee" ? sideBarContentEmployee : userRole?.user?.type?.toLowerCase() == "admin" ? sideBarContentAdmin : sideBarContentSuperAdmin
   // console.log("userRole" ,userRole);
   const [profileData, setProfileData] = useState();
   const employeeId = sessionStorage.getItem("employeeId");
@@ -63,7 +63,7 @@ function SideBar() {
         </a>
       </div>
       <div className="sidebar-inner slimscroll mt-3">
-        <div id="sidebar-menu" className="sidebar-menu">
+        <div id="sidebar-menu" className="sidebar-menu sv-sidebar-menu">
           <ul>
             <li className="menu-title">
               <span>{role || "Super Admin"}</span>
@@ -72,6 +72,29 @@ function SideBar() {
               <ul>
                 {
                   sideBarContent?.map((item, index) => {
+                    if (item?.subMenu?.length > 0) {
+                      return (
+                        <li className={`submenu ${item?.paths?.includes(window.location.pathname )? "active" : ""}  `}>
+                          <a href={item?.pathname||"#"} className={`${item?.paths?.includes(window.location.pathname )?"active " :""}`} data-discover="true">
+                            <i className="ti ti-box"></i><span>{item?.title}</span>
+                            <span className="menu-arrow">
+                            </span></a>
+                          <ul style={{ display:item?.paths?.includes(window.location.pathname )? "block":"none" }}>
+                            {
+                              item?.subMenu?.map((subLink, indexN) => {
+                                return (
+                                  <li key={indexN} className="">
+                                    <a style={{background:"transparent"}} className={`  ${item?.pathname == window.location.pathname ? "active" : ""}  `} href={subLink?.pathname} data-discover="true">
+                                      {subLink?.title}
+                                      <span className=""></span></a>
+                                  </li>
+                                )
+                              })
+                            }
+                          </ul>
+                        </li>
+                      )
+                    }
                     return (
                       <li key={index} className={`submenu ${item?.pathname == window.location.pathname ? "active" : ""}  `}>
                         <Link to={item?.pathname}>

@@ -1,27 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "./EmployeeAssetAssign.css";
-import { Table, Avatar, Select, Button, Pagination } from "antd";
-import { useAuth } from "../../Component/Authentication/AuthContext";
-import {
-  MdLaptopChromebook,
-  MdOutlineMailOutline,
-  MdOutlineUploadFile,
-} from "react-icons/md";
-import { BiBuildings } from "react-icons/bi";
-import { TfiLocationPin } from "react-icons/tfi";
-import { LuPhone } from "react-icons/lu";
+import { Table} from "antd";
 import { Api, BaseUrl, ImagePath } from "../../Config/Api";
 import { toast } from "react-toastify";
 import axios from "axios";
-import MaterialTable from "material-table";
-import { FaHospitalUser } from "react-icons/fa";
-import NoImage from "../../Assets/imageno.png";
-import { IoCaretBackCircleSharp } from "react-icons/io5";
-import { IoCaretForwardCircle } from "react-icons/io5";
-import { Dialog, DialogContent } from "@material-ui/core";
-import Lottie from "lottie-react";
-import Animation from "../../Assets/animation.json";
+// import NoImage from "../../Assets/imageno.png";
+// import { IoCaretBackCircleSharp } from "react-icons/io5";
+// import { IoCaretForwardCircle } from "react-icons/io5";
+// import { Dialog, DialogContent } from "@material-ui/core";
 import { COLOR, FONT, IMAGE } from "../../Config/Color";
+import MainLayout from "../../../layouts/MainLayout";
 const commonTextStyle = {
   fontWeight: "500",
   fontSize: "13px",
@@ -33,7 +21,9 @@ const commonTextStyle = {
 const EmployeeAssetAssign = () => {
   const employeeId = sessionStorage.getItem("employeeId");
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+  // const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const [profileData, setProfileData] = useState([]);
   const [employeeAssignAsset, setEmployeeAssignAsset] = useState([]);
   const [open, setOpen] = useState(false);
@@ -298,7 +288,9 @@ const EmployeeAssetAssign = () => {
     setSelectedImage(null);
   };
   return (
-    <>
+    <MainLayout>
+    <div className="page-wrapper">
+      <div className="content">
       <h2
         style={{
           marginBottom: "10px",
@@ -497,7 +489,7 @@ const EmployeeAssetAssign = () => {
             </div>
           </div>
         </div>
-        <Dialog open={open} onClose={handleClose}>
+        {/* <Dialog open={open} onClose={handleClose}>
           <DialogContent style={{ padding: 0, position: "relative" }}>
             {selectedImage && selectedImage.length > 0 ? (
               <>
@@ -560,9 +552,12 @@ const EmployeeAssetAssign = () => {
               />
             )}
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
       </div>
-    </>
+      </div>
+      </div>
+
+    </MainLayout>
   );
 };
 

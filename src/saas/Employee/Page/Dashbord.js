@@ -84,7 +84,8 @@ const Dashbord = () => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [profileData, setProfileData] = useState();
   const currentMonth = months[new Date().getMonth()];
   const [leaveData, setLeaveData] = useState([]);

@@ -12,7 +12,9 @@ import { FaLock, FaLockOpen } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 const EditEmployeeModal = ({ open, onClose, user }) => {
-  const { setLoading, logout } = useAuth();
+  // const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
   const [showPassword, setShowPassword] = useState(false);

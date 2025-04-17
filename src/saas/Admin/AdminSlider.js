@@ -51,7 +51,8 @@ const AdminSlider = () => {
   const [profileData, setProfileData] = useState();
   const token = sessionStorage.getItem("authToken");
   const employeeId = sessionStorage.getItem("employeeId");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   // const { logout } = useAuth();
   useEffect(() => {
     fetchEmployeProfile();

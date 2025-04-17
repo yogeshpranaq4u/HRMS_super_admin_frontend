@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 import { setAllUserAttendance, setMonthlyAttendance } from "../../Redux/Action";
 
 const EditEmployeeAttendance = ({ open, onClose, user }) => {
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const dispatch = useDispatch();
   const employeeId = sessionStorage.getItem("employeeId");
   const token = sessionStorage.getItem("authToken");

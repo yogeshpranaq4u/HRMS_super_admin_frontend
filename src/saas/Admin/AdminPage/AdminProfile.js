@@ -54,7 +54,8 @@ const AdminProfile = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [previewImage, setPreviewImage] = useState();
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [profileData, setProfileData] = useState();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);

@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 import { FaMapMarkerAlt, FaIdBadge } from "react-icons/fa";
 import Cropper from "react-easy-crop";
+import MainLayout from "../../../../layouts/MainLayout";
 
 const getCroppedImg = async (imageSrc, crop) => {
   const image = new Image();
@@ -49,7 +50,8 @@ const AdminNewProfile = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [previewImage, setPreviewImage] = useState();
-  const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const [profileData, setProfileData] = useState();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -210,470 +212,476 @@ const AdminNewProfile = () => {
   };
 
   return (
-    <div className="relative w-full overflow-y-auto h-full">
-      <div className="relative w-full h-[170px]">
-        <img
-          src={require("../../../Assets/NewImage/background.png")}
-          alt="background"
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      <div className="absolute top-[80px] left-1/2 transform -translate-x-1/2 w-[95%] bg-white shadow-sm rounded-lg  p-6">
-        <div className="flex items-start space-x-6">
-          <div className="relative w-[150px] h-[150px]">
-            {profileData?.image == null ? (
-              <div className="w-16 h-16 flex justify-center items-center bg-blue-700 text-white font-bold text-xl rounded-md">
-                {profileData?.name?.charAt(0).toUpperCase()}
-              </div>
-            ) : (
+    <MainLayout>
+      <div className="page-wrapper">
+        <div className="content">
+          <div className=" w-full overflow-y-auto h-full">
+            <div className=" w-full h-[170px]">
               <img
-                src={ImagePath + profileData?.image}
-                alt="User"
-                className="w-[150px] h-[150px] rounded-md object-cover"
+                src={require("../../../Assets/NewImage/background.png")}
+                alt="background"
+                className="w-full h-full object-cover"
               />
-            )}
-            <button
-              className="absolute bottom-[-5px] right-[-10px] bg-white p-1 rounded-full shadow-md transition flex items-center justify-center"
-              onClick={() => console.log("Edit Image Clicked")}
-            >
-              <img
-                src={IMAGE.PEN}
-                alt="User"
-                style={{ width: "15px", height: "15px" }}
-                onClick={() => {
-                  setIsDialogOpen(true);
+            </div>
+
+            <div className="absolute top-[80px] left-1/2 transform -translate-x-1/2 w-[95%] bg-white shadow-sm rounded-lg  p-6">
+              <div className="flex items-start space-x-6">
+                <div className="relative w-[150px] h-[150px]">
+                  {profileData?.image == null ? (
+                    <div className="w-16 h-16 flex justify-center items-center bg-blue-700 text-white font-bold text-xl rounded-md">
+                      {profileData?.name?.charAt(0).toUpperCase()}
+                    </div>
+                  ) : (
+                    <img
+                      src={ImagePath + profileData?.image}
+                      alt="User"
+                      className="w-[150px] h-[150px] rounded-md object-cover"
+                    />
+                  )}
+                  <button
+                    className="absolute bottom-[-5px] right-[-10px] bg-white p-1 rounded-full shadow-md transition flex items-center justify-center"
+                    onClick={() => console.log("Edit Image Clicked")}
+                  >
+                    <img
+                      src={IMAGE.PEN}
+                      alt="User"
+                      style={{ width: "15px", height: "15px" }}
+                      onClick={() => {
+                        setIsDialogOpen(true);
+                      }}
+                    />
+                  </button>
+                </div>
+
+                {/* Employee Details */}
+                <div className="flex flex-col mt-2">
+                  <h2
+                    style={{
+                      color: COLOR?.BLACK,
+                      fontSize: "20px",
+                      fontWeight: "600",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "32px",
+                    }}
+                  >
+                    {profileData?.name}
+                  </h2>
+                  <h3
+                    style={{
+                      color: COLOR?.BLACK1,
+                      fontSize: "15px",
+                      fontWeight: "500",
+                      lineHeight: "22px",
+                      fontFamily: FONT?.INTER,
+                    }}
+                  >
+                    {profileData?.designation}
+                  </h3>
+                  <h3
+                    className=" mt-1"
+                    style={{
+                      color: COLOR?.GRAY4,
+                      fontSize: "15px",
+                      fontWeight: "400",
+                      lineHeight: "22px",
+                      fontFamily: FONT?.INTER,
+                    }}
+                  >
+                    I am a professional {profileData?.designation}
+                  </h3>
+
+                  {/* Contact Information */}
+                  <div className="flex flex-wrap mt-4 gap-3">
+                    <div className="flex items-center px-3 py-1 border border-dashed rounded-lg text-gray-700 space-x-2">
+                      <img src={IMAGE.CONTACT} className="w-4 h-4" alt="icon" />
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          fontFamily: FONT.INTER,
+                          fontWeight: "500",
+                          lineHeight: "22px",
+                          marginTop: "5px",
+                          color: COLOR.BLACK1,
+                        }}
+                      >
+                        {profileData?.employee_code}
+                      </span>
+                    </div>
+                    <div className="flex items-center px-3 py-1 border border-dashed rounded-lg text-gray-700 space-x-2">
+                      <img src={IMAGE.PHONE} className="w-4 h-4" alt="icon" />
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          fontFamily: FONT.INTER,
+                          fontWeight: "500",
+                          lineHeight: "22px",
+                          marginTop: "5px",
+                          color: COLOR.BLACK1,
+                        }}
+                      >
+                        {profileData?.mobile}
+                      </span>
+                    </div>
+                    <div className="flex items-center px-3 py-1 border border-dashed rounded-lg text-gray-700 space-x-2">
+                      <img src={IMAGE.EMAIL} className="w-4 h-4" alt="icon" />
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          fontFamily: FONT.INTER,
+                          fontWeight: "500",
+                          lineHeight: "22px",
+                          marginTop: "5px",
+                          color: COLOR.BLACK1,
+                        }}
+                      >
+                        {profileData?.email}
+                      </span>
+                    </div>
+                    <div className="flex items-center px-3 py-1 border border-dashed rounded-lg text-gray-700 space-x-2">
+                      <img src={IMAGE.LOCATION} className="w-4 h-4" alt="icon" />
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          fontFamily: FONT.INTER,
+                          fontWeight: "500",
+                          lineHeight: "22px",
+                          marginTop: "5px",
+                          color: COLOR.BLACK1,
+                        }}
+                      >
+                        {profileData?.location}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="absolute top-[300px] left-1/2 transform -translate-x-1/2 w-[95%] bg-white shadow-sm rounded-lg  p-6">
+              <h2
+                className="mb-4 border-b pb-2"
+                style={{
+                  color: "#2D3142",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  fontFamily: FONT?.INTER,
+                  lineHeight: "24px",
                 }}
-              />
-            </button>
-          </div>
+              >
+                Profile Details
+              </h2>
 
-          {/* Employee Details */}
-          <div className="flex flex-col mt-2">
-            <h2
-              style={{
-                color: COLOR?.BLACK,
-                fontSize: "20px",
-                fontWeight: "600",
-                fontFamily: FONT?.INTER,
-                lineHeight: "32px",
-              }}
-            >
-              {profileData?.name}
-            </h2>
-            <h3
-              style={{
-                color: COLOR?.BLACK1,
-                fontSize: "15px",
-                fontWeight: "500",
-                lineHeight: "22px",
-                fontFamily: FONT?.INTER,
-              }}
-            >
-              {profileData?.designation}
-            </h3>
-            <h3
-              className=" mt-1"
-              style={{
-                color: COLOR?.GRAY4,
-                fontSize: "15px",
-                fontWeight: "400",
-                lineHeight: "22px",
-                fontFamily: FONT?.INTER,
-              }}
-            >
-              I am a professional {profileData?.designation}
-            </h3>
-
-            {/* Contact Information */}
-            <div className="flex flex-wrap mt-4 gap-3">
-              <div className="flex items-center px-3 py-1 border border-dashed rounded-lg text-gray-700 space-x-2">
-                <img src={IMAGE.CONTACT} className="w-4 h-4" alt="icon" />
-                <span
-                  style={{
-                    fontSize: "14px",
-                    fontFamily: FONT.INTER,
-                    fontWeight: "500",
-                    lineHeight: "22px",
-                    marginTop: "5px",
-                    color: COLOR.BLACK1,
-                  }}
-                >
-                  {profileData?.employee_code}
-                </span>
-              </div>
-              <div className="flex items-center px-3 py-1 border border-dashed rounded-lg text-gray-700 space-x-2">
-                <img src={IMAGE.PHONE} className="w-4 h-4" alt="icon" />
-                <span
-                  style={{
-                    fontSize: "14px",
-                    fontFamily: FONT.INTER,
-                    fontWeight: "500",
-                    lineHeight: "22px",
-                    marginTop: "5px",
-                    color: COLOR.BLACK1,
-                  }}
-                >
-                  {profileData?.mobile}
-                </span>
-              </div>
-              <div className="flex items-center px-3 py-1 border border-dashed rounded-lg text-gray-700 space-x-2">
-                <img src={IMAGE.EMAIL} className="w-4 h-4" alt="icon" />
-                <span
-                  style={{
-                    fontSize: "14px",
-                    fontFamily: FONT.INTER,
-                    fontWeight: "500",
-                    lineHeight: "22px",
-                    marginTop: "5px",
-                    color: COLOR.BLACK1,
-                  }}
-                >
-                  {profileData?.email}
-                </span>
-              </div>
-              <div className="flex items-center px-3 py-1 border border-dashed rounded-lg text-gray-700 space-x-2">
-                <img src={IMAGE.LOCATION} className="w-4 h-4" alt="icon" />
-                <span
-                  style={{
-                    fontSize: "14px",
-                    fontFamily: FONT.INTER,
-                    fontWeight: "500",
-                    lineHeight: "22px",
-                    marginTop: "5px",
-                    color: COLOR.BLACK1,
-                  }}
-                >
-                  {profileData?.location}
-                </span>
+              {/* Profile Details (One Line Per Entry) */}
+              <div className="  space-y-3 text-gray-800 pr-2">
+                <div className="flex justify-between  pb-2">
+                  <span
+                    style={{
+                      color: "#373A3C",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    Employee ID
+                  </span>
+                  <span
+                    style={{
+                      color: "#1A1A1A",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {profileData?.employee_code}
+                  </span>
+                </div>
+                <div className="flex justify-between  pb-2">
+                  <span
+                    style={{
+                      color: "#373A3C",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    Blood Group
+                  </span>
+                  <span
+                    style={{
+                      color: "#1A1A1A",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {profileData?.blood_group}
+                  </span>
+                </div>
+                <div className="flex justify-between  pb-2">
+                  <span
+                    style={{
+                      color: "#373A3C",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    Date of Birth
+                  </span>
+                  <span
+                    style={{
+                      color: "#1A1A1A",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {profileData?.dob}
+                  </span>
+                </div>
+                <div className="flex justify-between  pb-2">
+                  <span
+                    style={{
+                      color: "#373A3C",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    Department
+                  </span>
+                  <span
+                    style={{
+                      color: "#1A1A1A",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {profileData?.department}
+                  </span>
+                </div>
+                <div className="flex justify-between  pb-2">
+                  <span
+                    style={{
+                      color: "#373A3C",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    Experience
+                  </span>
+                  <span
+                    style={{
+                      color: "#1A1A1A",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {profileData?.experience}
+                  </span>
+                </div>
+                <div className="flex justify-between  pb-2">
+                  <span
+                    style={{
+                      color: "#373A3C",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    Total Experience
+                  </span>
+                  <span
+                    style={{
+                      color: "#1A1A1A",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {profileData?.total_experience}
+                  </span>
+                </div>
+                <div className="flex justify-between  pb-2">
+                  <span
+                    style={{
+                      color: "#373A3C",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    Date of Joining
+                  </span>
+                  <span
+                    style={{
+                      color: "#1A1A1A",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {profileData?.doj}
+                  </span>
+                </div>
+                <div className="flex justify-between  pb-2">
+                  <span
+                    style={{
+                      color: "#373A3C",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    Reporting Manager
+                  </span>
+                  <span
+                    style={{
+                      color: "#1A1A1A",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {profileData?.reporting_manager}
+                  </span>
+                </div>
+                <div className="flex justify-between  pb-2">
+                  <span
+                    style={{
+                      color: "#373A3C",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    Employee Status
+                  </span>
+                  <span
+                    style={{
+                      color: "#1A1A1A",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {profileData?.status}
+                  </span>
+                </div>
+                <div className="flex justify-between  pb-2">
+                  <span
+                    style={{
+                      color: "#373A3C",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    Office Location
+                  </span>
+                  <span
+                    style={{
+                      color: "#1A1A1A",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {profileData?.office_location}
+                  </span>
+                </div>
+                <div className="flex justify-between ">
+                  <span
+                    style={{
+                      color: "#373A3C",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    Shift Zone
+                  </span>
+                  <span
+                    style={{
+                      color: "#1A1A1A",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                      fontFamily: FONT?.INTER,
+                      lineHeight: "24px",
+                    }}
+                  >
+                    {profileData?.shift_timing}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div className="absolute top-[300px] left-1/2 transform -translate-x-1/2 w-[95%] bg-white shadow-sm rounded-lg  p-6">
-        <h2
-          className="mb-4 border-b pb-2"
-          style={{
-            color: "#2D3142",
-            fontSize: "16px",
-            fontWeight: "600",
-            fontFamily: FONT?.INTER,
-            lineHeight: "24px",
-          }}
-        >
-          Profile Details
-        </h2>
 
-        {/* Profile Details (One Line Per Entry) */}
-        <div className="  space-y-3 text-gray-800 pr-2">
-          <div className="flex justify-between  pb-2">
-            <span
-              style={{
-                color: "#373A3C",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              Employee ID
-            </span>
-            <span
-              style={{
-                color: "#1A1A1A",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              {profileData?.employee_code}
-            </span>
-          </div>
-          <div className="flex justify-between  pb-2">
-            <span
-              style={{
-                color: "#373A3C",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              Blood Group
-            </span>
-            <span
-              style={{
-                color: "#1A1A1A",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              {profileData?.blood_group}
-            </span>
-          </div>
-          <div className="flex justify-between  pb-2">
-            <span
-              style={{
-                color: "#373A3C",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              Date of Birth
-            </span>
-            <span
-              style={{
-                color: "#1A1A1A",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              {profileData?.dob}
-            </span>
-          </div>
-          <div className="flex justify-between  pb-2">
-            <span
-              style={{
-                color: "#373A3C",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              Department
-            </span>
-            <span
-              style={{
-                color: "#1A1A1A",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              {profileData?.department}
-            </span>
-          </div>
-          <div className="flex justify-between  pb-2">
-            <span
-              style={{
-                color: "#373A3C",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              Experience
-            </span>
-            <span
-              style={{
-                color: "#1A1A1A",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              {profileData?.experience}
-            </span>
-          </div>
-          <div className="flex justify-between  pb-2">
-            <span
-              style={{
-                color: "#373A3C",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              Total Experience
-            </span>
-            <span
-              style={{
-                color: "#1A1A1A",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              {profileData?.total_experience}
-            </span>
-          </div>
-          <div className="flex justify-between  pb-2">
-            <span
-              style={{
-                color: "#373A3C",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              Date of Joining
-            </span>
-            <span
-              style={{
-                color: "#1A1A1A",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              {profileData?.doj}
-            </span>
-          </div>
-          <div className="flex justify-between  pb-2">
-            <span
-              style={{
-                color: "#373A3C",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              Reporting Manager
-            </span>
-            <span
-              style={{
-                color: "#1A1A1A",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              {profileData?.reporting_manager}
-            </span>
-          </div>
-          <div className="flex justify-between  pb-2">
-            <span
-              style={{
-                color: "#373A3C",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              Employee Status
-            </span>
-            <span
-              style={{
-                color: "#1A1A1A",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              {profileData?.status}
-            </span>
-          </div>
-          <div className="flex justify-between  pb-2">
-            <span
-              style={{
-                color: "#373A3C",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              Office Location
-            </span>
-            <span
-              style={{
-                color: "#1A1A1A",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              {profileData?.office_location}
-            </span>
-          </div>
-          <div className="flex justify-between ">
-            <span
-              style={{
-                color: "#373A3C",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              Shift Zone
-            </span>
-            <span
-              style={{
-                color: "#1A1A1A",
-                fontSize: "16px",
-                fontWeight: "400",
-                fontFamily: FONT?.INTER,
-                lineHeight: "24px",
-              }}
-            >
-              {profileData?.shift_timing}
-            </span>
-          </div>
-        </div>
-      </div>
+            {isDialogOpen && (
+              <div className="dialog-backdrop">
+                <div className="dialog">
+                  <h2 style={{ marginBottom: 30 }}>Update Profile Image</h2>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageSelect}
+                    style={{}}
+                  />
 
-      {isDialogOpen && (
-        <div className="dialog-backdrop">
-          <div className="dialog">
-            <h2 style={{ marginBottom: 30 }}>Update Profile Image</h2>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageSelect}
-              style={{}}
-            />
+                  {selectedImage && (
+                    <div style={{ position: "relative", width: "100%", height: 200 }}>
+                      <Cropper
+                        image={previewImage}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={1}
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        onCropComplete={onCropComplete}
+                      />
+                    </div>
+                  )}
 
-            {selectedImage && (
-              <div style={{ position: "relative", width: "100%", height: 200 }}>
-                <Cropper
-                  image={previewImage}
-                  crop={crop}
-                  zoom={zoom}
-                  aspect={1}
-                  onCropChange={setCrop}
-                  onZoomChange={setZoom}
-                  onCropComplete={onCropComplete}
-                />
+                  <div className="dialog-buttons">
+                    <button className="confirm-btn" onClick={handleImageUpload}>
+                      Submit Image
+                    </button>
+                    <button
+                      className="cancel-btn"
+                      onClick={() => setIsDialogOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
-
-            <div className="dialog-buttons">
-              <button className="confirm-btn" onClick={handleImageUpload}>
-                Submit Image
-              </button>
-              <button
-                className="cancel-btn"
-                onClick={() => setIsDialogOpen(false)}
-              >
-                Cancel
-              </button>
-            </div>
           </div>
         </div>
-      )}
-    </div>
+      </div>
+    </MainLayout>
   );
 };
 

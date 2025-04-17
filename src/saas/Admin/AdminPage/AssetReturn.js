@@ -10,7 +10,8 @@ import { setAssetsAssignData, setAssetsData } from "../../Redux/Action";
 import { setAssetIndex } from "../../Redux/Action";
 const AssetReturn = ({ open, onClose, assetsData }) => {
   const employeeId = sessionStorage.getItem("employeeId");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
   const [selectedImages, setSelectedImages] = useState([]);

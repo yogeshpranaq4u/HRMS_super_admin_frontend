@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { FaEdit, FaPlus, FaSearch, FaTrash } from "react-icons/fa";
 import { BsPlusCircle } from "react-icons/bs";
-import MaterialTable from "material-table";
 import "./Customer.css";
 import AddCustomer from "./Component/AddCustomer";
 import { useSelector } from "react-redux";
@@ -13,6 +12,7 @@ import { toast } from "react-toastify";
 import { setCustomeDetails } from "../../../Redux/Action";
 import EditCustomer from "./Component/EditCustomer";
 import { Table } from "antd";
+import MainLayout from "../../../../layouts/MainLayout";
 const Customer = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -22,7 +22,8 @@ const Customer = () => {
   const [customerData, setCustomerData] = useState();
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const handleClick = () => {
     setModalOpen(true);
   };
@@ -100,9 +101,9 @@ const Customer = () => {
         } catch (e) {
           emailArray = [];
         }
-    
+
         const text = emailArray.length > 0 ? emailArray.join(" , ") : "No Emails";
-    
+
         return (
           <span
             style={{
@@ -315,7 +316,7 @@ const Customer = () => {
   useEffect(() => {
     fetchCustomerDetails();
   }, [dispatch, token, setLoading]);
-  
+
   useEffect(() => {
     if (!modalOpen) {
       fetchCustomerDetails();
@@ -359,59 +360,62 @@ const Customer = () => {
     setFilterCustomer(filteredItems);
   };
   return (
-    <div className="mainDivCustomer">
-      <h1
-        style={{
-          fontWeight: "700",
-          fontSize: 20,
-          color: "black",
-          padding: 15,
-          textAlign: "left",
-        }}
-      >
-        All Customers
-      </h1>
-      <div className="mainDivCustomer2">
-        <div className="card-containerCustomer">
-          <div
-            style={{
-              marginBottom: 20,
-              justifyContent: "space-between",
-              flexDirection: "row",
-              display: "flex",
-            }}
-          >
-            <div
+    <MainLayout>
+      <div className="page-wrapper">
+        <div className="content">
+          <div className="mainDivCustomer">
+            <h1
               style={{
-                width: 250,
-                height: 30,
-                justifyContent: "center",
-                alignItems: "center",
-                display: "flex",
+                fontWeight: "700",
+                fontSize: 20,
+                color: "black",
+                padding: 15,
+                textAlign: "left",
               }}
             >
-              <div className="customersearchBar-wrapper">
-                <input
-                  type="text"
-                  id="search-query"
-                  name="query"
-                  value={query}
-                  onChange={handleInputChange}
-                  placeholder="Search..."
-                  autoComplete="current-query"
-                  className="customersearchBar-input"
-                />
-                <FaSearch className="search-icon" />
-              </div>
-            </div>
-            <div className="button-customercontainer">
-              <button className="mycustomerButton" onClick={handleClick}>
-                <BsPlusCircle style={{ marginRight: "10px" }} />
-                New Customer
-              </button>
-            </div>
-          </div>
-          {/* <div className="table-customer_container">
+              All Customers
+            </h1>
+            <div className="mainDivCustomer2">
+              <div className="card-containerCustomer">
+                <div
+                  style={{
+                    marginBottom: 20,
+                    justifyContent: "space-between",
+                    flexDirection: "row",
+                    display: "flex",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 250,
+                      height: 30,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    <div className="customersearchBar-wrapper">
+                      <input
+                        type="text"
+                        id="search-query"
+                        name="query"
+                        value={query}
+                        onChange={handleInputChange}
+                        placeholder="Search..."
+                        autoComplete="current-query"
+                        className="customersearchBar-input"
+                      />
+                      <FaSearch className="search-icon" />
+                    </div>
+                  </div>
+                  <div className="button-customercontainer">
+                    <button className="mycustomerButton" onClick={handleClick}>
+                      <BsPlusCircle style={{ marginRight: "10px" }} />
+                      New Customer
+                    </button>
+                  </div>
+                </div>
+                {/* <div className="table-customer_container">
             <table className="customer-table">
               <MaterialTable
                 columns={columns}
@@ -442,32 +446,35 @@ const Customer = () => {
              
             </table>
           </div> */}
-          <Table
-            dataSource={filterCustomer}
-            className="dotted-border-table"
-            columns={columns}
-            pagination={{ pageSize: 10, position: ["bottomRight"] }}
-            rowClassName={() => "custom-row"}
-            bordered={false}
-            // style={{ tableLayout: "auto" }}
-            tableLayout="fixed"
-            rowKey="key"
-            scroll={{ x: 1000 }} // Ensures proper scrolling behavior
-            locale={{
-              emptyText: (
-                <div className="custom-no-data">No Employee Data Found</div>
-              ),
-            }}
-          />
+                <Table
+                  dataSource={filterCustomer}
+                  className="dotted-border-table"
+                  columns={columns}
+                  pagination={{ pageSize: 10, position: ["bottomRight"] }}
+                  rowClassName={() => "custom-row"}
+                  bordered={false}
+                  // style={{ tableLayout: "auto" }}
+                  tableLayout="fixed"
+                  rowKey="key"
+                  scroll={{ x: 1000 }} // Ensures proper scrolling behavior
+                  locale={{
+                    emptyText: (
+                      <div className="custom-no-data">No Employee Data Found</div>
+                    ),
+                  }}
+                />
+              </div>
+            </div>
+            <AddCustomer open={modalOpen} onClose={() => setModalOpen(false)} />
+            <EditCustomer
+              open={editModalOpen}
+              onClose={() => setEditModalOpen(false)}
+              customerDetails={customerData}
+            />
+          </div>
         </div>
       </div>
-      <AddCustomer open={modalOpen} onClose={() => setModalOpen(false)} />
-      <EditCustomer
-        open={editModalOpen}
-        onClose={() => setEditModalOpen(false)}
-        customerDetails={customerData}
-      />
-    </div>
+    </MainLayout>
   );
 };
 

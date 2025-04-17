@@ -10,7 +10,8 @@ import axios from "axios";
 import { setEmployeeLeaveDetails } from "../../Redux/Action";
 
 const AddLeaveStatusModal = ({ open, onClose, user }) => {
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const getEmployeeLeaveDetails = useSelector(
     (state) => state.getEmployeeLeaveDetails
   );

@@ -5,13 +5,14 @@ import "./EmployeeLeaveTable.css"; // Import CSS
 import axios from "axios";
 import { Api, BaseUrl } from "../../../../Config/Api";
 import { toast } from "react-toastify";
-import { useAuth } from "../../../../Component/Authentication/AuthContext";
 import Modal from "react-responsive-modal";
 import { useNavigate } from "react-router-dom";
 import { COLOR } from "../../../../Config/Color";
 
 const EmployeeLeaveTable = () => {
-  const { setLoading, logout } = useAuth();
+  // const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const employeeId = sessionStorage.getItem("employeeId");
   const token = sessionStorage.getItem("authToken");
   const [leaveData, setLeaveData] = useState([]);

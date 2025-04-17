@@ -56,7 +56,8 @@ const Attendance = () => {
     useState(getEmployeeDetails);
 
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(false);
   const [selectedText, setSelectedText] = useState("Current");

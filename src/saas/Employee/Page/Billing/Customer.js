@@ -20,7 +20,8 @@ const Customer = () => {
   const [customerData, setCustomerData] = useState();
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const handleClick = () => {
     setModalOpen(true);
   };

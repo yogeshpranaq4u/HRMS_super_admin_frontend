@@ -8,7 +8,8 @@ import axios from "axios";
 import { setDepartement, setManagerData } from "../../Redux/Action";
 
 const AddDepartment = ({ open, onClose, user, AddType }) => {
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
   const dispatch = useDispatch();
   const [employee, setEmployee] = useState();

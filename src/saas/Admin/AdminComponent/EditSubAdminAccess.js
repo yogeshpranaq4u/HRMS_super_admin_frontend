@@ -13,7 +13,8 @@ import { setUserDetails } from "../../Redux/Action";
 import { FaChevronDown } from "react-icons/fa";
 
 const EditSubAdminAccess = ({ open, onClose, data }) => {
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");

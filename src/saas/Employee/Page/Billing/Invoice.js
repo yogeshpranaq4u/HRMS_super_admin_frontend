@@ -20,7 +20,8 @@ import Delete from "../../../Assets/Color.png";
 import InvoicePic from "../../../Assets/Invoices.png";
 
 const Invoice = () => {
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const getAllinvoice = useSelector((state) => state.getAllinvoice);
   const [query, setQuery] = useState("");
   const [invoiceData, setInvoiceData] = useState([]);

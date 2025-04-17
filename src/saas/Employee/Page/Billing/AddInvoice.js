@@ -19,7 +19,8 @@ const AddInvoice = () => {
   const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState(false);
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [sunTotal, setSubTotal] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [discount, setDiscount] = useState(0);

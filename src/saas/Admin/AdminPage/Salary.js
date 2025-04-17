@@ -64,7 +64,8 @@ const Salary = () => {
 
   const [filteredCategories, setFilteredCategories] =
     useState(getEmployeeDetails);
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   useEffect(() => {
     getLateCount();
   }, [inputValue, salaryCount, salaryDays]);

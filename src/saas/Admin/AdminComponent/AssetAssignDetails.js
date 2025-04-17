@@ -21,7 +21,8 @@ const AssetAssignDetails = () => {
   const [retuenModal, setRetuenModal] = useState(false);
   const getAssetsAssignData = useSelector((state) => state.getAssetsAssignData);
   const [filterAsset, setFilterAsset] = useState(getAssetsAssignData);
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const token = sessionStorage.getItem("authToken");
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(false);

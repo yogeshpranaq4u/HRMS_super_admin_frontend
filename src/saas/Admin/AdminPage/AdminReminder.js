@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./AdminReminder.css";
 import { useSelector } from "react-redux";
-import { useAuth } from "../../Component/Authentication/AuthContext";
 import axios from "axios";
 import { Api, BaseUrl } from "../../Config/Api";
 import { toast } from "react-toastify";
@@ -10,11 +9,13 @@ import Anniversary from "../../Assets/Anniversary.png";
 import Probation from "../../Assets/Probation.png";
 import Intership from "../../Assets/Intern.png";
 import Performance from "../../Assets/Performance.png";
+import MainLayout from "../../../layouts/MainLayout";
 
 const AdminReminder = () => {
   const token = sessionStorage.getItem("authToken");
   const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
-  const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const [reminderData, setReminderData] = useState([]);
   useEffect(() => {
     getReminderDetails();
@@ -88,223 +89,229 @@ const AdminReminder = () => {
     }
   };
   return (
-    <div className="reminderDiv">
-      <div className="container-reminder">
-        <div
-          style={{
-            marginBottom: 20,
-            display: "flex",
-          }}
-        >
-          <h1 style={{ color: "#155596", fontWeight: "700", fontSize: 18 }}>
-            Upcoming
-          </h1>
-          <div style={{ marginTop: 20, marginLeft: -80 }}>
-            {reminderData?.upcoming_events?.map((data, index) => (
+    <MainLayout>
+      <div className="page-wrapper">
+        <div className="content">
+          <div className="reminderDiv">
+            <div className="container-reminder">
               <div
-                key={index}
                 style={{
-                  marginTop: 20,
-                  flexDirection: "row",
+                  marginBottom: 20,
                   display: "flex",
-                  alignItems: "center",
                 }}
               >
-                <img
-                  src={
-                    data?.type === "Birthday"
-                      ? Birthday
-                      : data?.type === "Anniversary"
-                      ? Anniversary
-                      : data?.type === "Prohibition End"
-                      ? Probation
-                      : data?.type === "Internship Completion"
-                      ? Intership
-                      : Performance
-                  }
-                  alt="Birthday"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    display: "flex",
-                  }}
-                />
-                <h1
-                  style={{
-                    marginLeft: 20,
-                    fontWeight: "500",
-                    fontSize: 18,
-                    color: "#1F2937",
-                    textAlign: "left",
-                  }}
-                >
-                  {upcomminggetText(data)}
-                  <h3
-                    style={{
-                      fontWeight: "400",
-                      fontSize: 14,
-                      color: "#6B7280",
-                    }}
-                  >
-                    Upcoming Date : {data?.date}
-                  </h3>
+                <h1 style={{ color: "#155596", fontWeight: "700", fontSize: 18 }}>
+                  Upcoming
                 </h1>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div
-          style={{
-            marginBottom: 20,
-            display: "flex",
-          }}
-        >
-          <h1 style={{ color: "#155596", fontWeight: "700", fontSize: 18 }}>
-            Today
-          </h1>
-          <div style={{ marginTop: 20, marginLeft: -45 }}>
-            {reminderData?.current_events > 0 ? (
-              <>
-                {reminderData?.current_events?.map((data, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      marginTop: 20,
-                      flexDirection: "row",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <img
-                      src={
-                        data?.type === "Birthday"
-                          ? Birthday
-                          : data?.type === "Anniversary"
-                          ? Anniversary
-                          : data?.type === "Prohibition End"
-                          ? Probation
-                          : data?.type === "Internship Completion"
-                          ? Intership
-                          : Performance
-                      }
-                      alt="Birthday"
+                <div style={{ marginTop: 20, marginLeft: -80 }}>
+                  {reminderData?.upcoming_events?.map((data, index) => (
+                    <div
+                      key={index}
                       style={{
-                        width: "40px",
-                        height: "40px",
+                        marginTop: 20,
+                        flexDirection: "row",
                         display: "flex",
-                      }}
-                    />
-                    <h1
-                      style={{
-                        marginLeft: 20,
-                        fontWeight: "500",
-                        fontSize: 18,
-                        color: "#1F2937",
-                        textAlign: "left",
+                        alignItems: "center",
                       }}
                     >
-                      {currentgetText(data)}
-                      <h3
+                      <img
+                        src={
+                          data?.type === "Birthday"
+                            ? Birthday
+                            : data?.type === "Anniversary"
+                              ? Anniversary
+                              : data?.type === "Prohibition End"
+                                ? Probation
+                                : data?.type === "Internship Completion"
+                                  ? Intership
+                                  : Performance
+                        }
+                        alt="Birthday"
                         style={{
-                          fontWeight: "400",
-                          fontSize: 14,
-                          color: "#6B7280",
+                          width: "40px",
+                          height: "40px",
+                          display: "flex",
+                        }}
+                      />
+                      <h1
+                        style={{
+                          marginLeft: 20,
+                          fontWeight: "500",
+                          fontSize: 18,
+                          color: "#1F2937",
+                          textAlign: "left",
                         }}
                       >
-                        On Date : {data?.date}
-                      </h3>
-                    </h1>
-                  </div>
-                ))}
-              </>
-            ) : (
-              <div
-                style={{
-                  marginTop: 20,
-                  width: "100%",
-                  display: "flex", // Makes the div a flex container
-                  justifyContent: "center", // Centers the text horizontally
-                  alignItems: "center", // Centers the text vertically
-                }}
-              >
-                <h2
-                  style={{
-                    fontWeight: "500",
-                    fontSize: 18,
-                    color: "#1F2937",
-                  }}
-                >
-                  No celebration for today!
-                </h2>
+                        {upcomminggetText(data)}
+                        <h3
+                          style={{
+                            fontWeight: "400",
+                            fontSize: 14,
+                            color: "#6B7280",
+                          }}
+                        >
+                          Upcoming Date : {data?.date}
+                        </h3>
+                      </h1>
+                    </div>
+                  ))}
+                </div>
               </div>
-            )}
-          </div>
-        </div>
-        <div
-          style={{
-            marginBottom: 20,
-            display: "flex",
-          }}
-        >
-          <h1 style={{ color: "#155596", fontWeight: "700", fontSize: 18 }}>
-            Older
-          </h1>
-          <div style={{ marginTop: 20, marginLeft: -45 }}>
-            {reminderData?.older_events?.map((data, index) => (
               <div
-                key={index}
                 style={{
-                  marginTop: 20,
-                  flexDirection: "row",
+                  marginBottom: 20,
                   display: "flex",
-                  alignItems: "center",
                 }}
               >
-                <img
-                  src={
-                    data?.type === "Birthday"
-                      ? Birthday
-                      : data?.type === "Anniversary"
-                      ? Anniversary
-                      : data?.type === "Prohibition End"
-                      ? Probation
-                      : data?.type === "Internship Completion"
-                      ? Intership
-                      : Performance
-                  }
-                  alt="Birthday"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    display: "flex",
-                  }}
-                />
-                <h1
-                  style={{
-                    marginLeft: 20,
-                    fontWeight: "500",
-                    fontSize: 18,
-                    color: "#1F2937",
-                    textAlign: "left",
-                  }}
-                >
-                  {pastgetText(data)}
-                  <h3
-                    style={{
-                      fontWeight: "400",
-                      fontSize: 14,
-                      color: "#6B7280",
-                    }}
-                  >
-                    Passed Date : {data?.date}
-                  </h3>
+                <h1 style={{ color: "#155596", fontWeight: "700", fontSize: 18 }}>
+                  Today
                 </h1>
+                <div style={{ marginTop: 20, marginLeft: -45 }}>
+                  {reminderData?.current_events > 0 ? (
+                    <>
+                      {reminderData?.current_events?.map((data, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            marginTop: 20,
+                            flexDirection: "row",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <img
+                            src={
+                              data?.type === "Birthday"
+                                ? Birthday
+                                : data?.type === "Anniversary"
+                                  ? Anniversary
+                                  : data?.type === "Prohibition End"
+                                    ? Probation
+                                    : data?.type === "Internship Completion"
+                                      ? Intership
+                                      : Performance
+                            }
+                            alt="Birthday"
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              display: "flex",
+                            }}
+                          />
+                          <h1
+                            style={{
+                              marginLeft: 20,
+                              fontWeight: "500",
+                              fontSize: 18,
+                              color: "#1F2937",
+                              textAlign: "left",
+                            }}
+                          >
+                            {currentgetText(data)}
+                            <h3
+                              style={{
+                                fontWeight: "400",
+                                fontSize: 14,
+                                color: "#6B7280",
+                              }}
+                            >
+                              On Date : {data?.date}
+                            </h3>
+                          </h1>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <div
+                      style={{
+                        marginTop: 20,
+                        width: "100%",
+                        display: "flex", // Makes the div a flex container
+                        justifyContent: "center", // Centers the text horizontally
+                        alignItems: "center", // Centers the text vertically
+                      }}
+                    >
+                      <h2
+                        style={{
+                          fontWeight: "500",
+                          fontSize: 18,
+                          color: "#1F2937",
+                        }}
+                      >
+                        No celebration for today!
+                      </h2>
+                    </div>
+                  )}
+                </div>
               </div>
-            ))}
+              <div
+                style={{
+                  marginBottom: 20,
+                  display: "flex",
+                }}
+              >
+                <h1 style={{ color: "#155596", fontWeight: "700", fontSize: 18 }}>
+                  Older
+                </h1>
+                <div style={{ marginTop: 20, marginLeft: -45 }}>
+                  {reminderData?.older_events?.map((data, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        marginTop: 20,
+                        flexDirection: "row",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <img
+                        src={
+                          data?.type === "Birthday"
+                            ? Birthday
+                            : data?.type === "Anniversary"
+                              ? Anniversary
+                              : data?.type === "Prohibition End"
+                                ? Probation
+                                : data?.type === "Internship Completion"
+                                  ? Intership
+                                  : Performance
+                        }
+                        alt="Birthday"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          display: "flex",
+                        }}
+                      />
+                      <h1
+                        style={{
+                          marginLeft: 20,
+                          fontWeight: "500",
+                          fontSize: 18,
+                          color: "#1F2937",
+                          textAlign: "left",
+                        }}
+                      >
+                        {pastgetText(data)}
+                        <h3
+                          style={{
+                            fontWeight: "400",
+                            fontSize: 14,
+                            color: "#6B7280",
+                          }}
+                        >
+                          Passed Date : {data?.date}
+                        </h3>
+                      </h1>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 

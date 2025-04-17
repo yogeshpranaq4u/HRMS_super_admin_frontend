@@ -12,7 +12,8 @@ const EditInvoice = ({ open, onClose, invoiceData }) => {
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
   const [modalOpen, setModalOpen] = useState(false);
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [customerSymbol, setCustomerSymbol] = useState(null);
   const [sunTotal, setSubTotal] = useState(invoiceData?.sub_total);
   const [totalPrice, setTotalPrice] = useState(invoiceData?.total);

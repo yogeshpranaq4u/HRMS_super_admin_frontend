@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { COLOR } from "../../../../Config/Color";
 import { Table, Avatar, Select, Button, Pagination } from "antd";
-import { FilterOutlined } from "@ant-design/icons";
 import NOIMAGE from "../../../../Assets/NewImage/NoImage.png";
 import EDIT from "../../../../Assets/NewImage/edit.png";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Api, BaseUrl, ImagePath1 } from "../../../../Config/Api";
-import { Dialog, DialogContent } from "@material-ui/core";
-import { FaEdit, FaTrash } from "react-icons/fa";
+// import { Dialog, DialogContent } from "@material-ui/core";
 import EditEmployeeAttendance from "../../../AdminComponent/EditEmployeeAttendance";
-import { TbRefresh } from "react-icons/tb";
 import PullToRefresh from "react-simple-pull-to-refresh";
 import { setAllUserAttendance } from "../../../../Redux/Action";
-import { useAuth } from "../../../../Component/Authentication/AuthContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 const { Option } = Select;
@@ -34,7 +30,8 @@ const CurrentDayAttendance = ({ data }) => {
   const currentMonthIndex = new Date().getMonth();
   const currentDay = new Date().getDate();
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [countData, setcountData] = useState({
@@ -1214,7 +1211,7 @@ const CurrentDayAttendance = ({ data }) => {
           />
         </div>
 
-        <Dialog open={open} onClose={handleClose}>
+        {/* <Dialog open={open} onClose={handleClose}>
           <DialogContent style={{ padding: 0 }}>
             {selectedImage ? (
               <img
@@ -1230,7 +1227,7 @@ const CurrentDayAttendance = ({ data }) => {
               <img src={NOIMAGE} style={{ width: 500, height: 500 }} />
             )}
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
         <EditEmployeeAttendance
           open={editmodalOpen}
           onClose={() => setEditModalOpen(false)}

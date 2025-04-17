@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 import { setEmployeeLeaveDetails } from "../../Redux/Action";
 
 const EditLeaveStatusModal = ({ open, onClose, user, leave }) => {
-  const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
   const [emptyFields, setEmptyFields] = useState([]);

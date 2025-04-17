@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import "./LoginForm.css";
 import { FaUser, FaLock } from "react-icons/fa";
-
-import { useAuth } from "../Component/Authentication/AuthContext";
 import { Form, Input, Button, Checkbox, Select } from "antd";
-import Image2 from "../Assets/test3.jpg";
-import { useSelector } from "react-redux";
+// import Image2 from "../Assets/test3.jpg";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { setEmployeeAllDetails, setEmployeeAuth } from "../Redux/Action";
 import OtpModal from "../Admin/AdminComponent/OtpModal";
 import WfhVerification from "../Component/WfhVerification";
 import { callApi } from "../../config/apiCall";
@@ -21,7 +17,6 @@ export const LoginForm = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalOpen1, setModalOpen1] = useState(false);
   const [username, setUsername] = useState("");
-  const getEmployeeAuth = useSelector((state) => state.getEmployeeAuth);
   const [employeeData, setEmployeeData] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,7 +29,7 @@ export const LoginForm = () => {
     data.append("type" ,values.role )
     data.append("token" ,token )
     const response = await callApi(`${BaseUrl}${Api.LOGIN}`,"POST" , data,"")
-    console.log("response" ,response);
+    // console.log("response" ,response);
     if(response?.valid && response?.success ){
       if (response?.isOffice === true) {
         if (response?.type === "Employee") {
@@ -45,11 +40,12 @@ export const LoginForm = () => {
           sessionStorage.setItem("userDetails", JSON.stringify({
             token,user:response
           }));
+          window.location = "/employee/"
           
-          navigate("/employee/");
         } else {
           // setEmployeeresponse(response);
           setModalOpen(true);
+          setEmployeeData(response)
         }
       }
       toast.success(response.mssg || response.mssg || "Login Done");
@@ -67,7 +63,6 @@ export const LoginForm = () => {
 
   const handleUsernameChange = (e) => {
     const value = e.target.value;
-
     if (!value.includes("@")) {
       setUsername(value);
     }
@@ -80,7 +75,7 @@ export const LoginForm = () => {
       <div className="login-box">
         <div className="illustration-wrapper">
           <img
-            src={Image2}
+            src={"/assets/Assets/test3.jpg"}
             alt="Login"
             style={{
               objectFit: "cover",

@@ -12,7 +12,8 @@ import { toast } from "react-toastify";
 import { setUserDetails } from "../../Redux/Action";
 import { FaChevronDown } from "react-icons/fa";
 const SubAdminAccess = ({ open, onClose }) => {
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");

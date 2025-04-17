@@ -24,7 +24,8 @@ const commonTextStyle = {
 const Attendence = () => {
   const employeeId = sessionStorage.getItem("employeeId");
   const token = sessionStorage.getItem("authToken");
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const [profileData, setProfileData] = useState();
   const [attendanceData, setAttandanceData] = useState([]);
   const [filteredLeaveData, setFilteredLeaveData] = useState([]);

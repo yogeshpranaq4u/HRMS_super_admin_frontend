@@ -47,7 +47,8 @@ const months = [
   "December",
 ];
 const DashBoard = () => {
-  const { setLoading, logout } = useAuth();
+const setLoading = () => { };
+  const logout = () => { };
   const token = sessionStorage.getItem("authToken");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalCardOpen, setModalCardOpen] = useState(false);

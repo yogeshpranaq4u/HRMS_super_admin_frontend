@@ -11,7 +11,9 @@ import { setUserDetails } from "../../Redux/Action";
 import { FaLock, FaLockOpen } from "react-icons/fa";
 import { useSelector } from "react-redux";
 const AddEmployeeModal = ({ open, onClose }) => {
-  const { setLoading, logout } = useAuth();
+  // const { setLoading, logout } = useAuth();
+  const setLoading = () => { };
+  const logout = () => { };
   const dispatch = useDispatch();
   const token = sessionStorage.getItem("authToken");
   const [errorMessage, setErrorMessage] = useState("");
