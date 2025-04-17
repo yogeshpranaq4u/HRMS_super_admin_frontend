@@ -7,11 +7,11 @@ import { useDispatch } from "react-redux";
 import {
   setEmployeeindex,
   setEmployeeLeaveDetails,
+  setUserDetails,
   setWorkFromHome,
 } from "../../../Redux/Action";
 import "../AdminNewPage/Style/NewLeaveHistory.css";
 import { BsFillLightbulbFill } from "react-icons/bs";
-
 import { Table, Avatar, Select, Button, Pagination } from "antd";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../Component/Authentication/AuthContext";
@@ -175,6 +175,51 @@ const NewLeaveHistory = () => {
 
     filterLeaveData();
   }, [formData.leaveYear, formData.leaveMonth, getWorkFromHome]);
+
+  // useEffect(()=>{
+  //   fetchEmployees()
+  // },[])
+
+  //  const fetchEmployees = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const responseData = await axios.get(`${BaseUrl}${Api.GET_EMPLOYEE}`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+  
+  //       if (responseData?.data?.authenticated === false) {
+  //         toast.error(responseData?.data?.mssg[0], {
+  //           position: "top-center",
+  //           autoClose: 1000,
+  //         });
+  //         logout();
+  //       } else {
+  //         if (responseData?.data?.valid === false) {
+  //           toast.error(responseData?.data?.mssg[0], {
+  //             position: "top-center",
+  //             autoClose: 1000,
+  //           });
+  //           setLoading(false);
+  //         } else {
+  //           const employeeData = JSON.parse(
+  //             JSON.stringify(responseData.data.data)
+  //           );
+  //           dispatch(setUserDetails(responseData?.data?.data));
+  
+  //           setLoading(false);
+  //         }
+  //       }
+  //     } catch (error) {
+  //       setLoading(false);
+  //       console.error("API call failed:", error);
+  //       toast.error("An error occurred. Please try again.");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
   const getEmployeeLeavdDetails = useCallback(
     async (data) => {
       setLoading(true);
@@ -256,6 +301,9 @@ const NewLeaveHistory = () => {
       setLoading(false);
     }
   };
+
+  console.log("getEmployeeDetails" ,getEmployeeDetails);
+  
   useEffect(() => {
     if (getEmployeeDetails.length > 0) {
       getEmployeeLeavdDetails(getEmployeeindex);

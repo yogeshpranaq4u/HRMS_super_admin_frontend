@@ -101,7 +101,6 @@ const setLoading = () => { };
   };
   const fetchEmployees = async () => {
     setLoading(true);
-
     try {
       const responseData = await axios.get(`${BaseUrl}${Api.GET_EMPLOYEE}`, {
         headers: {
