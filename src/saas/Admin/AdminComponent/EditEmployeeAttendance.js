@@ -6,14 +6,16 @@ import axios from "axios";
 import { Api, BaseUrl } from "../../Config/Api";
 import { toast } from "react-toastify";
 import { setAllUserAttendance, setMonthlyAttendance } from "../../Redux/Action";
+import { useSelector } from "react-redux";
+import { getEmployeeProfile } from "../../../redux/actions/employeeActions";
 
 const EditEmployeeAttendance = ({ open, onClose, user }) => {
-const setLoading = () => { };
+  const setLoading = () => { };
   const logout = () => { };
   const dispatch = useDispatch();
+  const profileData = useSelector((state) => state.employeeData?.profile)
   const employeeId = sessionStorage.getItem("employeeId");
   const token = sessionStorage.getItem("authToken");
-  const [profileData, setProfileData] = useState([]);
   const initialFormData = {
     name: "",
     employee_code: "",
@@ -139,50 +141,13 @@ const setLoading = () => { };
       }
     }
   };
-  const fetchEmployeProfile = useCallback(async () => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(
-        `${BaseUrl}${Api.GET_EMPLOYEE_PROFILE}?employee_id=${employeeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
-          setLoading(false);
-        } else {
-          setProfileData(responseData?.data?.data);
-
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      await new Promise((resolve) => setTimeout(resolve, 10000));
-      setLoading(false); // Hide loader after delay
-    }
-  }, [token, setLoading, logout]);
+ 
   useEffect(() => {
-    fetchEmployeProfile();
+    if (employeeId && (!profileData?.name)) {
+      dispatch(getEmployeeProfile(employeeId))
+    }
   }, []);
+
   const getAllUserAttendanceData = async () => {
     setLoading(true);
 
@@ -220,46 +185,7 @@ const setLoading = () => { };
       setLoading(false);
     }
   };
-  // const getMonthlyAttendance1 = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const responseData = await axios.get(
-  //       `${BaseUrl}${Api.GET_MONTHLY_ATTENDANCE}?employee_id=${employeeId}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-
-  //     if (responseData?.data?.authenticated === false) {
-  //       toast.error(responseData?.data?.mssg[0], {
-  //         position: "top-center",
-  //         autoClose: 1000,
-  //       });
-  //       logout();
-  //     } else {
-  //       if (responseData?.data?.valid === false) {
-  //         toast.error(responseData?.data?.mssg[0], {
-  //           position: "top-center",
-  //           autoClose: 1000,
-  //         });
-  //         setLoading(false);
-  //       } else {
-  //         // setAllAttendance(responseData?.data?.data);
-  //         // setFilteredCategories(responseData?.data?.data);
-  //         dispatch(setMonthlyAttendance(responseData?.data?.data));
-  //         setLoading(false);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     setLoading(false);
-  //     console.error("API call failed:", error);
-  //     toast.error("An error occurred. Please try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+ 
   return (
     <Modal
       open={open}

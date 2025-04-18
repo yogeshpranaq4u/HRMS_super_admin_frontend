@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { persistor } from "../../Redux/Store";
 import Modal from "react-responsive-modal";
 import Webcam from "react-webcam";
+import { useSelector } from "react-redux";
 
 const LogoutModal = ({ open, onClose, employeeData }) => {
   // const { setLoading } = useAuth();
@@ -153,48 +154,14 @@ const LogoutEmployee = () => {
   const navigate = useNavigate();
   const employeeId = sessionStorage.getItem("employeeId");
   const token = sessionStorage.getItem("authToken");
-  const [profileData, setProfileData] = useState();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const profileData = useSelector((state) => state.employeeData?.profile)
   useEffect(() => {
-    fetchEmployeProfile();
     setShowDialog(true)
   }, []);
-  const fetchEmployeProfile = async () => {
-    try {
-      const responseData = await axios.get(
-        `${BaseUrl}${Api.GET_EMPLOYEE_PROFILE}?employee_id=${employeeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
-        } else {
-          setProfileData(responseData?.data?.data);
-        }
-      }
-    } catch (error) {
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      await new Promise((resolve) => setTimeout(resolve, 10000));
-    }
-  };
+
   const employeeLogout = async () => {
-    // setLoading(true);
-    console.log("profileData" ,profileData);
-    
+    // setLoading(true);    
     try {
       const responseData = await axios(`${BaseUrl}${Api.LOG_OUT_WFHLOCATION}`, {
         method: "POST",
@@ -246,11 +213,6 @@ const LogoutEmployee = () => {
         position: "top-center",
         autoClose: 1000,
       });
-      // dispatch(setEmployeeAuth(false));
-      // sessionStorage.removeItem("authToken");
-      // await persistor.flush();
-      // await persistor.purge();
-      // window.location.reload();
     } finally {
       // setLoading(false);
     }

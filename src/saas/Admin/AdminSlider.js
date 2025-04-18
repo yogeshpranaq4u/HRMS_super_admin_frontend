@@ -41,6 +41,8 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { Api, BaseUrl, ImagePath } from "../Config/Api";
 import { toast } from "react-toastify";
+import { getEmployeeProfile } from "../../redux/actions/employeeActions";
+import { useDispatch } from "react-redux";
 
 const AdminSlider = () => {
   const isTabletMid = useMediaQuery({ query: "(max-width: 1024px)" });
@@ -48,50 +50,18 @@ const AdminSlider = () => {
   const { pathname } = useLocation();
   const [billingSubMenuOpen, setBillingSubMenuOpen] = useState(false);
   const [leaveSubMenuOpen, setLeaveSubMenuOpen] = useState(false);
-  const [profileData, setProfileData] = useState();
+  
   const token = sessionStorage.getItem("authToken");
   const employeeId = sessionStorage.getItem("employeeId");
-const setLoading = () => { };
+  const setLoading = () => { };
   const logout = () => { };
-  // const { logout } = useAuth();
+  const dispatch = useDispatch()
+  const profileData = useSelector((state) => state.employeeData?.profile)
   useEffect(() => {
-    fetchEmployeProfile();
-  }, []);
-
-  const fetchEmployeProfile = async () => {
-    try {
-      const responseData = await axios.get(
-        `${BaseUrl}${Api.GET_EMPLOYEE_PROFILE}?employee_id=${employeeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
-        } else {
-          setProfileData(responseData?.data?.data);
-        }
-      }
-    } catch (error) {
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      await new Promise((resolve) => setTimeout(resolve, 10000));
+    if (employeeId && (!profileData?.name)) {
+      dispatch(getEmployeeProfile(employeeId))
     }
-  };
+  }, []);
   useEffect(() => {
     setOpen(!isTabletMid);
   }, [isTabletMid]);
@@ -114,9 +84,6 @@ const setLoading = () => { };
       },
     },
   };
-  // const handleLogoutClick = () => {
-  //   // sessionStorage.setItem("EmployeeType", "Admin");
-  // };
 
   const toggleSubMenu = () => {
     setBillingSubMenuOpen((prev) => !prev);
@@ -222,8 +189,7 @@ const setLoading = () => { };
                         <NavLink
                           to="/adminhome/adminleaves"
                           className={({ isActive }) =>
-                            `flex items-center ${
-                              isActive ? "active p-2 rounded-md" : "ml-2"
+                            `flex items-center ${isActive ? "active p-2 rounded-md" : "ml-2"
                             }`
                           }
                         >
@@ -241,7 +207,7 @@ const setLoading = () => { };
                                   fontWeight: "500",
                                 }}
                               >
-                              History
+                                History
                               </span>
                             </>
                           )}
@@ -251,8 +217,7 @@ const setLoading = () => { };
                         <NavLink
                           to="/adminhome/adminLeaverrequestHistory"
                           className={({ isActive }) =>
-                            `flex items-center ${
-                              isActive ? "active p-2 rounded-md" : "ml-2"
+                            `flex items-center ${isActive ? "active p-2 rounded-md" : "ml-2"
                             }`
                           }
                         >
@@ -492,8 +457,7 @@ const setLoading = () => { };
                         <NavLink
                           to="/adminhome/customer"
                           className={({ isActive }) =>
-                            `flex items-center ${
-                              isActive ? "active p-2 rounded-md" : "ml-2"
+                            `flex items-center ${isActive ? "active p-2 rounded-md" : "ml-2"
                             }`
                           }
                         >
@@ -521,8 +485,7 @@ const setLoading = () => { };
                         <NavLink
                           to="/adminhome/invoice"
                           className={({ isActive }) =>
-                            `flex items-center ${
-                              isActive ? "active p-2 rounded-md" : "ml-2"
+                            `flex items-center ${isActive ? "active p-2 rounded-md" : "ml-2"
                             }`
                           }
                         >
@@ -667,13 +630,13 @@ const setLoading = () => { };
                 />
                 <div>
                   <p className="font-medium text-gray-800">
-                  
+
                     {profileData?.name}
                   </p>
                   <p
                     className="text-sm text-gray-500 ml-1 "
                     style={{
-                      width:200,
+                      width: 200,
                       whiteSpace: "pre-wrap",
                       wordBreak: "break-word",
                       display: "block", // Ensures it takes full width
@@ -681,7 +644,7 @@ const setLoading = () => { };
                     }}
                   >
                     {profileData?.email}
-                   
+
                   </p>
                 </div>
               </div>

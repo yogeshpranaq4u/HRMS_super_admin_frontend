@@ -6,53 +6,23 @@ import { toast } from "react-toastify";
 import { COLOR, FONT, IMAGE } from "../../Config/Color";
 import { Table, Avatar, Select, Button, Pagination } from "antd";
 import MainLayout from "../../../layouts/MainLayout";
+import { useDispatch } from "react-redux";
+import { getEmployeeProfile } from "../../../redux/actions/employeeActions";
+import { useSelector } from "react-redux";
 const EmployeeSalaryNew = () => {
   const employeeId = sessionStorage.getItem("employeeId");
   const token = sessionStorage.getItem("authToken");
   // const { setLoading, logout } = useAuth();
   const setLoading = () => { };
   const logout = () => { };
-  const [profileData, setProfileData] = useState([]);
   const [employeeSalary, setEmployeeSalary] = useState([]);
-
-  const fetchEmployeProfile = useCallback(async () => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(
-        `${BaseUrl}${Api.GET_EMPLOYEE_PROFILE}?employee_id=${employeeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          setLoading(false);
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
-        } else {
-          setProfileData(responseData?.data?.data);
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
+  const dispatch = useDispatch()
+  const profileData = useSelector((state) => state.employeeData?.profile)
+  useEffect(() => {
+    if (employeeId && (!profileData?.name)) {
+      dispatch(getEmployeeProfile(employeeId))
     }
-  }, [token, setLoading, logout]);
+  }, []);
   const getEmployeeSalaryDetails = useCallback(
     async (data) => {
       setLoading(true);
@@ -99,7 +69,6 @@ const EmployeeSalaryNew = () => {
     [token, setLoading, logout]
   );
   useEffect(() => {
-    fetchEmployeProfile();
     getEmployeeSalaryDetails();
   }, []);
   const columns = [

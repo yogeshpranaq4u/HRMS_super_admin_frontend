@@ -1,54 +1,23 @@
-import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
-import { Api, BaseUrl, ImagePath } from "../../Config/Api";
-import { toast } from "react-toastify";
 import { FaPlus } from "react-icons/fa";
 import "./AdminHoliday.css";
 import AddHoliday from "../AdminComponent/AddHoliday";
 
 import { format } from 'date-fns';
 import MainLayout from "../../../layouts/MainLayout";
+import { useDispatch } from "react-redux";
+import { getHolidayData } from "../../../redux/actions/employeeActions";
+import { useSelector } from "react-redux";
 
 const AdminHoliday = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const setLoading = () => { };
-  const logout = () => { };
-  const token = sessionStorage.getItem("authToken");
-  const [holidayData, setholidayData] = useState([])
   const currentDate = format(new Date(), 'yyyy-MM-dd');
+  const dispatch = useDispatch()
+  const holidayData = useSelector((state)=> state.employeeData?.holidayList)
   useEffect(() => {
-    getHolidayList();
+    dispatch(getHolidayData())
   }, []);
-  const getHolidayList = async () => {
-    setLoading(true);
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.GET_HOLIDAY}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else if (responseData?.data?.valid === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-      } else {
-        setholidayData(responseData?.data?.data);
-      }
-    } catch (error) {
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+ 
   const handleClick = () => {
     setModalOpen(true);
   };
