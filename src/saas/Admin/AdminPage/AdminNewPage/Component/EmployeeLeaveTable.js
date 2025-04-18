@@ -66,7 +66,7 @@ const EmployeeLeaveTable = () => {
         const tableData = responseData?.data?.data?.filter((item) => {
           return item.status === "Pending";
         });
-        console.log("getLeaveWfhDataeeee", tableData);
+   
         setLeaveData(tableData);
       } else {
         toast.error(responseData?.data?.mssg, {

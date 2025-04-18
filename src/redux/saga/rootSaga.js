@@ -10,7 +10,7 @@ import {
   watchPlansAction,
 } from "./dashboardSaga";
 import { watchGetCompanyAction, watchGetPlanHistoryAction, watchGetServiceTypeAction } from "./companyDataSaga";
-import { watchGetEmployeeAction, watchGetEmployeeProfileAction, watchGetHolidaysAction, watchGetReminderDetailsAction } from "./employeeSaga";
+import {  watchGetEmployeeProfileAction, watchGetHolidaysAction, watchGetReminderDetailsAction } from "./employeeSaga";
 import { watchGetEmployeedDataAction, watchGetEmployeeAttendanceAction,watchGetEmployeeLeaveWfhRequestAction} from "./adminSaga";
 
 function* rootSaga() {

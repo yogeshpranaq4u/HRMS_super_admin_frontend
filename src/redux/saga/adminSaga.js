@@ -121,7 +121,7 @@ export function* getEmployeeLeaveWfhRequestAction(action) {
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
-          console.log("responseall", response?.data);
+     
           yield put({
             type: types.GET_EMPLOYEE_LEAVE_WFH_SUCCESS,
             payload: response?.data,

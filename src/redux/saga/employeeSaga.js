@@ -19,7 +19,7 @@ function* getHolidayAction(action) {
       SAAS_BASE_URL
     );
 
-    console.log("response", response);
+  
 
     if (response?.authenticated) {
       if (response?.valid) {
@@ -57,6 +57,7 @@ function* getEmployeeProfileAction(action) {
       userDetails?.token,
       SAAS_BASE_URL
     );
+     
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
@@ -75,15 +76,16 @@ function* getEmployeeProfileAction(action) {
       // window.location.href = "/login";
     }
   } catch (error) {
-    yield put({ type: types.GET_EMPLOYEEPROFILE_FAILED, error: error.response });
+    yield put({
+      type: types.GET_EMPLOYEEPROFILE_FAILED,
+      error: error.response,
+    });
   }
 }
 
 export function* watchGetEmployeeProfileAction() {
   yield takeLatest(types.GET_EMPLOYEEPROFILE_REQUEST, getEmployeeProfileAction);
 }
-
-
 
 function* getReminderDetailsAction(action) {
   try {
@@ -96,18 +98,14 @@ function* getReminderDetailsAction(action) {
       SAAS_BASE_URL
     );
 
-    console.log("response" ,response);
-    
     if (response?.authenticated) {
       if (response?.valid) {
-        if (response?.success) {
-          yield put({
-            type: types.GET_REMINDER_SUCCESS,
-            payload: response?.data,
-          });
-        } else {
-          toast.error(response?.data?.mssg);
-        }
+       
+
+        yield put({
+          type: types.GET_REMINDER_SUCCESS,
+          payload: response,
+        });
       } else {
         toast.error(response?.data?.mssg[0]);
       }

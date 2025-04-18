@@ -3,6 +3,7 @@ import commenDataReducer from "./commenDataReducer";
 import otherReducer from "./otherReducer";
 import employeeReducer from "./employeeReducer";
 import adminReducer from "./adminReducer";
+import { normalReducer } from "./normalReducer";
 
 
 const rootReducer = combineReducers({
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
   data: otherReducer,
   employeeData: employeeReducer,
   adminData: adminReducer,
+  normalData:normalReducer,
 });
 
 export default rootReducer;

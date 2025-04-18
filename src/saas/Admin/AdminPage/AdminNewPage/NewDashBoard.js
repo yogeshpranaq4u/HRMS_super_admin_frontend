@@ -5,30 +5,22 @@ import { ImageUrl } from "../../../Config/Image";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { format } from "date-fns";
-import axios from "axios";
-import { Api, BaseUrl } from "../../../Config/Api";
-import { toast } from "react-toastify";
-import {
-  setAllInactiveEmployee,
-  setAllUserAttendance,
-  setCustomeDetails,
-  setDepartement,
-  setEmployeeHoliday,
-  setGiftCardShow,
-  setManagerData,
-  setMonthlyAttendance,
-  setUserDetails,
-} from "../../../Redux/Action";
+
 import AddEmployeeModal from "../../AdminComponent/AddEmployeeModal";
 import Card from "../../../Component/Card";
 import EmployeeLeaveTable from "./Component/EmployeeLeaveTable";
-import debounce from "lodash/debounce";
+
 import MainLayout from "../../../../layouts/MainLayout";
-import { getReminder } from "../../../../redux/actions/employeeActions";
+import {
+  getEmployeeProfile,
+  getHolidayData,
+  getReminder,
+} from "../../../../redux/actions/employeeActions";
 import {
   getEmployeeAttendanceData,
   getEmployeeData,
 } from "../../../../redux/actions/adminAction";
+import { setGiftCardShow } from "../../../../redux/actions/normalAction";
 const months = [
   "January",
   "February",
@@ -45,72 +37,49 @@ const months = [
 ];
 const NewDashBoard = () => {
   const details = JSON.parse(sessionStorage.getItem("userDetails")) || {};
-
-  const dispatch = useDispatch();
-  const [filterAttendance, setFilterAttendance] = useState([]);
-  const error = useSelector((state) => state?.adminData?.error);
-  const loading = useSelector((state) => state?.adminData?.loading);
-  const getAllUsersData = useSelector(
-    (state) => state?.adminData?.employeeListData
-  );
-
-  const getAllUserAttendance = useSelector(
-    (state) => state?.adminData?.employeeAttendanceData
-  );
-
-  useEffect(() => {
-    dispatch(getEmployeeData());
-    dispatch(getEmployeeAttendanceData());
-  }, []);
-
-  // const { setLoading, logout } = useAuth();
-  const setLoading = () => {};
-  const logout = () => {}; 
-  const token = sessionStorage.getItem("authToken");
+  const employeeId = sessionStorage.getItem("employeeId");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalCardOpen, setModalCardOpen] = useState(false);
-  const getEmployeeHoliday = useSelector((state) => state.getEmployeeHoliday);
-  const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
-
-  const getGiftCardShow = useSelector((state) => state.getGiftCardShow);
   const [cardType, setCardType] = useState("");
   const [cardData, setCardData] = useState([]);
-  // const getAllUserAttendance = useSelector(
-  //   (state) => state.getAllUserAttendance
-  // );
-
   const currentDate = format(new Date(), "yyyy-MM-dd");
   const currentYear = new Date().getFullYear(); // Get current year
   const currentMonthIndex = new Date().getMonth();
   const currentDate1 = new Date();
   const month = months[currentDate1.getMonth() + 0];
   const day = currentDate1.getDate();
-  const employeeId = sessionStorage.getItem("employeeId");
   const [profileData, setProfileData] = useState();
 
-  const reminderData = useSelector((state) => state.employeeData?.reminder);
-  useEffect(() => {
-    dispatch(getReminder())
-  }, []);
-  
-  const fetchAllData = useCallback(
-    debounce(() => {
-    
-      fetchEmployeProfile();
-      getHolidayList();
-
-      getManagerList();
-      getDepartmentList();
-      getMonthlyAttendance1();
-      fetchCustomerDetails();
-      fetchAllInactiveEmployee();
-    }, 300), // 300ms debounce delay
-    []
+  const dispatch = useDispatch();
+  const [filterAttendance, setFilterAttendance] = useState([]);
+  const error = useSelector((state) => state?.adminData?.error);
+  const loading = useSelector((state) => state?.adminData?.loading);
+  const getGiftCardShow = useSelector(
+    (state) => state?.normalData?.getGiftCardShow
   );
 
+  const getAllUsersData = useSelector(
+    (state) => state?.adminData?.employeeListData
+  );
+  const getAllUserAttendance = useSelector(
+    (state) => state?.adminData?.employeeAttendanceData
+  );
+  const reminderData = useSelector((state) => state.employeeData?.reminder);
+  const getEmployeeHoliday = useSelector(
+    (state) => state.employeeData?.holidayList
+  );
+  const getProfileData = useSelector((state) => state.employeeData?.profile);
+
   useEffect(() => {
-    fetchAllData();
-  }, [fetchAllData]);
+    dispatch(getEmployeeData());
+    dispatch(getEmployeeAttendanceData());
+    dispatch(getReminder());
+    dispatch(getHolidayData());
+    dispatch(getEmployeeProfile(employeeId));
+  }, []);
+
+
+
   useEffect(() => {
     const filteredData = getAllUserAttendance?.filter((attendance) => {
       const isDateMatch =
@@ -122,255 +91,31 @@ const NewDashBoard = () => {
     });
     setFilterAttendance(filteredData);
   }, [getAllUserAttendance]);
-
-
-  const fetchEmployeProfile = async () => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(
-        `${BaseUrl}${Api.GET_EMPLOYEE_PROFILE}?employee_id=${employeeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0]);
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0]);
-          setLoading(false);
-        } else {
-          setProfileData(responseData?.data?.data);
-          const date = new Date(responseData?.data?.data?.dob);
-          const month1 = date.toLocaleString("default", { month: "long" });
-          const day1 = date.getDate();
-
-          const date1 = new Date(responseData?.data?.data?.doj);
-          const month2 = date1.toLocaleString("default", { month: "long" });
-          const day2 = date1.getDate();
-
-          if (month1 === month && day1 === day && getGiftCardShow == false) {
-            setCardType("BIRTHDAY");
-            setCardData(responseData?.data?.data);
-            openGift();
-          } else if (
-            month2 === month &&
-            day2 === day &&
-            getGiftCardShow == false
-          ) {
-            setCardType("Work Anniversary");
-            setCardData(responseData?.data?.data);
-            openGift();
-          }
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      await new Promise((resolve) => setTimeout(resolve, 10000));
-      setLoading(false); // Hide loader after delay
+  useEffect(() => {
+    if (getEmployeeHoliday?.length > 0) {
+      getHolidatData(getEmployeeHoliday);
     }
-  };
-
-
-  const getManagerList = async (data) => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(
-        `${BaseUrl}${Api.GET_ROPORTING_MANAGER}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0]);
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0]);
-          setLoading(false);
-        } else {
-          dispatch(setManagerData(responseData?.data?.data));
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
+  }, [getEmployeeHoliday]);
+  useEffect(() => {
+    const date = new Date(getProfileData?.dob);
+    const month1 = date.toLocaleString("default", { month: "long" });
+    const day1 = date.getDate();
+    const date1 = new Date(getProfileData?.doj);
+    const month2 = date1.toLocaleString("default", { month: "long" });
+    const day2 = date1.getDate();
+    if (month1 === month && day1 === day && getGiftCardShow == false) {
+      setCardType("BIRTHDAY");
+      setCardData(getProfileData);
+      openGift();
+    } else if (month2 === month && day2 === day && getGiftCardShow == false) {
+      setCardType("Work Anniversary");
+      setCardData(getProfileData);
+      openGift();
     }
-  };
-  const getDepartmentList = async (data) => {
-    setLoading(true);
+  }, [getProfileData]);
 
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.GET_DEPARTMENT}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0]);
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0]);
-          setLoading(false);
-        } else {
-          dispatch(setDepartement(responseData?.data?.data));
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  const getMonthlyAttendance1 = async () => {
-    setLoading(true);
-    try {
-      const responseData = await axios.get(
-        `${BaseUrl}${Api.GET_MONTHLY_ATTENDANCE}?month=${months[currentMonthIndex]}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0]);
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0]);
-          setLoading(false);
-        } else {
-          // setAllAttendance(responseData?.data?.data);
-          // setFilteredCategories(responseData?.data?.data);
-          dispatch(setMonthlyAttendance(responseData?.data?.data));
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  const fetchCustomerDetails = async () => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.GET_CUSTOMER}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0]);
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0]);
-          setLoading(false);
-        } else {
-          //  console.log("responseData?.data" ,responseData?.data);
-
-          dispatch(setCustomeDetails(responseData?.data?.data));
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  const fetchAllInactiveEmployee = async () => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(
-        `${BaseUrl}${Api.GET_ALL_INACTIVE_EMPLOYEE}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0]);
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0]);
-          setLoading(false);
-        } else {
-          // setAllAttendance(responseData?.data?.data);
-          dispatch(setAllInactiveEmployee(responseData?.data?.data));
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getHolidayList = async () => {
-    setLoading(true);
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.GET_HOLIDAY}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0]);
-        logout();
-      } else if (responseData?.data?.valid === false) {
-        toast.error(responseData?.data?.mssg[0]);
-      } else {
-        dispatch(setEmployeeHoliday(responseData?.data?.data));
-        getHolidatData(responseData?.data?.data);
-      }
-    } catch (error) {
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
   const getHolidatData = (data) => {
-    const todayHoliday = data.find((holiday) => holiday?.date === currentDate);
+    const todayHoliday = data?.find((holiday) => holiday?.date === currentDate);
 
     if (todayHoliday != undefined && getGiftCardShow == false) {
       setCardType(todayHoliday?.holiday_name);
@@ -473,9 +218,9 @@ const NewDashBoard = () => {
       return acc;
     }, {});
 
-    const groupedLateArray = Object.values(groupedLateData).sort(
-      (a, b) => b.count - a.count
-    );
+  const groupedLateArray = Object.values(groupedLateData).sort(
+    (a, b) => b.count - a.count
+  );
   return (
     <MainLayout>
       <div className="page-wrapper">
@@ -866,58 +611,6 @@ const NewDashBoard = () => {
                 </div>
               </div>
 
-              {/* <div
-          style={{
-            width: "39%",
-            height: "100%",
-            display: "flex",
-            background: COLOR.WHITE,
-            borderRadius: "8px",
-            borderWidth: 1,
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-            // border: 1px solid #ddd;
-            // border-radius: 8px;
-          }}
-        >
-            <div className="cta">
-            <h2
-              style={{
-                fontFamily: "Inter",
-                fontWeight: "600",
-                fontSize: 16,
-                marginTop: "10px",
-                color: COLOR.BLACK,
-              }}
-            >
-              Grow Your Team, Grow Your Success!
-            </h2>
-            <p
-              style={{
-                fontFamily: "Inter",
-                fontWeight: "500",
-                fontSize: 14,
-                color: COLOR.BLACK1,
-              }}
-            >
-              Easily onboard new talent and keep your workforce thriving. Add
-              new employee with just a click.
-            </p>
-            <button className="ctaButton" onClick={() => setModalOpen(true)}>
-              Add Employee
-            </button>
-          </div>
-          <img
-            src={ImageUrl.ADDEMPLOYEE}
-            style={{
-              width: "110px",
-              height: "110px",
-              alignContent: "center",
-              alignSelf: "center",
-              marginRight: "16px",
-              marginTop:'70px'
-            }}
-          />
-        </div> */}
               <div
                 style={{
                   width: "39%",
@@ -967,7 +660,10 @@ const NewDashBoard = () => {
                     </p>
                     <button
                       className="ctaButton"
-                      onClick={() => setModalOpen(true)}
+                      // onClick={() => setModalOpen(true)}
+                      onClick={() => {
+                        dispatch(setGiftCardShow(true));
+                      }}
                       style={{
                         width: "100%",
                         maxWidth: "150px",

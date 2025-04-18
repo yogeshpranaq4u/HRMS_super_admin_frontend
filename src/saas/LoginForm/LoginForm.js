@@ -17,38 +17,42 @@ export const LoginForm = () => {
   const [employeeData, setEmployeeData] = useState();
   const token = sessionStorage.getItem("fcmToken");
   const onFinish = async (values) => {
-    const data = new FormData()
-    data.append("email" ,values.username)
-    data.append("password" ,values.password )
-    data.append("type" ,values.role )
+    const data = new FormData();
+    data.append("email", values.username);
+    data.append("password", values.password);
+    data.append("type", values.role);
     // data.append("token" ,token )
-    const response = await callApi(`${BaseUrl}${Api.LOGIN}`,"POST" , data,"")
+    const response = await callApi(`${BaseUrl}${Api.LOGIN}`, "POST", data, "");
     // console.log("response" ,response);
-    if(response?.valid && response?.success ){
-      if (response?.isOffice === true) {
-        if (response?.type === "Employee") {
-          toast.success(response?.mssg);
-          const token = response?.token;
-          sessionStorage.setItem("authToken", token);
-          sessionStorage.setItem("employeeId", response?.id);
-          sessionStorage.setItem("userDetails", JSON.stringify({
-            token,user:response
-          }));
-          window.location = "/employee/"
-          
-        } else {
-          // setEmployeeresponse(response);
-          setModalOpen(true);
-          setEmployeeData(response)
+    if (response?.valid) {
+      if (response?.success) {
+        if (response?.isOffice === true) {
+          if (response?.type === "Employee") {
+            toast.success(response?.mssg);
+            const token = response?.token;
+            sessionStorage.setItem("authToken", token);
+            sessionStorage.setItem("employeeId", response?.id);
+            sessionStorage.setItem(
+              "userDetails",
+              JSON.stringify({
+                token,
+                user: response,
+              })
+            );
+            window.location = "/employee/";
+          } else {
+            // setEmployeeresponse(response);
+            setModalOpen(true);
+            setEmployeeData(response);
+          }
+          toast.success(response.mssg || response.mssg || "Login Done");
         }
+      } else {
+        toast.error(response.mssg || response.mssg || "Login Done");
       }
-      toast.success(response.mssg || response.mssg || "Login Done");
-    }else{
-      if(response.mssg[0] || response.mssg ){
-        toast.error(response.mssg[0] || response.mssg || "Server Error");
-      }
+    } else {
+      toast.error(response?.mssg[0] || response?.mssg || "Login Done");
     }
-    
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -61,8 +65,6 @@ export const LoginForm = () => {
       setUsername(value);
     }
   };
-
-  
 
   return (
     <div className="login-page">
@@ -86,7 +88,6 @@ export const LoginForm = () => {
 
           <Form.Item
             name="username"
-       
             rules={[
               {
                 required: true,
@@ -102,7 +103,6 @@ export const LoginForm = () => {
               // value={username}
               // onChange={handleUsernameChange}
               placeholder="Username"
-         
               prefix={<FaUser />}
             />
           </Form.Item>

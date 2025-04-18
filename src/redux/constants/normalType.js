@@ -1,0 +1,6 @@
+export const types = {
+
+    EMPLOYEE_SELECTED_INDEX: "EMPLOYEE_SELECTED_INDEX",
+    GIFT_CARD_SHOW:'GIFT_CARD_SHOW',
+
+  };
