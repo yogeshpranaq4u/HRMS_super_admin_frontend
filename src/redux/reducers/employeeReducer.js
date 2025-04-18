@@ -2,7 +2,8 @@ import { types } from "../constants/types";
 // reducers/postReducer.js
 const initialState = {
   profile: {},
-  holidayList:{},
+  holidayList:[],
+  reminder:{},
   loading: false,
   error: null,
 };
@@ -38,6 +39,25 @@ const employeeReducer = (state = initialState, action) => {
         holidayList: action.payload,
       };
     case types.GET_HOLIDAY_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+
+   
+    case types.GET_REMINDER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.GET_REMINDER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        reminder: action.payload,
+      };
+    case types.GET_REMINDER_FAILED:
       return {
         ...state,
         loading: false,

@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
-
+/* 
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 .sv-sidebar-menu{
   height: 90vh;
@@ -342,6 +342,10 @@ color: #1AD701;
   font-size: 20px;
   text-align: center;
 
+}
+
+.modal-dialog-centered{
+  background: #fff;
 }
 
 .e-dlg-overlay {

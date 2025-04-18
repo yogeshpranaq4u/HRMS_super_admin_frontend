@@ -5,52 +5,19 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
 import MainLayout from "../../../layouts/MainLayout";
+import { getHolidayData } from "../../../redux/actions/employeeActions";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const Holiday = () => {
-  // const { setLoading, logout } = useAuth();
-  const setLoading = () => { };
-  const logout = () => { };
-  const token = sessionStorage.getItem("authToken");
-  const [holidayData ,setholidayData] =useState([])
   const currentDate = format(new Date(), "yyyy-MM-dd");
+  const dispatch = useDispatch();
+  const holidayData = useSelector((state) => state.employeeData?.holidayList)
   useEffect(() => {
-    getHolidayList();
-  }, []);
-
-
-  const getHolidayList = async () => {
-    setLoading(true);
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.GET_HOLIDAY}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log("responseData" ,responseData);
-      
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else if (responseData?.data?.valid === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-      } else {
-
-        setholidayData(responseData?.data?.data);
-      }
-    } catch (error) {
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
+    if (holidayData.length == 0) {
+      dispatch(getHolidayData())
     }
-  };
+  }, []);
 
   const getOpcity = (data) => {
     if (data?.date < currentDate) {

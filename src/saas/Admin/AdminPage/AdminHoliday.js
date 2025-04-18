@@ -13,11 +13,17 @@ const AdminHoliday = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const currentDate = format(new Date(), 'yyyy-MM-dd');
   const dispatch = useDispatch()
-  const holidayData = useSelector((state)=> state.employeeData?.holidayList)
+  const holidayData = useSelector((state) => state.employeeData?.holidayList)
+  const isLoading = useSelector((state) => state.employeeData?.loading)
+  const profileData = useSelector((state) => state.employeeData?.profile)
+
   useEffect(() => {
     dispatch(getHolidayData())
   }, []);
- 
+
+  // console.log("profileData", holidayData);
+
+
   const handleClick = () => {
     setModalOpen(true);
   };
@@ -32,69 +38,76 @@ const AdminHoliday = () => {
     <MainLayout>
       <div className="page-wrapper">
         <div className="content">
-          <div className="holidayDiv">
-            <div className="crow2">
-              <div className="crow3">
-                <h1 style={{ fontWeight: "700", fontSize: 30, color: "black" }}>
-                  Holidays({holidayData[0]?.year})
-                </h1>
-              </div>
-              <div className="button-container1">
-                <button className="myButton1" onClick={handleClick}>
-                  <FaPlus style={{ marginRight: "10px" }} />
-                  Add Holiday
-                </button>
-              </div>
-            </div>
-            <div className="card-container12">
-              <div
-                style={{
-                  marginBottom: 20,
-
-                  flexDirection: "row",
-                  display: "flex",
-                }}
-              >
-                <h1 style={{ color: "#155596", fontWeight: "700", fontSize: 25 }}>
-                  Holiday Details
-                </h1>
-              </div>
-              <div className="holiday-list">
-                {holidayData?.map((holiday, index) => (
-                  <div key={index} className="holiday-item">
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        background: "white",
-                        width: 70,
-                        height: 58,
-                        borderWidth: 2,
-                        opacity: getOpcity(holiday),
-                        borderRadius: 2,
-                        borderColor: "#047EFF",
-                      }}
-                    >
-                      <div className="holiday-date">
-                        <div className="holiday-month">
-                          {holiday?.month.slice(0, 3)}
-                        </div>
-                      </div>
-                      <div className="holiday-day">{holiday?.date.split("-")[2]}</div>
+          {
+            isLoading ? "Loading..." :
+              <div className="holidayDiv">
+                {
+                  profileData?.type == "Admin" &&
+                  <div className="crow2">
+                    <div className="crow3">
+                      <h1 style={{ fontWeight: "700", fontSize: 30, color: "black" }}>
+                        Holidays({holidayData[0]?.year})
+                      </h1>
                     </div>
-
-                    <div className="holiday-details">
-                      <div className="holiday-name">{holiday.holiday_name}</div>
-                      <div className="holiday-weekday">{holiday.day}</div>
+                    <div className="button-container1">
+                      <button className="myButton1" onClick={handleClick}>
+                        <FaPlus style={{ marginRight: "10px" }} />
+                        Add Holiday
+                      </button>
                     </div>
                   </div>
-                ))}
+                }
+                <div className="card-container12">
+                  <div
+                    style={{
+                      marginBottom: 20,
+
+                      flexDirection: "row",
+                      display: "flex",
+                    }}
+                  >
+                    <h1 style={{ color: "#155596", fontWeight: "700", fontSize: 25 }}>
+                      Holiday Details
+                    </h1>
+                  </div>
+                  <div className="holiday-list">
+                    {holidayData?.map((holiday, index) => (
+                      <div key={index} className="holiday-item">
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            background: "white",
+                            width: 70,
+                            height: 58,
+                            borderWidth: 2,
+                            opacity: getOpcity(holiday),
+                            borderRadius: 2,
+                            borderColor: "#047EFF",
+                          }}
+                        >
+                          <div className="holiday-date">
+                            <div className="holiday-month">
+                              {holiday?.month.slice(0, 3)}
+                            </div>
+                          </div>
+                          <div className="holiday-day">{holiday?.date.split("-")[2]}</div>
+                        </div>
+
+                        <div className="holiday-details">
+                          <div className="holiday-name">{holiday.holiday_name}</div>
+                          <div className="holiday-weekday">{holiday.day}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+                <AddHoliday open={modalOpen} onClose={() => setModalOpen(false)} />
               </div>
 
-            </div>
-            <AddHoliday open={modalOpen} onClose={() => setModalOpen(false)} />
-          </div>
+          }
         </div>
       </div>
     </MainLayout>

@@ -157,7 +157,7 @@ function RegisterFromDemo({ handleData }) {
             style={handleData?.isOpen ? { display: "block" } : {}}
             className={`modal fade ${handleData?.isOpen ? "show" : ""} `}
             id="edit_company" >
-            <div className="modal-dialog modal-dialog-centered modal-lg">
+            <div className="modal-dialog modal-dialog-centered modal-lg bg-white">
                 <div className="modal-content shadow">
                     <div className="modal-header">
                         <h4 className="modal-title">{handleData?.type == "edit" ? "Edit" : "Register"} Company</h4>

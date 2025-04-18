@@ -29,7 +29,6 @@ import EmployeeDashbord from "../saas/Employee/EmployeeNewPage/EmployeeDashbord"
 import EmployeeSalaryNew from "../saas/Employee/EmployeeNewPage/EmployeeSalaryNew";
 import LeaveWfhRequest from "../saas/Employee/EmployeeNewPage/LeaveWfhRequest";
 import EmployeeAssetAssign from "../saas/Employee/Page/EmployeeAssetAssign";
-import EmployeeOrganisationTree from "../saas/Employee/Page/EmployeeOrganisationTree";
 import EmployeePasswordUpdate from "../saas/Employee/Page/EmployeePasswordUpdate";
 import Holiday from "../saas/Employee/Page/Holiday";
 import LogoutEmployee from "../saas/Employee/Page/LogoutEmployee";
@@ -165,12 +164,6 @@ const employeeRoutes = [
     {
         element: <EmployeeAssetAssign />,
         path: "/employee/assets",
-        isPrivate: true,
-        isSuperAdmin: true
-    },
-    {
-        element: <EmployeeOrganisationTree />,
-        path: "/employee/org-tree",
         isPrivate: true,
         isSuperAdmin: true
     },
