@@ -10,6 +10,7 @@ import {
   watchPlansAction,
 } from "./dashboardSaga";
 import { watchGetCompanyAction, watchGetPlanHistoryAction, watchGetServiceTypeAction } from "./companyDataSaga";
+import { watchGetEmployeeAction } from "./employeeSaga";
 
 function* rootSaga() {
   yield all([
@@ -24,7 +25,18 @@ function* rootSaga() {
     watchPlansAction(),
     watchGetCompanyAction(),
     watchGetPlanHistoryAction(),
-    watchGetServiceTypeAction()
+    watchGetServiceTypeAction(),
+
+    // saas sagas
+    watchGetEmployeeAction()
+
+
+
+
+
+
+
+
   ]);
 }
 

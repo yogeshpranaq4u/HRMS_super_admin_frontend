@@ -3,6 +3,9 @@
 // export const BaseUrl = "https://hr.hrmsbycvinfotech.com/CV/public/api/"; //New Live Server
 
 //Debug DataBase  Base  URL
+export const API_BASE_URL =
+  "https://development-hrmanagement.cvinfotechserver.com/CV/public/api/";
+//Debug DataBase  Base  URL
 export const BaseUrl =
   "https://development-hrmanagement.cvinfotechserver.com/CV/public/api/";
 

@@ -1,12 +1,12 @@
 import axios from "axios";
 import { BaseUrl } from "./apiEndPoints";
 
-const callApi = (url, method, payload ,token) => {
+const callApi = (url, method, payload ,token,API_BASE) => {
     return new Promise(async (resolve, reject) => {
         let config = payload ? {
             method: method,
             url: url,
-            baseURL: `${BaseUrl}`,
+            baseURL: `${API_BASE ||BaseUrl}`,
             headers: {
                 // 'Content-Type': 'application/json',
                 "Authorization":`Bearer ${token}`

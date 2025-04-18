@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import "./LoginForm.css";
 import { FaUser, FaLock } from "react-icons/fa";
 import { Form, Input, Button, Checkbox, Select } from "antd";
-// import Image2 from "../Assets/test3.jpg";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import OtpModal from "../Admin/AdminComponent/OtpModal";
 import WfhVerification from "../Component/WfhVerification";
@@ -18,10 +15,7 @@ export const LoginForm = () => {
   const [modalOpen1, setModalOpen1] = useState(false);
   const [username, setUsername] = useState("");
   const [employeeData, setEmployeeData] = useState();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const token = sessionStorage.getItem("fcmToken");
-
   const onFinish = async (values) => {
     const data = new FormData()
     data.append("email" ,values.username)
@@ -133,9 +127,9 @@ export const LoginForm = () => {
           </Form.Item>
           <Form.Item
             name="companyId"
-            rules={[
-              { required: true, message: "Please input your company id" },
-            ]}
+            // rules={[
+            //   { required: true, message: "Please input your company id" },
+            // ]}
             className="uniform-input"
           >
             <Input placeholder="Company Id" />
