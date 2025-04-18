@@ -38,13 +38,6 @@ function* rootSaga() {
     watchGetEmployeeAttendanceAction(),
     watchGetEmployeeLeaveWfhRequestAction()
 
-
-
-
-
-
-
-
   ]);
 }
 

@@ -87,7 +87,7 @@ const NewDashBoard = () => {
   const day = currentDate1.getDate();
   const employeeId = sessionStorage.getItem("employeeId");
   const [profileData, setProfileData] = useState();
-  const dispatch = useDispatch();
+
   const reminderData = useSelector((state) => state.employeeData?.reminder);
   useEffect(() => {
     dispatch(getReminder())
