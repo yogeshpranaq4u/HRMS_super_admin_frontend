@@ -11,6 +11,7 @@ import {
 } from "./dashboardSaga";
 import { watchGetCompanyAction, watchGetPlanHistoryAction, watchGetServiceTypeAction } from "./companyDataSaga";
 import { watchGetEmployeeAction, watchGetEmployeeProfileAction } from "./employeeSaga";
+import { watchGetEmployeedDataAction, watchGetEmployeeAttendanceAction,watchGetEmployeeLeaveWfhRequestAction} from "./adminSaga";
 
 function* rootSaga() {
   yield all([
@@ -29,7 +30,12 @@ function* rootSaga() {
 
     // saas sagas
     watchGetEmployeeAction(),
-    watchGetEmployeeProfileAction()
+    watchGetEmployeeProfileAction(),
+
+    //Admin Saga
+    watchGetEmployeedDataAction(),
+    watchGetEmployeeAttendanceAction(),
+    watchGetEmployeeLeaveWfhRequestAction()
 
 
 

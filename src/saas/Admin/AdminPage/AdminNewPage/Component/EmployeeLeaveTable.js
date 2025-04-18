@@ -8,9 +8,28 @@ import { toast } from "react-toastify";
 import Modal from "react-responsive-modal";
 import { useNavigate } from "react-router-dom";
 import { COLOR } from "../../../../Config/Color";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { getEmployeeLeaveWfhRequestData } from "../../../../../redux/actions/adminAction";
 
 const EmployeeLeaveTable = () => {
-  // const { setLoading, logout } = useAuth();
+  const dispatch = useDispatch();
+
+  const error = useSelector((state) => state?.adminData?.error);
+  const loading = useSelector((state) => state?.adminData?.loading);
+  const getLeaveWfhData = useSelector(
+    (state) => state?.adminData?.employeeLeaveWfhRequestData
+  );
+
+  const getAllUserAttendance = useSelector(
+    (state) => state?.adminData?.employeeAttendanceData
+  );
+ 
+
+  useEffect(() => {
+    dispatch(getEmployeeLeaveWfhRequestData());
+   
+  }, []);
   const setLoading = () => { };
   const logout = () => { };
   const employeeId = sessionStorage.getItem("employeeId");
@@ -47,6 +66,7 @@ const EmployeeLeaveTable = () => {
         const tableData = responseData?.data?.data?.filter((item) => {
           return item.status === "Pending";
         });
+        console.log("getLeaveWfhDataeeee", tableData);
         setLeaveData(tableData);
       } else {
         toast.error(responseData?.data?.mssg, {
@@ -486,6 +506,7 @@ const EmployeeLeaveTable = () => {
       <Table
         className="dotted-border-table"
         columns={columns}
+        // dataSource={getLeaveWfhData?.filter(item => item.status === "Pending").slice(0, 3)}
         dataSource={leaveData?.slice(0, 3)}
         pagination={{ pageSize: 8, position: ["bottomRight"] }}
         rowClassName={() => "custom-row"}

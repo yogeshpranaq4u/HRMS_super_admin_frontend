@@ -24,6 +24,10 @@ import Card from "../../../Component/Card";
 import EmployeeLeaveTable from "./Component/EmployeeLeaveTable";
 import debounce from "lodash/debounce";
 import MainLayout from "../../../../layouts/MainLayout";
+import {
+  getEmployeeAttendanceData,
+  getEmployeeData,
+} from "../../../../redux/actions/adminAction";
 const months = [
   "January",
   "February",
@@ -39,21 +43,40 @@ const months = [
   "December",
 ];
 const NewDashBoard = () => {
+  const details = JSON.parse(sessionStorage.getItem("userDetails")) || {};
+
+  const dispatch = useDispatch();
+  const [filterAttendance, setFilterAttendance] = useState([]);
+  const error = useSelector((state) => state?.adminData?.error);
+  const loading = useSelector((state) => state?.adminData?.loading);
+  const getAllUsersData = useSelector(
+    (state) => state?.adminData?.employeeListData
+  );
+
+  const getAllUserAttendance = useSelector(
+    (state) => state?.adminData?.employeeAttendanceData
+  );
+
+  useEffect(() => {
+    dispatch(getEmployeeData());
+    dispatch(getEmployeeAttendanceData());
+  }, []);
+
   // const { setLoading, logout } = useAuth();
   const setLoading = () => {};
-  const logout = () => {};
+  const logout = () => {}; 
   const token = sessionStorage.getItem("authToken");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalCardOpen, setModalCardOpen] = useState(false);
   const getEmployeeHoliday = useSelector((state) => state.getEmployeeHoliday);
   const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
-  const [filterAttendance, setFilterAttendance] = useState([]);
+
   const getGiftCardShow = useSelector((state) => state.getGiftCardShow);
   const [cardType, setCardType] = useState("");
   const [cardData, setCardData] = useState([]);
-  const getAllUserAttendance = useSelector(
-    (state) => state.getAllUserAttendance
-  );
+  // const getAllUserAttendance = useSelector(
+  //   (state) => state.getAllUserAttendance
+  // );
 
   const currentDate = format(new Date(), "yyyy-MM-dd");
   const currentYear = new Date().getFullYear(); // Get current year
@@ -64,15 +87,14 @@ const NewDashBoard = () => {
   const employeeId = sessionStorage.getItem("employeeId");
   const [profileData, setProfileData] = useState();
   const [reminderData, setReminderData] = useState([]);
-  const dispatch = useDispatch();
 
   const fetchAllData = useCallback(
     debounce(() => {
-      getAllUserAttendanceData();
+    
       fetchEmployeProfile();
       getReminderDetails();
       getHolidayList();
-      fetchEmployees();
+
       getManagerList();
       getDepartmentList();
       getMonthlyAttendance1();
@@ -96,67 +118,8 @@ const NewDashBoard = () => {
     });
     setFilterAttendance(filteredData);
   }, [getAllUserAttendance]);
-  const fetchEmployees = async () => {
-    setLoading(true);
 
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.GET_EMPLOYEE}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
 
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0]);
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0]);
-          setLoading(false);
-        } else {
-          dispatch(setUserDetails(responseData?.data?.data));
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      // console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  const getAllUserAttendanceData = async () => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.GET_ATTENDANCE}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0]);
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0]);
-          setLoading(false);
-        } else {
-          dispatch(setAllUserAttendance(responseData?.data?.data));
-
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
   const fetchEmployeProfile = async () => {
     setLoading(true);
 
@@ -531,12 +494,9 @@ const NewDashBoard = () => {
       return acc;
     }, {});
 
-  console.log("getAllUserAttendance", getAllUserAttendance);
-
-  const groupedLateArray = [];
-  //  Object.values(groupedLateData).sort(
-  //   (a, b) => b.count - a.count
-  // )||[];
+    const groupedLateArray = Object.values(groupedLateData).sort(
+      (a, b) => b.count - a.count
+    );
   return (
     <MainLayout>
       <div className="page-wrapper">
@@ -632,9 +592,10 @@ const NewDashBoard = () => {
                         fontWeight: "600",
                         fontFamily: "Inter",
                         color: COLOR.BLACK,
+                        margin: "0px",
                       }}
                     >
-                      {getEmployeeDetails?.length}
+                      {getAllUsersData?.length}
                     </p>
                     <p
                       style={{
@@ -688,10 +649,11 @@ const NewDashBoard = () => {
                         fontWeight: "600",
                         fontFamily: "Inter",
                         color: COLOR.BLACK,
+                        margin: "0px",
                       }}
                     >
                       {
-                        getEmployeeDetails?.filter(
+                        getAllUsersData?.filter(
                           (emp) => emp.officeLocation === "Gurugram"
                         )?.length
                       }
@@ -748,10 +710,11 @@ const NewDashBoard = () => {
                         fontWeight: "600",
                         fontFamily: "Inter",
                         color: COLOR.BLACK,
+                        margin: "0px",
                       }}
                     >
                       {
-                        getEmployeeDetails?.filter(
+                        getAllUsersData?.filter(
                           (emp) => emp.officeLocation === "Noida"
                         )?.length
                       }
@@ -785,20 +748,6 @@ const NewDashBoard = () => {
               >
                 <div className="w-full bg-white  rounded-lg p-2">
                   <div className="flex items-center mb-4">
-                    {/* <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-blue-500 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M3 10h11M9 21V3m-6 9l6-6m0 0l6 6m-6-6v12"
-                />
-              </svg> */}
                     <div style={{}}>
                       <img
                         src={IMAGE.CURRENT}
@@ -2645,7 +2594,7 @@ const NewDashBoard = () => {
                       marginTop: "16px",
                       borderRadius: "4px",
                       background: COLOR.GRAY,
-                      overflowY: "auto", // Enables vertical scrolling
+                      overflowY: "auto",
                     }}
                   >
                     <div
@@ -2656,7 +2605,6 @@ const NewDashBoard = () => {
                         padding: "10px",
                       }}
                     >
-                      {console.log("Sssssssss", getEmployeeHoliday)}
                       {getEmployeeHoliday && getEmployeeHoliday?.length > 0 ? (
                         (() => {
                           const currentMonth = new Date().getMonth();
