@@ -24,7 +24,7 @@ export const LoginForm = () => {
 
   const onFinish = async (values) => {
     const data = new FormData()
-    data.append("email" ,values.username + "@cvinfotech.com")
+    data.append("email" ,values.username)
     data.append("password" ,values.password )
     data.append("type" ,values.role )
     data.append("token" ,token )
@@ -97,11 +97,11 @@ export const LoginForm = () => {
               {
                 validator: (_, value) => {
                   if (value && value.includes("@")) {
-                    return Promise.reject(
-                      new Error(
-                        "Please do not include a domain (e.g. @cvinfotech.com)."
-                      )
-                    );
+                    // return Promise.reject(
+                    //   new Error(
+                    //     "Please do not include a domain "
+                    //   )
+                    // );
                   }
                   return Promise.resolve();
                 },
@@ -112,7 +112,7 @@ export const LoginForm = () => {
               value={username}
               onChange={handleUsernameChange}
               placeholder="Username"
-              suffix="@cvinfotech.com"
+              // suffix="@cvinfotech.com"
               prefix={<FaUser />}
             />
           </Form.Item>
@@ -130,6 +130,15 @@ export const LoginForm = () => {
               <Option value="Admin">Admin</Option>
               <Option value="Employee">Employee</Option>
             </Select>
+          </Form.Item>
+          <Form.Item
+            name="companyId"
+            rules={[
+              { required: true, message: "Please input your company id" },
+            ]}
+            className="uniform-input"
+          >
+            <Input placeholder="Company Id" />
           </Form.Item>
 
           <Form.Item name="remember" valuePropName="checked">
