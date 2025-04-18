@@ -7,6 +7,9 @@ import { COLOR, FONT, IMAGE } from "../../Config/Color";
 import PullToRefresh from "react-simple-pull-to-refresh";
 import { Table } from "antd";
 import MainLayout from "../../../layouts/MainLayout";
+import { getEmployeeProfile } from "../../../redux/actions/employeeActions";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 // import { Dialog, DialogContent } from "@material-ui/core";
 const EmployeeAttendance = () => {
   const employeeId = sessionStorage.getItem("employeeId");
@@ -14,61 +17,23 @@ const EmployeeAttendance = () => {
   // const { setLoading, logout } = useAuth();
   const setLoading = () => { };
   const logout = () => { };
-  const [profileData, setProfileData] = useState();
   const [attendanceData, setAttandanceData] = useState([]);
   const [filteredLeaveData, setFilteredLeaveData] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(false);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
+  const dispatch = useDispatch()
+  const profileData = useSelector((state) => state.employeeData?.profile)
   const [countData, setcountData] = useState({
     leave: 0,
     onTime: 0,
     halfDay: 0,
     late: 0,
   });
-  const fetchEmployeProfile = useCallback(async () => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(
-        `${BaseUrl}${Api.GET_EMPLOYEE_PROFILE}?employee_id=${employeeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          setLoading(false);
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
-        } else {
-          setProfileData(responseData?.data?.data);
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  }, [token, setLoading, logout]);
 
   const fetchEmployeeAttendance = useCallback(async () => {
     setLoading(true);
-
     try {
       const responseData = await axios.get(
         `${BaseUrl}${Api.GET_EMPLOYEE_ATTENDANCE}?employee_id=${employeeId}`,
@@ -181,7 +146,11 @@ const EmployeeAttendance = () => {
     });
   };
   useEffect(() => {
-    fetchEmployeProfile();
+    if (employeeId && (!profileData?.name)) {
+      dispatch(getEmployeeProfile(employeeId))
+    }
+  }, []);
+  useEffect(() => {
     fetchEmployeeAttendance();
   }, []);
   const handleYearChange = (e) => {
@@ -371,7 +340,6 @@ const EmployeeAttendance = () => {
     setIsFilterApplied(false);
   };
   const handleRefresh = async () => {
-    await fetchEmployeProfile();
     await fetchEmployeeAttendance();
   };
   const columns = [

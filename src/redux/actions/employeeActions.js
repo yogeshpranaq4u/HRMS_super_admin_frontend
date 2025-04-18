@@ -1,7 +1,11 @@
 import { types } from "../constants/types";
 
-export const getEmployeeData = (data) => ({
-    type: types.GET_EMPLOYEEDATA_REQUEST,
+export const getHolidayData = (data) => ({
+    type: types.GET_HOLIDAY_REQUEST,
+    payload:data
+});
+export const getEmployeeProfile = (data) => ({
+    type: types.GET_EMPLOYEEPROFILE_REQUEST,
     payload:data
 });
 

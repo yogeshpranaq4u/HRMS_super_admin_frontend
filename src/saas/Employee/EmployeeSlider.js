@@ -31,22 +31,26 @@ import { FaChevronUp } from "react-icons/fa";
 import axios from "axios";
 import { Api, BaseUrl } from "../Config/Api";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { getEmployeeProfile } from "../../redux/actions/employeeActions";
 
 const EmployeeSlider = () => {
   const isTabletMid = useMediaQuery({ query: "(max-width: 1024px)" });
   const [open, setOpen] = useState(!isTabletMid);
   const [billingSubMenuOpen, setBillingSubMenuOpen] = useState(false);
-  const [profileData, setProfileData] = useState();
   const { pathname } = useLocation();
-  const navigate = useNavigate();
-  // const { logout, setLoading } = useAuth();
-  const logout =()=>{};
-  const setLoading =()=>{};
+  const dispatch = useDispatch()
+  const profileData = useSelector((state) => state.employeeData?.profile)
   const employeeId = sessionStorage.getItem("employeeId");
-  const token = sessionStorage.getItem("authToken");
   useEffect(() => {
     setOpen(!isTabletMid);
   }, [isTabletMid]);
+  useEffect(() => {
+    if (employeeId && (!profileData?.name)) {
+      dispatch(getEmployeeProfile(employeeId))
+    }
+  }, []);
 
   useEffect(() => {
     if (isTabletMid) setOpen(false);
@@ -54,50 +58,7 @@ const EmployeeSlider = () => {
   const toggleSubMenu = () => {
     setBillingSubMenuOpen((prev) => !prev);
   };
-  const fetchEmployeProfile = useCallback(async () => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(
-        `${BaseUrl}${Api.GET_EMPLOYEE_PROFILE}?employee_id=${employeeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
-          setLoading(false);
-        } else {
-          setProfileData(responseData?.data?.data);
-
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      await new Promise((resolve) => setTimeout(resolve, 10000));
-      setLoading(false); // Hide loader after delay
-    }
-  }, [token, setLoading, logout]);
-  useEffect(() => {
-    fetchEmployeProfile();
-  }, []);
+ 
   return (
     <div>
       <motion.div

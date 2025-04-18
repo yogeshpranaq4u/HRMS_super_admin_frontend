@@ -15,7 +15,7 @@ const callApi = (url, method, payload ,token,API_BASE) => {
         }:{
             method: method,
             url: url,
-            baseURL: `${BaseUrl}`,
+            baseURL: `${API_BASE||BaseUrl}`,
             headers: {
                 // 'Content-Type': 'application/json',
                 "Authorization":`Bearer ${token}`

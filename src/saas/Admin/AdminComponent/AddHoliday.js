@@ -5,10 +5,9 @@ import "./AddHoliday.css";
 import { Api, BaseUrl } from "../../Config/Api";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { setEmployeeHoliday } from "../../Redux/Action";
+import { getHolidayData } from "../../../redux/actions/employeeActions";
 
 const AddHoliday = ({ open, onClose }) => {
-  // const { setLoading, logout } = useAuth();
   const setLoading = () => { };
   const logout = () => { };
   const dispatch = useDispatch();
@@ -33,7 +32,6 @@ const AddHoliday = ({ open, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("holiday_name", formData.holidayName);
@@ -72,7 +70,7 @@ const AddHoliday = ({ open, onClose }) => {
             position: "top-center",
             autoClose: 1000,
           });
-          getHolidayList();
+          dispatch(getHolidayData())
           setFormData(initialFormData);
           setLoading(false);
         }
@@ -86,7 +84,6 @@ const AddHoliday = ({ open, onClose }) => {
   };
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-
     if (name === "image") {
       setFile(files[0]); // Correctly sets the file
     } else {
@@ -97,37 +94,6 @@ const AddHoliday = ({ open, onClose }) => {
     }
   };
 
-  const getHolidayList = async () => {
-    setLoading(true);
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.GET_HOLIDAY}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else if (responseData?.data?.valid === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-      } else {
-        dispatch(setEmployeeHoliday(responseData?.data?.data));
-        onClose();
-      }
-    } catch (error) {
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
     <Modal
       open={open}

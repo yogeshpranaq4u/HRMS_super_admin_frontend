@@ -5,57 +5,22 @@ import axios from 'axios';
 import { Api, BaseUrl } from '../../Config/Api';
 import { toast } from 'react-toastify';
 import MainLayout from '../../../layouts/MainLayout';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { getEmployeeProfile } from '../../../redux/actions/employeeActions';
 
 const EmployeePasswordUpdate = () => {
   const [form] = Form.useForm();
   const token = sessionStorage.getItem("authToken");
   const employeeId = sessionStorage.getItem("employeeId");
-  const [profileData, setProfileData] = useState();
   const setLoading = () => { };
   const logout = () => { };
-  const fetchEmployeProfile = useCallback(async () => {
-    setLoading(true);
-    try {
-      const responseData = await axios.get(
-        `${BaseUrl}${Api.GET_EMPLOYEE_PROFILE}?employee_id=${employeeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
-          setLoading(false);
-        } else {
-          setProfileData(responseData?.data?.data);
-
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      await new Promise((resolve) => setTimeout(resolve, 10000));
-      setLoading(false);
-    }
-  }, [token, setLoading, logout]);
-
+  const dispatch = useDispatch()
+  const profileData = useSelector((state) => state.employeeData?.profile)
   useEffect(() => {
-    fetchEmployeProfile();
+    if (employeeId && (!profileData?.name)) {
+      dispatch(getEmployeeProfile(employeeId))
+    }
   }, []);
   const onFinish = async (values) => {
     setLoading(true);
