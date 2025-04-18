@@ -40,8 +40,8 @@ const months = [
 ];
 const NewDashBoard = () => {
   // const { setLoading, logout } = useAuth();
-  const setLoading = () => { };
-  const logout = () => { };
+  const setLoading = () => {};
+  const logout = () => {};
   const token = sessionStorage.getItem("authToken");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalCardOpen, setModalCardOpen] = useState(false);
@@ -354,8 +354,8 @@ const NewDashBoard = () => {
           toast.error(responseData?.data?.mssg[0]);
           setLoading(false);
         } else {
-//  console.log("responseData?.data" ,responseData?.data);
- 
+          //  console.log("responseData?.data" ,responseData?.data);
+
           dispatch(setCustomeDetails(responseData?.data?.data));
         }
       }
@@ -447,8 +447,8 @@ const NewDashBoard = () => {
         attendance?.date == currentDate &&
         (attendance?.attendance_status == "On Time" ||
           attendance?.attendance_status == "Half-Day" ||
-          attendance?.attendance_status == "Late" || attendance?.work_status == "WFH")
-
+          attendance?.attendance_status == "Late" ||
+          attendance?.work_status == "WFH");
 
       return isDateMatch;
     });
@@ -531,9 +531,9 @@ const NewDashBoard = () => {
       return acc;
     }, {});
 
-    console.log("getAllUserAttendance" ,getAllUserAttendance);
-    
-  const groupedLateArray =[]
+  console.log("getAllUserAttendance", getAllUserAttendance);
+
+  const groupedLateArray = [];
   //  Object.values(groupedLateData).sort(
   //   (a, b) => b.count - a.count
   // )||[];
@@ -825,7 +825,7 @@ const NewDashBoard = () => {
                   </div>
 
                   <div
-                    className="rounded-md p-4 space-y-2"
+                    className="rounded-md p-4 space-y-1"
                     style={{ backgroundColor: "#FAFAFA" }}
                   >
                     <div className="flex justify-between">
@@ -878,7 +878,9 @@ const NewDashBoard = () => {
                           Gurgaon Office
                         </span>
                       </span>
-                      <span className="font-semibold">{totalPresentGurugram}</span>
+                      <span className="font-semibold">
+                        {totalPresentGurugram}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span
@@ -1032,13 +1034,17 @@ const NewDashBoard = () => {
                         marginBottom: "16px",
                       }}
                     >
-                      Easily onboard new talent and keep your workforce thriving. Add
-                      new employee with just a click.
+                      Easily onboard new talent and keep your workforce
+                      thriving. Add new employee with just a click.
                     </p>
                     <button
                       className="ctaButton"
                       onClick={() => setModalOpen(true)}
-                      style={{ width: "100%", maxWidth: "150px", marginTop: "30px" }}
+                      style={{
+                        width: "100%",
+                        maxWidth: "150px",
+                        marginTop: "30px",
+                      }}
                     >
                       Add Employee
                     </button>
@@ -1232,7 +1238,10 @@ const NewDashBoard = () => {
                                       color:
                                         leaveItem.attendance_status === "Leave"
                                           ? "#B91C1C"
-                                          : leaveItem.attendance_status === "Half-Day" ? '#1E40AF' : "#9370DB",
+                                          : leaveItem.attendance_status ===
+                                            "Half-Day"
+                                          ? "#1E40AF"
+                                          : "#9370DB",
                                     }}
                                   >
                                     ●
@@ -1328,7 +1337,8 @@ const NewDashBoard = () => {
                                       </span>
                                     </div>
                                   )}
-                                  {leaveItem?.attendance_status == "Half-Day" && (
+                                  {leaveItem?.attendance_status ==
+                                    "Half-Day" && (
                                     <div
                                       style={{
                                         width: "80px",
@@ -1502,27 +1512,27 @@ const NewDashBoard = () => {
                         }}
                       >
                         {reminderData?.current_events?.length > 0 ||
-                          reminderData?.upcoming_events?.length > 0
+                        reminderData?.upcoming_events?.length > 0
                           ? (() => {
-                            // Filter and combine the data
-                            const birthdayItems = [
-                              ...(reminderData?.current_events || []),
-                              ...(reminderData?.upcoming_events || []),
-                            ].filter((item) => {
-                              if (item.type !== "Birthday") return false;
+                              // Filter and combine the data
+                              const birthdayItems = [
+                                ...(reminderData?.current_events || []),
+                                ...(reminderData?.upcoming_events || []),
+                              ].filter((item) => {
+                                if (item.type !== "Birthday") return false;
 
-                              const itemDate = new Date(item.date);
-                              const currentMonth = new Date().getMonth();
-                              const currentYear = new Date().getFullYear();
+                                const itemDate = new Date(item.date);
+                                const currentMonth = new Date().getMonth();
+                                const currentYear = new Date().getFullYear();
 
-                              return (
-                                itemDate.getMonth() === currentMonth &&
-                                itemDate.getFullYear() === currentYear
-                              );
-                            });
+                                return (
+                                  itemDate.getMonth() === currentMonth &&
+                                  itemDate.getFullYear() === currentYear
+                                );
+                              });
 
-                            return birthdayItems?.length;
-                          })()
+                              return birthdayItems?.length;
+                            })()
                           : 0}
                       </p>
                     </div>
@@ -1554,7 +1564,7 @@ const NewDashBoard = () => {
                       }}
                     >
                       {reminderData?.current_events?.length > 0 ||
-                        reminderData?.upcoming_events?.length > 0 ? (
+                      reminderData?.upcoming_events?.length > 0 ? (
                         (() => {
                           const birthdayItems = [
                             ...(reminderData?.current_events || []),
@@ -1865,13 +1875,14 @@ const NewDashBoard = () => {
                       }}
                     >
                       {Array.isArray(filterAttendance) &&
-                        filterAttendance.length > 0 &&
-                        filterAttendance.some(
-                          (attendance) => attendance?.attendance_status === "Late"
-                        ) ? (
+                      filterAttendance.length > 0 &&
+                      filterAttendance.some(
+                        (attendance) => attendance?.attendance_status === "Late"
+                      ) ? (
                         filterAttendance
                           .filter(
-                            (attendance) => attendance?.attendance_status === "Late"
+                            (attendance) =>
+                              attendance?.attendance_status === "Late"
                           )
                           .map((leaveItem, index) => (
                             <div
@@ -2072,29 +2083,28 @@ const NewDashBoard = () => {
                           color: COLOR.BLACK2,
                         }}
                       >
-
                         {reminderData?.current_events?.length > 0 ||
-                          reminderData?.upcoming_events?.length > 0
+                        reminderData?.upcoming_events?.length > 0
                           ? (() => {
-                            // Filter and combine the data
-                            const birthdayItems = [
-                              ...(reminderData?.current_events || []),
-                              ...(reminderData?.upcoming_events || []),
-                            ].filter((item) => {
-                              if (item.type !== "Anniversary") return false;
+                              // Filter and combine the data
+                              const birthdayItems = [
+                                ...(reminderData?.current_events || []),
+                                ...(reminderData?.upcoming_events || []),
+                              ].filter((item) => {
+                                if (item.type !== "Anniversary") return false;
 
-                              const itemDate = new Date(item.date);
-                              const currentMonth = new Date().getMonth();
-                              const currentYear = new Date().getFullYear();
+                                const itemDate = new Date(item.date);
+                                const currentMonth = new Date().getMonth();
+                                const currentYear = new Date().getFullYear();
 
-                              return (
-                                itemDate.getMonth() === currentMonth &&
-                                itemDate.getFullYear() === currentYear
-                              );
-                            });
+                                return (
+                                  itemDate.getMonth() === currentMonth &&
+                                  itemDate.getFullYear() === currentYear
+                                );
+                              });
 
-                            return birthdayItems?.length;
-                          })()
+                              return birthdayItems?.length;
+                            })()
                           : 0}
                       </p>
                     </div>
@@ -2126,7 +2136,7 @@ const NewDashBoard = () => {
                       }}
                     >
                       {reminderData?.current_events?.length > 0 ||
-                        reminderData?.upcoming_events?.length > 0 ? (
+                      reminderData?.upcoming_events?.length > 0 ? (
                         (() => {
                           const birthdayItems = [
                             ...(reminderData?.current_events || []),
@@ -2175,15 +2185,20 @@ const NewDashBoard = () => {
                                     }}
                                   >
                                     <div style={{ display: "flex" }}>
-                                      <span style={{ color: "#115E59" }}>●</span>
+                                      <span style={{ color: "#115E59" }}>
+                                        ●
+                                      </span>
                                       <h3
                                         style={{
                                           fontWeight: "600",
-                                          color: "#888888",
+                                          color: COLOR.BLACK2,
+                                          fontSize: "14px",
+                                          fontFamily: "Inter",
                                           marginLeft: 10,
                                         }}
                                       >
-                                        {birthdayItem?.name}({birthdayItem.type})
+                                        {birthdayItem?.name}({birthdayItem.type}
+                                        )
                                       </h3>
                                     </div>
                                   </div>
@@ -2433,7 +2448,7 @@ const NewDashBoard = () => {
                       }}
                     >
                       {Array.isArray(groupedLateArray) &&
-                        groupedLateArray.length > 0 ? (
+                      groupedLateArray.length > 0 ? (
                         groupedLateArray.map((person, index) => (
                           <div
                             key={index}
@@ -2603,14 +2618,14 @@ const NewDashBoard = () => {
                       >
                         {Array.isArray(getEmployeeHoliday)
                           ? getEmployeeHoliday.filter((item) => {
-                            const holidayDate = new Date(item.date);
-                            const currentMonth = new Date().getMonth();
-                            const currentYear = new Date().getFullYear();
-                            return (
-                              holidayDate.getMonth() === currentMonth &&
-                              holidayDate.getFullYear() === currentYear
-                            );
-                          }).length
+                              const holidayDate = new Date(item.date);
+                              const currentMonth = new Date().getMonth();
+                              const currentYear = new Date().getFullYear();
+                              return (
+                                holidayDate.getMonth() === currentMonth &&
+                                holidayDate.getFullYear() === currentYear
+                              );
+                            }).length
                           : 0}
                       </p>
                     </div>
@@ -2680,7 +2695,9 @@ const NewDashBoard = () => {
                                 >
                                   <div style={{ width: "40%" }}>
                                     <div style={{ display: "flex" }}>
-                                      <span style={{ color: "#FEAABC" }}>●</span>
+                                      <span style={{ color: "#FEAABC" }}>
+                                        ●
+                                      </span>
                                       <h3
                                         style={{
                                           marginLeft: "10px",
@@ -2808,7 +2825,10 @@ const NewDashBoard = () => {
               <EmployeeLeaveTable />
             </div>
 
-            <AddEmployeeModal open={modalOpen} onClose={() => setModalOpen(false)} />
+            <AddEmployeeModal
+              open={modalOpen}
+              onClose={() => setModalOpen(false)}
+            />
             <div>
               <Card
                 open={modalCardOpen}

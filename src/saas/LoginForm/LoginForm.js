@@ -21,7 +21,7 @@ export const LoginForm = () => {
     data.append("email" ,values.username)
     data.append("password" ,values.password )
     data.append("type" ,values.role )
-    data.append("token" ,token )
+    // data.append("token" ,token )
     const response = await callApi(`${BaseUrl}${Api.LOGIN}`,"POST" , data,"")
     // console.log("response" ,response);
     if(response?.valid && response?.success ){
@@ -44,8 +44,8 @@ export const LoginForm = () => {
       }
       toast.success(response.mssg || response.mssg || "Login Done");
     }else{
-      if(response.mssg || response.mssg ){
-        toast.error(response.mssg || response.mssg || "Server Error");
+      if(response.mssg[0] || response.mssg ){
+        toast.error(response.mssg[0] || response.mssg || "Server Error");
       }
     }
     
@@ -86,27 +86,23 @@ export const LoginForm = () => {
 
           <Form.Item
             name="username"
+       
             rules={[
-              { required: true, message: "Please input your username!" },
               {
-                validator: (_, value) => {
-                  if (value && value.includes("@")) {
-                    // return Promise.reject(
-                    //   new Error(
-                    //     "Please do not include a domain "
-                    //   )
-                    // );
-                  }
-                  return Promise.resolve();
-                },
+                required: true,
+                message: "Please input your email address",
+              },
+              {
+                type: "email",
+                message: "Please enter a valid email address",
               },
             ]}
           >
             <Input
-              value={username}
-              onChange={handleUsernameChange}
+              // value={username}
+              // onChange={handleUsernameChange}
               placeholder="Username"
-              // suffix="@cvinfotech.com"
+         
               prefix={<FaUser />}
             />
           </Form.Item>
