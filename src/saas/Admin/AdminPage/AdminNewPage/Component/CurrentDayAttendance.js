@@ -12,15 +12,13 @@ import PullToRefresh from "react-simple-pull-to-refresh";
 import { setAllUserAttendance } from "../../../../Redux/Action";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { getEmployeeAttendanceData } from "../../../../../redux/actions/adminAction";
 const { Option } = Select;
 const CurrentDayAttendance = ({ data }) => {
   const dispatch = useDispatch();
   const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
   const getEmployeeindex = useSelector((state) => state.getEmployeeindex);
   const [employee, setEmployee] = useState();
-  const getAllUserAttendance = useSelector(
-    (state) => state.getAllUserAttendance
-  );
   const [test1, setTest1] = useState([]);
   const [editmodalOpen, setEditModalOpen] = useState(false);
   const [filterallAttendanceData, setAllAttendanceData] = useState([]);
@@ -30,7 +28,7 @@ const CurrentDayAttendance = ({ data }) => {
   const currentMonthIndex = new Date().getMonth();
   const currentDay = new Date().getDate();
   const token = sessionStorage.getItem("authToken");
-const setLoading = () => { };
+  const setLoading = () => { };
   const logout = () => { };
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
@@ -55,6 +53,12 @@ const setLoading = () => { };
     "November",
     "December",
   ];
+  const getAllUserAttendance = useSelector(
+    (state) => state?.adminData?.employeeAttendanceData
+  );
+  useEffect(() => {
+    dispatch(getEmployeeAttendanceData());
+  }, []);
 
   const getDaysInMonth = (year, monthIndex) => {
     return new Date(year, monthIndex + 1, 0).getDate();
@@ -217,38 +221,6 @@ const setLoading = () => { };
       }
     };
 
-    // const filterEmpAttendance = () => {
-    //   const filteredData = employeeAttendance?.filter((leave) => {
-    //     const isDateMatch =
-    //       leave.year === formData.leaveYear &&
-    //       leave.month === formData.leaveMonth;
-
-    //     if (formData.statusType === "ALL Data") {
-    //       if (getSwitchOnOff) {
-    //         return isDateMatch && leave.attendance_status !== "Week Off";
-    //       }
-    //       return isDateMatch;
-    //     } else {
-    //       if (getSwitchOnOff) {
-    //         return (
-    //           isDateMatch &&
-    //           leave.attendance_status !== "Week Off" &&
-    //           (leave.attendance_status === formData.statusType ||
-    //             leave.work_status === formData.statusType)
-    //         );
-    //       }
-    //       return (
-    //         isDateMatch &&
-    //         (leave.attendance_status === formData.statusType ||
-    //           leave.work_status === formData.statusType)
-    //       );
-    //     }
-    //   });
-
-    //   setFilterEmployeeAttendance(filteredData);
-    //   getCountAttendanceDarta(filteredData);
-    // };
-
     filterAttendanceData();
   }, [
     formData.leaveYear,
@@ -260,44 +232,8 @@ const setLoading = () => { };
 
     data,
   ]);
-  // Columns
 
-  // useEffect(() => {
-  //   const filterAttendanceData = () => {
-  //     const filteredData = getAllUserAttendance?.filter((leave) => {
-  //       const isDateMatch =
-  //         leave.year === formData.leaveYear &&
-  //         leave.month === formData.leaveMonth &&
-  //         leave.date === formData.leaveDate;
 
-  //       const isOfficeLocationMatch =
-  //         formData.officeLocation === "ALL Data" || leave.office_location === formData.officeLocation;
-
-  //       const isStatusMatch =
-  //         formData.statusType === "ALL Data" ||
-  //         leave.attendance_status === formData.statusType ||
-  //         leave.work_status === formData.statusType;
-
-  //       if (data) {
-  //         return isDateMatch && isOfficeLocationMatch && leave.attendance_status !== "Week Off" && isStatusMatch;
-  //       }
-  //       return isDateMatch && isOfficeLocationMatch && isStatusMatch;
-  //     });
-
-  //     setAllAttendanceData(filteredData);
-  //     getCountAttendanceDarta(filteredData);
-  //   };
-
-  //   filterAttendanceData();
-  // }, [
-  //   formData.leaveYear,
-  //   formData.leaveMonth,
-  //   formData.leaveDate,
-  //   formData.statusType,
-  //   formData.officeLocation,
-  //   getAllUserAttendance,
-  //   data,
-  // ]);
   const columns = [
     {
       title: "S.NO",
@@ -663,46 +599,10 @@ const setLoading = () => { };
     setEmployee(empData);
     setEditModalOpen(true);
   };
-  const handleRefresh = async () => {
-    await getAllUserAttendanceData();
+  const handleRefresh = () => {
+    dispatch(getEmployeeAttendanceData());
   };
-  const getAllUserAttendanceData = async () => {
-    setLoading(true);
 
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.GET_ATTENDANCE}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
-          setLoading(false);
-        } else {
-          // setAllAttendance(responseData?.data?.data);
-          dispatch(setAllUserAttendance(responseData?.data?.data));
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
   const getRowStyle = (data) => {
     const LATE_THRESHOLD = "09:15:59";
     const { login_time, attendance_status, work_status } = data;
@@ -783,52 +683,21 @@ const setLoading = () => { };
     return style;
   };
   const getCountAttendanceDarta = (data) => {
-  
-    // let leaveCount = 0;
-    // let halfDayCount = 0;
-    // let lateCount = 0;
-    // let onTimeCount = 0;
-    // let wfhCount = 0;
-
-    // data?.forEach((item) => {
-    
-    //   if (item?.attendance_status === "Leave") {
-    //     leaveCount += 1;
-    //   } else if (item?.attendance_status === "Half-Day") {
-    //     halfDayCount += 1;
-    //   } else if (item?.attendance_status === "Late") {
-    //     lateCount += 1;
-    //   } else if (
-    //     item?.attendance_status === "On Time" &&
-    //     item?.work_status !== "WFH"
-    //   ) {
-    //     onTimeCount += 1;
-    //   } else if (item?.work_status == "WFH") {
-    //     wfhCount += 1;
-    //   }
-    // });
-    // setcountData({
-    //   leave: leaveCount,
-    //   onTime: onTimeCount,
-    //   halfDay: halfDayCount,
-    //   late: lateCount,
-    //   wfh: wfhCount,
-    // });
 
     let leaveCount = 0;
     let halfDayCount = 0;
     let lateCount = 0;
     let onTimeCount = 0;
-  
+
     let totalWfhCount = 0;
     let wfhLateCount = 0;
     let wfhOnTimeCount = 0;
     let wfhHalfDayCount = 0;
-  
+
     data?.forEach((item) => {
       if (item?.work_status === "WFH") {
         totalWfhCount += 1;
-  
+
         // Count WFH attendance statuses
         if (item?.attendance_status === "Late") {
           wfhLateCount += 1;
@@ -853,7 +722,7 @@ const setLoading = () => { };
         }
       }
     });
-  
+
     setcountData({
       leave: leaveCount,
       onTime: onTimeCount,
@@ -1074,11 +943,10 @@ const setLoading = () => { };
             <button
               onClick={handleClearFilter}
               disabled={isDisabled}
-              className={`px-3 py-1 rounded flex items-center justify-center transition-colors ${
-                isFilterApplied
-                  ? "bg-blue-500 text-white hover:bg-blue-600"
-                  : "bg-gray-200 text-black"
-              } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`px-3 py-1 rounded flex items-center justify-center transition-colors ${isFilterApplied
+                ? "bg-blue-500 text-white hover:bg-blue-600"
+                : "bg-gray-200 text-black"
+                } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
               style={{
                 fontSize: "12px",
                 fontWeight: "600",

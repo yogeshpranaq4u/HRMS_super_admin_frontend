@@ -22,8 +22,7 @@ const AdminHoliday = () => {
   }, []);
 
   // console.log("profileData", holidayData);
-
-
+  
   const handleClick = () => {
     setModalOpen(true);
   };

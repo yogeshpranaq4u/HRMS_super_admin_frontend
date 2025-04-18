@@ -15,10 +15,14 @@ import EditEmployeeAttendance from "../../../AdminComponent/EditEmployeeAttendan
 import { CSVLink } from "react-csv";
 // import { Dialog, DialogContent } from "@material-ui/core";
 import WHFComponnent from "../../../AdminComponent/WHFComponnent";
+import { getEmployeeAttendanceData, getEmployeeData } from "../../../../../redux/actions/adminAction";
 const SingleEmployeeAttendance = ({ data }) => {
   const dispatch = useDispatch();
-  const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
-  const getEmployeeindex = useSelector((state) => state.getEmployeeindex);
+  const getEmployeeDetails = useSelector(
+    (state) => state?.adminData?.employeeListData
+  );
+  const [currentEmpIndex, setCurrentEmpIndex] = useState(0);
+  // const currentEmpIndex = useSelector((state) => state.currentEmpIndex);
   const [employeeAttendance, setEmployeeAttendance] = useState([]);
   const [filteremployeeAttendance, setFilterEmployeeAttendance] = useState([]);
   const [editmodalOpen, setEditModalOpen] = useState(false);
@@ -26,11 +30,10 @@ const SingleEmployeeAttendance = ({ data }) => {
   const [open, setOpen] = useState(false);
   const [employee, setEmployee] = useState();
   const token = sessionStorage.getItem("authToken");
-const setLoading = () => { };
+  const setLoading = () => { };
   const logout = () => { };
   const [test1, setTest1] = useState([]);
-  const [filteredCategories, setFilteredCategories] =
-    useState(getEmployeeDetails);
+
   const [query, setQuery] = useState("");
   const currentYear = new Date().getFullYear();
   const currentMonthIndex = new Date().getMonth();
@@ -59,6 +62,13 @@ const setLoading = () => { };
   const getDaysInMonth = (year, monthIndex) => {
     return new Date(year, monthIndex + 1, 0).getDate();
   };
+  // const getAllUserAttendance = useSelector(
+  //   (state) => state?.adminData?.employeeAttendanceData
+  // );
+  useEffect(() => {
+    dispatch(getEmployeeData());
+    dispatch(getEmployeeAttendanceData());
+  }, []);
 
   const formatDate = (day, monthIndex, year) => {
     const formattedDay = String(day).padStart(2, "0");
@@ -83,7 +93,7 @@ const setLoading = () => { };
   }, []);
   useEffect(() => {
     if (getEmployeeDetails?.length > 0) {
-      getEmployeeAttendance(getEmployeeindex);
+      getEmployeeAttendance(currentEmpIndex);
     }
   }, [editmodalOpen]);
   const generateYears = () => {
@@ -140,7 +150,7 @@ const setLoading = () => { };
     }));
   }, [formData.leaveMonth, formData.leaveYear]);
   const handleRefresh = async () => {
-    await getEmployeeAttendance(getEmployeeindex);
+    await getEmployeeAttendance(currentEmpIndex);
   };
   const handleClearFilter = () => {
     setFormData({
@@ -154,32 +164,17 @@ const setLoading = () => { };
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
-    updateFilteredCategories(event.target.value);
   };
-  const updateFilteredCategories = (searchTerm) => {
-    const lowerCaseQuery = searchTerm.trim().toLowerCase();
 
-    const filteredItems = getEmployeeDetails.filter((item) => {
-      return (
-        item?.name.toLowerCase().includes(lowerCaseQuery) ||
-        item?.employee_code.toLowerCase().includes(lowerCaseQuery) ||
-        item?.email.toLowerCase().includes(lowerCaseQuery)
-      );
-    });
-
-    setFilteredCategories(filteredItems);
-  };
 
   const handleRowClick = (employeeId) => {
     const index = getEmployeeDetails.findIndex((emp) => emp?.id === employeeId);
-
-    dispatch(setEmployeeindex(index));
-
+    // dispatch(setEmployeeindex(index));
+    setCurrentEmpIndex(index);
     getEmployeeAttendance(index);
   };
   const getEmployeeAttendance = async (data) => {
     setLoading(true);
-
     try {
       const responseData = await axios.get(
         `${BaseUrl}${Api.GET_USER_ATTENDANCE}?employee_id=${getEmployeeDetails[data]?.id}`,
@@ -475,7 +470,7 @@ const setLoading = () => { };
       title: "IMAGE IN",
       dataIndex: "login_image",
       key: "login_image",
-      width:100,
+      width: 100,
       render: (img) =>
         img ? (
           <img
@@ -517,7 +512,7 @@ const setLoading = () => { };
       title: "IMAGE OUT",
       dataIndex: "logout_image",
       key: "logout_image",
-      width:120,
+      width: 120,
       render: (img) =>
         img ? (
           <img
@@ -578,32 +573,32 @@ const setLoading = () => { };
         </span>
       ),
     },
-     {
-          title: "OFFICE LOCATION",
-          dataIndex: "office_location",
-          key: "office_location",
-          width: 180,
-          render: (text) => (
-            <span
-              style={{
-                fontFamily: "Inter",
-                fontWeight: "500",
-                fontSize: "14px",
-                lineHeight: "22px",
-                color: COLOR.GRAY3,
-                whiteSpace: "pre-wrap",
-                wordBreak: "break-word",
-                display: "block", // Ensures it takes full width
-                overflowWrap: "break-word",
-              }}
-            >
-              {text}
-            </span>
-          ),
-        },
+    {
+      title: "OFFICE LOCATION",
+      dataIndex: "office_location",
+      key: "office_location",
+      width: 180,
+      render: (text) => (
+        <span
+          style={{
+            fontFamily: "Inter",
+            fontWeight: "500",
+            fontSize: "14px",
+            lineHeight: "22px",
+            color: COLOR.GRAY3,
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
+            display: "block", // Ensures it takes full width
+            overflowWrap: "break-word",
+          }}
+        >
+          {text}
+        </span>
+      ),
+    },
     {
       title: "ACTION",
-      width:100,
+      width: 100,
       render: (rowData) => (
         <div>
           <img
@@ -692,9 +687,6 @@ const setLoading = () => { };
     let onTimeCount = 0;
 
     data?.forEach((item) => {
-      {
-        console.log("item", item);
-      }
       if (item?.attendance_status === "Leave") {
         leaveCount += 1;
       } else if (item?.attendance_status === "Half-Day") {
@@ -781,7 +773,7 @@ const setLoading = () => { };
       >
         <div className="p-4 rounded-lg bg-white shadow-sm">
           <div className="flex items-start space-x-6 p-4">
-            {getEmployeeDetails[getEmployeeindex]?.image == null ? (
+            {getEmployeeDetails[currentEmpIndex]?.image == null ? (
               <div
                 style={{
                   width: "60px",
@@ -801,14 +793,14 @@ const setLoading = () => { };
                     color: "white",
                   }}
                 >
-                  {getEmployeeDetails[getEmployeeindex]?.name
+                  {getEmployeeDetails[currentEmpIndex]?.name
                     .charAt(0)
                     .toUpperCase()}
                 </h1>
               </div>
             ) : (
               <img
-                src={ImagePath + getEmployeeDetails[getEmployeeindex]?.image}
+                src={ImagePath + getEmployeeDetails[currentEmpIndex]?.image}
                 alt="User"
                 className="w-14 h-14 rounded-md object-cover"
               />
@@ -824,7 +816,7 @@ const setLoading = () => { };
                   color: COLOR.BLACK,
                 }}
               >
-                {getEmployeeDetails[getEmployeeindex]?.name}
+                {getEmployeeDetails[currentEmpIndex]?.name}
               </h2>
               <h2
                 style={{
@@ -836,7 +828,7 @@ const setLoading = () => { };
                   color: COLOR.BLACK1,
                 }}
               >
-                {getEmployeeDetails[getEmployeeindex]?.designation}
+                {getEmployeeDetails[currentEmpIndex]?.designation}
               </h2>
 
               <div className="flex flex-wrap mt-2 gap-2">
@@ -852,7 +844,7 @@ const setLoading = () => { };
                       color: COLOR.GRAY4,
                     }}
                   >
-                    {getEmployeeDetails[getEmployeeindex]?.employee_code}
+                    {getEmployeeDetails[currentEmpIndex]?.employee_code}
                   </span>
                 </div>
                 <div className="flex items-center px-2 py-1 border border-dashed rounded-lg text-gray-800 space-x-2">
@@ -868,7 +860,7 @@ const setLoading = () => { };
                     }}
                   >
                     {" "}
-                    {getEmployeeDetails[getEmployeeindex]?.mobile}
+                    {getEmployeeDetails[currentEmpIndex]?.mobile}
                   </span>
                 </div>
                 <div className="flex items-center px-2 py-1 border border-dashed rounded-lg text-gray-800 space-x-2">
@@ -884,7 +876,7 @@ const setLoading = () => { };
                     }}
                   >
                     {" "}
-                    {getEmployeeDetails[getEmployeeindex]?.email}
+                    {getEmployeeDetails[currentEmpIndex]?.email}
                   </span>
                 </div>
 
@@ -900,7 +892,7 @@ const setLoading = () => { };
                       color: COLOR.GRAY4,
                     }}
                   >
-                    {getEmployeeDetails[getEmployeeindex]?.location}
+                    {getEmployeeDetails[currentEmpIndex]?.location}
                   </span>
                 </div>
               </div>
@@ -1140,9 +1132,8 @@ const setLoading = () => { };
                     lineHeight: "18px",
                   }}
                   className="px-3 py-1 bg-black text-white rounded hover:bg-gray-800 flex items-center justify-center"
-                  filename={`${
-                    getEmployeeDetails[getEmployeeindex]?.name
-                  }${" "}${formData.leaveMonth}${" "}${formData.leaveYear}.csv`}
+                  filename={`${getEmployeeDetails[currentEmpIndex]?.name
+                    }${" "}${formData.leaveMonth}${" "}${formData.leaveYear}.csv`}
                   data={downloadCsvData}
                 >
                   Export to CSV
@@ -1154,7 +1145,7 @@ const setLoading = () => { };
                 <span className="flex items-center space-x-1 text-sm text-green-600">
                   <span className="w-2 h-2 bg-green-500 rounded-full "></span>
                   <span
-             
+
                     style={{
                       color: "blue",
                       fontSize: "12px",
@@ -1169,7 +1160,7 @@ const setLoading = () => { };
                 <span className="flex items-center space-x-1 text-sm text-blue-600">
                   <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
                   <span
-               
+
                     style={{
                       color: "blue",
                       fontSize: "12px",
@@ -1184,7 +1175,7 @@ const setLoading = () => { };
                 <span className="flex items-center space-x-1 text-sm text-purple-500">
                   <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
                   <span
-               
+
                     style={{
                       color: "blue",
                       fontSize: "12px",
@@ -1199,7 +1190,7 @@ const setLoading = () => { };
                 <span className="flex items-center space-x-1 text-sm text-yellow-500">
                   <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
                   <span
-                   
+
                     style={{
                       color: "blue",
                       fontSize: "12px",
@@ -1214,7 +1205,7 @@ const setLoading = () => { };
                 <span className="flex items-center space-x-1 text-sm text-red-500">
                   <span className="w-2 h-2 bg-red-500 rounded-full"></span>
                   <span
-             
+
                     style={{
                       color: "blue",
                       fontSize: "12px",
@@ -1249,7 +1240,7 @@ const setLoading = () => { };
                 tableLayout="fixed"
                 rowKey="key"
                 // scroll={{ x: 1000 }} // Ensures proper scrolling behavior
-                scroll={{ y:1000, x: 1000 }}
+                scroll={{ y: 1000, x: 1000 }}
                 pagination={false}
                 locale={{
                   emptyText: (
@@ -1285,7 +1276,7 @@ const setLoading = () => { };
             <WHFComponnent
               open={whfmodal}
               onClose={() => setWhfModal(false)}
-              user={getEmployeeDetails[getEmployeeindex]}
+              user={getEmployeeDetails[currentEmpIndex]}
             />
           </div>
         </PullToRefresh>
@@ -1329,15 +1320,23 @@ const setLoading = () => { };
             <FaSearch className="search-icon" />
           </div>
         </div>
-        {filteredCategories?.map((emp, index) => (
+        {getEmployeeDetails?.filter((item) => {
+          if (query) {
+            return (
+              item?.name.toLowerCase().includes(query.toLowerCase()) ||
+              item?.employee_code.toLowerCase().includes(query.toLowerCase()) ||
+              item?.email.toLowerCase().includes(query.toLowerCase())
+            );
+          }
+          return item
+        })?.map((emp, index) => (
           <div key={index}>
             <div
-              className={`employee-item ${
-                getEmployeeDetails.findIndex((e) => e?.id === emp?.id) ===
-                getEmployeeindex
-                  ? "selected"
-                  : ""
-              }`}
+              className={`employee-item ${getEmployeeDetails.findIndex((e) => e?.id === emp?.id) ===
+                currentEmpIndex
+                ? "selected"
+                : ""
+                }`}
               onClick={() => handleRowClick(emp?.id)} // Pass the employee ID instead of index
             >
               <img

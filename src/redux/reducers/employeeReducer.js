@@ -4,6 +4,7 @@ const initialState = {
   profile: {},
   holidayList:[],
   reminder:{},
+  salaryData:{},
   loading: false,
   error: null,
 };
@@ -58,6 +59,25 @@ const employeeReducer = (state = initialState, action) => {
         reminder: action.payload,
       };
     case types.GET_REMINDER_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.error,
+      };
+
+
+    case types.GET_SALARY_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.GET_SALARY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        salaryData: action.payload,
+      };
+    case types.GET_SALARY_FAILED:
       return {
         ...state,
         loading: false,

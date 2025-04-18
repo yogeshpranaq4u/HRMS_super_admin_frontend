@@ -6,20 +6,21 @@ import { FaSearch } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import {
   setEmployeeindex,
-  setEmployeeLeaveDetails,
+  // setEmployeeLeaveDetails,
   setUserDetails,
-  setWorkFromHome,
+  // setWorkFromHome,
 } from "../../../Redux/Action";
 import "../AdminNewPage/Style/NewLeaveHistory.css";
 import { BsFillLightbulbFill } from "react-icons/bs";
 import { Table, Avatar, Select, Button, Pagination } from "antd";
 import { toast } from "react-toastify";
-import { useAuth } from "../../../Component/Authentication/AuthContext";
 import axios from "axios";
 import EditLeaveStatusModal from "../../AdminComponent/EditLeaveStatusModal";
 import AddLeaveStatusModal from "../../AdminComponent/AddLeaveStatusModal";
 import WHFComponnent from "../../AdminComponent/WHFComponnent";
 import EditWHFComponnent from "../../AdminComponent/EditWHFComponnent";
+import MainLayout from "../../../../layouts/MainLayout";
+import { getEmployeeData } from "../../../../redux/actions/adminAction";
 const NewLeaveHistory = () => {
   const dispatch = useDispatch();
   const setLoading = () => { };
@@ -28,9 +29,14 @@ const NewLeaveHistory = () => {
   const [employeeLeave, setEmployeeLeave] = useState();
   const [query, setQuery] = useState("");
   const [editWHFOpen, setEditWHFOpen] = useState(false);
-  const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
-  const getWorkFromHome = useSelector((state) => state.getWorkFromHome);
-  const getEmployeeindex = useSelector((state) => state.getEmployeeindex);
+  const getEmployeeDetails = useSelector(
+    (state) => state?.adminData?.employeeListData
+  );
+  const [currentEmpIndex, setCurrentEmpIndex] = useState(0);
+
+  const [getWorkFromHome ,setWorkFromHome] = useState();
+  // const getWorkFromHome = useSelector((state) => state.getWorkFromHome);
+  // const currentEmpIndex = useSelector((state) => state.currentEmpIndex);
   const [filteredWfhData, setFilteredWfh] = useState(getWorkFromHome);
   const [editmodalOpen, setEditModalOpen] = useState(false);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
@@ -39,13 +45,9 @@ const NewLeaveHistory = () => {
   const tabs = ["Leaves", "WFH"];
   const [selectedText, setSelectedText] = useState("Leaves");
   const [employee, setEmployee] = useState();
-  const getEmployeeLeaveDetails = useSelector(
-    (state) => state.getEmployeeLeaveDetails
-  );
+  const [getEmployeeLeaveDetails ,setEmployeeLeaveDetails] = useState({})
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [filteredCategories, setFilteredCategories] =
-    useState(getEmployeeDetails);
   const [modalOpen, setModalOpen] = useState(false);
   const [whfmodal, setWhfModal] = useState(false);
   const currentYear = new Date().getFullYear();
@@ -62,33 +64,21 @@ const NewLeaveHistory = () => {
     leaveYear: currentYear.toString(),
     leaveMonth: "All Data",
   });
+  useEffect(() => {
+    dispatch(getEmployeeData());
+  }, []);
   const handleRowClick = (employeeId) => {
     setSelectedEmployeeId(employeeId);
     const index = getEmployeeDetails.findIndex((emp) => emp.id === employeeId);
-
-    dispatch(setEmployeeindex(index));
+    setCurrentEmpIndex(index);
     getEmployeeLeavdDetails(index);
     getEmployeeWorkfromdata(index);
   };
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
-    updateFilteredCategories(event.target.value);
   };
 
-  const updateFilteredCategories = (searchTerm) => {
-    const lowerCaseQuery = searchTerm.trim().toLowerCase();
-
-    const filteredItems = getEmployeeDetails.filter((item) => {
-      return (
-        item.name.toLowerCase().includes(lowerCaseQuery) ||
-        item.employee_code.toLowerCase().includes(lowerCaseQuery) ||
-        item.email.toLowerCase().includes(lowerCaseQuery)
-      );
-    });
-
-    setFilteredCategories(filteredItems);
-  };
   const handleYearChange = (e) => {
     setIsDisabled(false);
     setIsFilterApplied(true);
@@ -176,54 +166,11 @@ const NewLeaveHistory = () => {
     filterLeaveData();
   }, [formData.leaveYear, formData.leaveMonth, getWorkFromHome]);
 
-  // useEffect(()=>{
-  //   fetchEmployees()
-  // },[])
 
-  //  const fetchEmployees = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const responseData = await axios.get(`${BaseUrl}${Api.GET_EMPLOYEE}`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  
-  //       if (responseData?.data?.authenticated === false) {
-  //         toast.error(responseData?.data?.mssg[0], {
-  //           position: "top-center",
-  //           autoClose: 1000,
-  //         });
-  //         logout();
-  //       } else {
-  //         if (responseData?.data?.valid === false) {
-  //           toast.error(responseData?.data?.mssg[0], {
-  //             position: "top-center",
-  //             autoClose: 1000,
-  //           });
-  //           setLoading(false);
-  //         } else {
-  //           const employeeData = JSON.parse(
-  //             JSON.stringify(responseData.data.data)
-  //           );
-  //           dispatch(setUserDetails(responseData?.data?.data));
-  
-  //           setLoading(false);
-  //         }
-  //       }
-  //     } catch (error) {
-  //       setLoading(false);
-  //       console.error("API call failed:", error);
-  //       toast.error("An error occurred. Please try again.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
 
   const getEmployeeLeavdDetails = useCallback(
     async (data) => {
       setLoading(true);
-
       try {
         const responseData = await axios.get(
           `${BaseUrl}${Api.GET_EMPLOYEE_LEAVE_DETAILS}?id=${getEmployeeDetails[data]?.id}`,
@@ -235,10 +182,7 @@ const NewLeaveHistory = () => {
         );
 
         if (responseData?.data?.authenticated === false) {
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
+          toast.error(responseData?.data?.mssg[0]);
           logout();
         } else {
           if (responseData?.data?.valid === false) {
@@ -248,7 +192,7 @@ const NewLeaveHistory = () => {
             });
             setLoading(false);
           } else {
-            dispatch(setEmployeeLeaveDetails(responseData?.data));
+            setEmployeeLeaveDetails(responseData?.data);
             setLoading(false);
           }
         }
@@ -276,20 +220,14 @@ const NewLeaveHistory = () => {
       );
 
       if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
+        toast.error(responseData?.data?.mssg[0]);
         logout();
       } else {
         if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
+          toast.error(responseData?.data?.mssg[0]);
           setLoading(false);
         } else {
-          dispatch(setWorkFromHome(responseData?.data?.data));
+          setWorkFromHome(responseData?.data?.data);
           setLoading(false);
         }
       }
@@ -302,14 +240,14 @@ const NewLeaveHistory = () => {
     }
   };
 
-  console.log("getEmployeeDetails" ,getEmployeeDetails);
-  
+  // console.log("getEmployeeDetails", getEmployeeDetails);
+
   useEffect(() => {
     if (getEmployeeDetails.length > 0) {
-      getEmployeeLeavdDetails(getEmployeeindex);
-      getEmployeeWorkfromdata(getEmployeeindex);
+      getEmployeeLeavdDetails(currentEmpIndex);
+      getEmployeeWorkfromdata(currentEmpIndex);
     }
-  }, [dispatch, token, modalOpen, editmodalOpen, getEmployeeindex]);
+  }, [dispatch, token, modalOpen, editmodalOpen, currentEmpIndex]);
   const handleClearFilter = () => {
     setIsDisabled(true);
     setIsFilterApplied(false);
@@ -597,7 +535,7 @@ const NewLeaveHistory = () => {
         </span>
       ),
     },
- 
+
     {
       title: "DAYS",
       dataIndex: "wfh_start_date", // Use appropriate dataIndex if needed
@@ -652,281 +590,284 @@ const NewLeaveHistory = () => {
     },
   ];
   return (
-    <div className="newattendance-container">
-      <h2
-        style={{
-          marginBottom: "10px",
-          marginTop: "10px",
-          fontSize: "24px",
-          fontWeight: "700",
-          fontFamily: "Inter",
-          color: COLOR.BLACK,
-        }}
-      >
-        Leave & WFO History
-      </h2>
+    <MainLayout>
+      <div className="page-wrapper">
+        <div className="content">
+          <div className="newattendance-container">
+            <h2
+              style={{
+                marginBottom: "10px",
+                marginTop: "10px",
+                fontSize: "24px",
+                fontWeight: "700",
+                fontFamily: "Inter",
+                color: COLOR.BLACK,
+              }}
+            >
+              Leave & WFO History
+            </h2>
 
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <div
-          style={{
-            width: "75%",
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <div
+                style={{
+                  width: "75%",
 
-            maxHeight: "90vh",
-            overflowY: "auto",
-            overflowX: "hidden",
-          }}
-        >
-          <div className="p-4 rounded-lg bg-white shadow-sm">
-            <div className="flex items-start space-x-6 p-4">
-              {getEmployeeDetails[getEmployeeindex]?.image == null ? (
-                <div
-                  style={{
-                    width: "60px",
-                    height: "50px",
-                    borderRadius: 8,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                    backgroundColor: "#155596",
-                  }}
-                >
-                  <h1
-                    style={{
-                      fontSize: 20,
-                      fontFamily: "cursive",
-                      fontWeight: "bold",
-                      color: "white",
-                    }}
-                  >
-                    {getEmployeeDetails[getEmployeeindex]?.name
-                      .charAt(0)
-                      .toUpperCase()}
-                  </h1>
-                </div>
-              ) : (
-                <img
-                  src={ImagePath + getEmployeeDetails[getEmployeeindex]?.image}
-                  alt="User"
-                  className="w-14 h-14 rounded-md object-cover"
-                />
-              )}
+                  maxHeight: "90vh",
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                }}
+              >
+                <div className="p-4 rounded-lg bg-white shadow-sm">
+                  <div className="flex items-start space-x-6 p-4">
+                    {getEmployeeDetails[currentEmpIndex]?.image == null ? (
+                      <div
+                        style={{
+                          width: "60px",
+                          height: "50px",
+                          borderRadius: 8,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          display: "flex",
+                          backgroundColor: "#155596",
+                        }}
+                      >
+                        <h1
+                          style={{
+                            fontSize: 20,
+                            fontFamily: "cursive",
+                            fontWeight: "bold",
+                            color: "white",
+                          }}
+                        >
+                          {getEmployeeDetails[currentEmpIndex]?.name
+                            .charAt(0)
+                            .toUpperCase()}
+                        </h1>
+                      </div>
+                    ) : (
+                      <img
+                        src={ImagePath + getEmployeeDetails[currentEmpIndex]?.image}
+                        alt="User"
+                        className="w-14 h-14 rounded-md object-cover"
+                      />
+                    )}
 
-              <div className="flex flex-col">
-                <h2
-                  style={{
-                    fontSize: "18px",
-                    fontFamily: "Inter",
-                    fontWeight: "600",
-                    lineHeight: "20px",
-                    color: COLOR.BLACK,
-                  }}
-                >
-                  {getEmployeeDetails[getEmployeeindex]?.name}
-                </h2>
-                <h2
-                  style={{
-                    fontSize: "14px",
-                    fontFamily: FONT.INTER,
-                    fontWeight: "500",
-                    lineHeight: "22px",
-                    marginTop: "5px",
-                    color: COLOR.BLACK1,
-                  }}
-                >
-                  {getEmployeeDetails[getEmployeeindex]?.designation}
-                </h2>
+                    <div className="flex flex-col">
+                      <h2
+                        style={{
+                          fontSize: "18px",
+                          fontFamily: "Inter",
+                          fontWeight: "600",
+                          lineHeight: "20px",
+                          color: COLOR.BLACK,
+                        }}
+                      >
+                        {getEmployeeDetails[currentEmpIndex]?.name}
+                      </h2>
+                      <h2
+                        style={{
+                          fontSize: "14px",
+                          fontFamily: FONT.INTER,
+                          fontWeight: "500",
+                          lineHeight: "22px",
+                          marginTop: "5px",
+                          color: COLOR.BLACK1,
+                        }}
+                      >
+                        {getEmployeeDetails[currentEmpIndex]?.designation}
+                      </h2>
 
-                <div className="flex flex-wrap mt-2 gap-2">
-                  <div className="flex items-center px-2 py-1 border border-dashed rounded-lg text-gray-800 space-x-2">
-                    <img src={IMAGE.CONTACT} className="w-4 h-4" alt="icon" />
-                    <span
-                      style={{
-                        fontSize: "14px",
-                        fontFamily: FONT.INTER,
-                        fontWeight: "500",
-                        lineHeight: "22px",
+                      <div className="flex flex-wrap mt-2 gap-2">
+                        <div className="flex items-center px-2 py-1 border border-dashed rounded-lg text-gray-800 space-x-2">
+                          <img src={IMAGE.CONTACT} className="w-4 h-4" alt="icon" />
+                          <span
+                            style={{
+                              fontSize: "14px",
+                              fontFamily: FONT.INTER,
+                              fontWeight: "500",
+                              lineHeight: "22px",
 
-                        color: COLOR.GRAY4,
-                      }}
-                    >
-                      {getEmployeeDetails[getEmployeeindex]?.employee_code}
-                    </span>
+                              color: COLOR.GRAY4,
+                            }}
+                          >
+                            {getEmployeeDetails[currentEmpIndex]?.employee_code}
+                          </span>
+                        </div>
+                        <div className="flex items-center px-2 py-1 border border-dashed rounded-lg text-gray-800 space-x-2">
+                          <img src={IMAGE.PHONE} className="w-4 h-4" alt="icon" />
+                          <span
+                            style={{
+                              fontSize: "14px",
+                              fontFamily: FONT.INTER,
+                              fontWeight: "500",
+                              lineHeight: "22px",
+
+                              color: COLOR.GRAY4,
+                            }}
+                          >
+                            {" "}
+                            {getEmployeeDetails[currentEmpIndex]?.mobile}
+                          </span>
+                        </div>
+                        <div className="flex items-center px-2 py-1 border border-dashed rounded-lg text-gray-800 space-x-2">
+                          <img src={IMAGE.EMAIL} className="w-4 h-4" alt="icon" />
+                          <span
+                            style={{
+                              fontSize: "14px",
+                              fontFamily: FONT.INTER,
+                              fontWeight: "500",
+                              lineHeight: "22px",
+
+                              color: COLOR.GRAY4,
+                            }}
+                          >
+                            {" "}
+                            {getEmployeeDetails[currentEmpIndex]?.email}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center px-2 py-1 border border-dashed rounded-lg text-gray-800 space-x-2">
+                          <img src={IMAGE.LOCATION} className="w-4 h-4" alt="icon" />
+                          <span
+                            style={{
+                              fontSize: "14px",
+                              fontFamily: FONT.INTER,
+                              fontWeight: "500",
+                              lineHeight: "22px",
+
+                              color: COLOR.GRAY4,
+                            }}
+                          >
+                            {getEmployeeDetails[currentEmpIndex]?.location}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center px-2 py-1 border border-dashed rounded-lg text-gray-800 space-x-2">
-                    <img src={IMAGE.PHONE} className="w-4 h-4" alt="icon" />
-                    <span
-                      style={{
-                        fontSize: "14px",
-                        fontFamily: FONT.INTER,
-                        fontWeight: "500",
-                        lineHeight: "22px",
 
-                        color: COLOR.GRAY4,
-                      }}
-                    >
-                      {" "}
-                      {getEmployeeDetails[getEmployeeindex]?.mobile}
-                    </span>
+                  <div className="leave-summary-container flex justify-between items-center mt-2 px-4">
+                    <div className="flex flex-wrap gap-4">
+                      <div className="leavehistory-card  annualhistory-leaves">
+                        <span
+                          style={{
+                            fontFamily: FONT.INTER,
+                            fontSize: "20px",
+                            lineHeight: "28px",
+                            color: "#FF9500",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {getEmployeeLeaveDetails?.leave_data?.total_leave_entitled}
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: FONT.INTER,
+                            fontSize: "14px",
+                            lineHeight: "22px",
+                            color: COLOR.GRAY4,
+                            fontWeight: "500",
+                          }}
+                        >
+                          Annual Leaves
+                        </span>
+                      </div>
+                      <div className="leavehistory-card collectedhistory-leaves">
+                        <span
+                          style={{
+                            fontFamily: FONT.INTER,
+                            fontSize: "20px",
+                            lineHeight: "28px",
+                            color: "#34C759",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {getEmployeeLeaveDetails?.leave_data?.leave_collected}
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: FONT.INTER,
+                            fontSize: "11px",
+                            lineHeight: "16px",
+                            color: "#34C759",
+                            fontWeight: "500",
+                          }}
+                        >
+                          (Current year + Previous year)
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: FONT.INTER,
+                            fontSize: "14px",
+                            lineHeight: "22px",
+                            color: COLOR.GRAY4,
+                            fontWeight: "500",
+                          }}
+                        >
+                          Leave Collected
+                        </span>
+                      </div>
+                      <div className="leavehistory-card paidhistory-collected">
+                        <span
+                          style={{
+                            fontFamily: FONT.INTER,
+                            fontSize: "20px",
+                            lineHeight: "28px",
+                            color: "#FFCC00",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {getEmployeeLeaveDetails?.leave_data?.paid_leave_taken}
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: FONT.INTER,
+                            fontSize: "14px",
+                            lineHeight: "22px",
+                            color: COLOR.GRAY4,
+                            fontWeight: "500",
+                          }}
+                        >
+                          Consumable Leaves
+                        </span>
+                      </div>
+
+                      <div className="leavehistory-card unpaidhistory-leaves">
+                        <span
+                          style={{
+                            fontFamily: FONT.INTER,
+                            fontSize: "20px",
+                            lineHeight: "28px",
+                            color: "#AF52DE",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {getEmployeeLeaveDetails?.leave_data?.unpaid_leave_taken}
+                        </span>
+                        <span
+                          style={{
+                            fontFamily: FONT.INTER,
+                            fontSize: "14px",
+                            lineHeight: "22px",
+                            color: COLOR.GRAY4,
+                            fontWeight: "500",
+                          }}
+                        >
+                          Unpaid Leaves
+                        </span>
+                      </div>
+                    </div>
+
+                    <button className="apply-wfh-btn ml-auto" onClick={handleClick}>
+                      Apply {activeTab}
+                    </button>
                   </div>
-                  <div className="flex items-center px-2 py-1 border border-dashed rounded-lg text-gray-800 space-x-2">
-                    <img src={IMAGE.EMAIL} className="w-4 h-4" alt="icon" />
-                    <span
-                      style={{
-                        fontSize: "14px",
-                        fontFamily: FONT.INTER,
-                        fontWeight: "500",
-                        lineHeight: "22px",
-
-                        color: COLOR.GRAY4,
-                      }}
-                    >
-                      {" "}
-                      {getEmployeeDetails[getEmployeeindex]?.email}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center px-2 py-1 border border-dashed rounded-lg text-gray-800 space-x-2">
-                    <img src={IMAGE.LOCATION} className="w-4 h-4" alt="icon" />
-                    <span
-                      style={{
-                        fontSize: "14px",
-                        fontFamily: FONT.INTER,
-                        fontWeight: "500",
-                        lineHeight: "22px",
-
-                        color: COLOR.GRAY4,
-                      }}
-                    >
-                      {getEmployeeDetails[getEmployeeindex]?.location}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="leave-summary-container flex justify-between items-center mt-2 px-4">
-              <div className="flex flex-wrap gap-4">
-                <div className="leavehistory-card  annualhistory-leaves">
-                  <span
-                    style={{
-                      fontFamily: FONT.INTER,
-                      fontSize: "20px",
-                      lineHeight: "28px",
-                      color: "#FF9500",
-                      fontWeight: "600",
-                    }}
-                  >
-                    {getEmployeeLeaveDetails?.leave_data?.total_leave_entitled}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: FONT.INTER,
-                      fontSize: "14px",
-                      lineHeight: "22px",
-                      color: COLOR.GRAY4,
-                      fontWeight: "500",
-                    }}
-                  >
-                    Annual Leaves
-                  </span>
-                </div>
-                <div className="leavehistory-card collectedhistory-leaves">
-                  <span
-                    style={{
-                      fontFamily: FONT.INTER,
-                      fontSize: "20px",
-                      lineHeight: "28px",
-                      color: "#34C759",
-                      fontWeight: "600",
-                    }}
-                  >
-                    {getEmployeeLeaveDetails?.leave_data?.leave_collected}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: FONT.INTER,
-                      fontSize: "11px",
-                      lineHeight: "16px",
-                      color: "#34C759",
-                      fontWeight: "500",
-                    }}
-                  >
-                    (Current year + Previous year)
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: FONT.INTER,
-                      fontSize: "14px",
-                      lineHeight: "22px",
-                      color: COLOR.GRAY4,
-                      fontWeight: "500",
-                    }}
-                  >
-                    Leave Collected
-                  </span>
-                </div>
-                <div className="leavehistory-card paidhistory-collected">
-                  <span
-                    style={{
-                      fontFamily: FONT.INTER,
-                      fontSize: "20px",
-                      lineHeight: "28px",
-                      color: "#FFCC00",
-                      fontWeight: "600",
-                    }}
-                  >
-                    {getEmployeeLeaveDetails?.leave_data?.paid_leave_taken}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: FONT.INTER,
-                      fontSize: "14px",
-                      lineHeight: "22px",
-                      color: COLOR.GRAY4,
-                      fontWeight: "500",
-                    }}
-                  >
-                    Consumable Leaves
-                  </span>
-                </div>
-
-                <div className="leavehistory-card unpaidhistory-leaves">
-                  <span
-                    style={{
-                      fontFamily: FONT.INTER,
-                      fontSize: "20px",
-                      lineHeight: "28px",
-                      color: "#AF52DE",
-                      fontWeight: "600",
-                    }}
-                  >
-                    {getEmployeeLeaveDetails?.leave_data?.unpaid_leave_taken}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: FONT.INTER,
-                      fontSize: "14px",
-                      lineHeight: "22px",
-                      color: COLOR.GRAY4,
-                      fontWeight: "500",
-                    }}
-                  >
-                    Unpaid Leaves
-                  </span>
-                </div>
-              </div>
-
-              <button className="apply-wfh-btn ml-auto" onClick={handleClick}>
-                Apply {activeTab}
-              </button>
-            </div>
-            {/* <div
+                  {/* <div
               style={{
                 width: "100%",
                 height: 50,
@@ -953,346 +894,355 @@ const NewLeaveHistory = () => {
                 as shown in the leave collected section.
               </h1>
             </div> */}
-            <div
-              style={{
-                width: "100%",
-                height: "auto",
-                marginTop: 10,
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                marginLeft: "15px",
-                justifyContent: "flex-start",
-                borderBottom: "2px solid #F1F1F4", // Add this for the line
-                paddingBottom: 20, // Optional: Adds space between the text and the line
-                marginBottom: 20,
-              }}
-            >
-              <BsFillLightbulbFill size={15} />
-              <h1
-                style={{
-                  fontSize: 16,
-                  fontWeight: "400",
-                  textAlign: "center",
-                  marginLeft: 10,
-                  marginTop: 15,
-                  textTransform: "none",
-                }}
-              >
-                You will get 1 leave per month from your annual leave balance,
-                as shown in the leave collected section.
-              </h1>
-            </div>
-
-            <div className="flex space-x-7 ml-5">
-              {tabs.map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    lineHeight: "24px",
-                    fontFamily: "Inter",
-                  }}
-                  className={`pb-1 font-medium ${
-                    activeTab === tab
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-[#78829D]"
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="p-4 rounded-lg bg-white shadow-sm mt-5">
-            <div className="flex items-center justify-between ">
-              <h3
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  fontFamily: "Inter",
-                  color: COLOR.BLACK,
-                  lineHeight: "20px",
-                }}
-              >
-                {activeTab} History
-              </h3>
-
-              <div className="flex items-center space-x-4 ">
-                <div>
-                  <span
-                    className="mr-2"
+                  <div
                     style={{
-                      fontSize: "12px",
-                      fontWeight: "500",
-                      fontFamily: "Inter",
-                      color: COLOR.GRAY3,
-                      lineHeight: "18px",
+                      width: "100%",
+                      height: "auto",
+                      marginTop: 10,
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginLeft: "15px",
+                      justifyContent: "flex-start",
+                      borderBottom: "2px solid #F1F1F4", // Add this for the line
+                      paddingBottom: 20, // Optional: Adds space between the text and the line
+                      marginBottom: 20,
                     }}
                   >
-                    Current Year
-                  </span>
+                    <BsFillLightbulbFill size={15} />
+                    <h1
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "400",
+                        textAlign: "center",
+                        marginLeft: 10,
+                        marginTop: 15,
+                        textTransform: "none",
+                      }}
+                    >
+                      You will get 1 leave per month from your annual leave balance,
+                      as shown in the leave collected section.
+                    </h1>
+                  </div>
 
-                  <select
-                    name="experience"
-                    id="experience"
-                    value={formData.leaveYear}
-                    onChange={handleYearChange}
-                    required
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: "500",
-                      fontFamily: "Inter",
-                      color: COLOR.BLACK,
-                      lineHeight: "18px",
-                    }}
-                  >
-                    {generateYears().map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
+                  <div className="flex space-x-7 ml-5">
+                    {tabs.map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: "600",
+                          lineHeight: "24px",
+                          fontFamily: "Inter",
+                        }}
+                        className={`pb-1 font-medium ${activeTab === tab
+                          ? "text-blue-600 border-b-2 border-blue-600"
+                          : "text-[#78829D]"
+                          }`}
+                      >
+                        {tab}
+                      </button>
                     ))}
-                  </select>
+                  </div>
                 </div>
 
-                <div>
-                  <span
-                    className="mr-2"
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: "500",
-                      fontFamily: "Inter",
-                      color: COLOR.GRAY3,
-                      lineHeight: "18px",
-                    }}
-                  >
-                    Month
-                  </span>
+                <div className="p-4 rounded-lg bg-white shadow-sm mt-5">
+                  <div className="flex items-center justify-between ">
+                    <h3
+                      style={{
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        fontFamily: "Inter",
+                        color: COLOR.BLACK,
+                        lineHeight: "20px",
+                      }}
+                    >
+                      {activeTab} History
+                    </h3>
 
-                  <select
-                    name="leaveMonth"
-                    id="leaveMonth"
-                    value={formData.leaveMonth}
-                    onChange={handleMonthChange}
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: "500",
-                      fontFamily: "Inter",
-                      color: COLOR.BLACK,
-                      lineHeight: "18px",
-                    }}
-                  >
-                    <option value="All Data">All Data</option>
-                    {generateMonths().map((month) => (
-                      <option key={month} value={month}>
-                        {month}
-                      </option>
-                    ))}
-                  </select>
+                    <div className="flex items-center space-x-4 ">
+                      <div>
+                        <span
+                          className="mr-2"
+                          style={{
+                            fontSize: "12px",
+                            fontWeight: "500",
+                            fontFamily: "Inter",
+                            color: COLOR.GRAY3,
+                            lineHeight: "18px",
+                          }}
+                        >
+                          Current Year
+                        </span>
+
+                        <select
+                          name="experience"
+                          id="experience"
+                          value={formData.leaveYear}
+                          onChange={handleYearChange}
+                          required
+                          style={{
+                            fontSize: "12px",
+                            fontWeight: "500",
+                            fontFamily: "Inter",
+                            color: COLOR.BLACK,
+                            lineHeight: "18px",
+                          }}
+                        >
+                          {generateYears().map((year) => (
+                            <option key={year} value={year}>
+                              {year}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <span
+                          className="mr-2"
+                          style={{
+                            fontSize: "12px",
+                            fontWeight: "500",
+                            fontFamily: "Inter",
+                            color: COLOR.GRAY3,
+                            lineHeight: "18px",
+                          }}
+                        >
+                          Month
+                        </span>
+
+                        <select
+                          name="leaveMonth"
+                          id="leaveMonth"
+                          value={formData.leaveMonth}
+                          onChange={handleMonthChange}
+                          style={{
+                            fontSize: "12px",
+                            fontWeight: "500",
+                            fontFamily: "Inter",
+                            color: COLOR.BLACK,
+                            lineHeight: "18px",
+                          }}
+                        >
+                          <option value="All Data">All Data</option>
+                          {generateMonths().map((month) => (
+                            <option key={month} value={month}>
+                              {month}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <button
+                        onClick={handleClearFilter}
+                        disabled={isDisabled}
+                        className={`px-3 py-1 rounded flex items-center justify-center transition-colors ${isFilterApplied
+                          ? "bg-blue-500 text-white hover:bg-blue-600"
+                          : "bg-gray-200 text-black"
+                          } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                        style={{
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          fontFamily: "Inter",
+                          lineHeight: "18px",
+                        }}
+                      >
+                        Clear Filter
+                      </button>
+                    </div>
+                  </div>
+
+                  {activeTab === "Leaves" ? (
+                    <div
+                      style={{
+                        marginTop: "20px",
+                        width: "100%",
+                        maxHeight: "90vh",
+                        overflowY: "auto",
+                        overflowX: "auto",
+                      }}
+                    >
+                      <Table
+                        className="dotted-border-table"
+                        columns={columns}
+                        dataSource={filteredLeaveData}
+                        pagination={{ pageSize: 5 }}
+                        rowClassName={() => "custom-row"}
+                        bordered={false}
+                        style={{ tableLayout: "fixed" }}
+                        rowKey="key"
+                        locale={{
+                          emptyText: (
+                            <div className="custom-no-data">No Leave Data Found</div>
+                          ),
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        marginTop: "20px",
+                        width: "100%",
+                        maxHeight: "90vh",
+                        overflowY: "auto",
+                        overflowX: "auto",
+                      }}
+                    >
+
+
+                      <Table
+                        className="dotted-border-table"
+                        columns={columns1}
+                        dataSource={filteredWfhData}
+                        pagination={{ pageSize: 5, position: ["bottomRight"] }}
+                        rowClassName={() => "custom-row"}
+                        bordered={false}
+                        tableLayout="fixed"
+                        rowKey="key"
+                        scroll={{ x: 1000 }} // Ensures proper scrolling behavior
+                        locale={{
+                          emptyText: (
+                            <div className="custom-no-data">No WFH Data Found</div>
+                          ),
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
-
-                <button
-                  onClick={handleClearFilter}
-                  disabled={isDisabled}
-                  className={`px-3 py-1 rounded flex items-center justify-center transition-colors ${
-                    isFilterApplied
-                      ? "bg-blue-500 text-white hover:bg-blue-600"
-                      : "bg-gray-200 text-black"
-                  } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+              </div>
+              <div
+                style={{
+                  width: "24%",
+                  justifyContent: "flex-start",
+                  maxHeight: "90vh", // Adjust height as needed
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                }}
+                className=" border-gray-300 px-5 py-5 bg-white rounded-lg shadow-sm"
+              >
+                <h1
                   style={{
-                    fontSize: "12px",
-                    fontWeight: "600",
                     fontFamily: "Inter",
-                    lineHeight: "18px",
+                    fontWeight: "600",
+                    fontSize: "16px",
+                    color: COLOR.BLACK,
+                    lineHeight: "20px",
+                    textAlign: "left",
+                    marginBottom: "20px",
                   }}
                 >
-                  Clear Filter
-                </button>
+                  Employees
+                </h1>
+                <div className="searchBar-2" sty>
+                  <div className="searchBar-wrapper">
+                    <input
+                      type="text"
+                      id="search-query"
+                      name="query"
+                      value={query}
+                      onChange={handleInputChange}
+                      placeholder="Search..."
+                      className="searchBar-input"
+                      autoComplete="current-query"
+                    />
+
+                    <FaSearch className="search-icon" />
+                  </div>
+                </div>
+                {getEmployeeDetails?.filter((item) => {
+                  if (query) {
+                    return (
+                      item?.name.toLowerCase().includes(query.toLowerCase()) ||
+                      item?.employee_code.toLowerCase().includes(query.toLowerCase()) ||
+                      item?.email.toLowerCase().includes(query.toLowerCase())
+                    );
+                  }
+                  return item
+                })?.map((emp, index) => (
+                  <div key={index}>
+                    <div
+                      className={`employee-item ${getEmployeeDetails.findIndex((e) => e?.id === emp?.id) ===
+                        currentEmpIndex
+                        ? "selected"
+                        : ""
+                        }`}
+                      onClick={() => handleRowClick(emp?.id)}
+                    >
+                      <img
+                        key={index}
+                        src={ImagePath + emp?.image}
+                        style={{
+                          width: 45,
+                          height: 45,
+                          marginRight: 10,
+                          borderRadius: "6px",
+                          borderWidth: 2,
+                          borderColor: "#E2E8F099",
+                        }}
+                      />
+                      <div>
+                        <span
+                          style={{
+                            fontSize: "14px",
+                            fontFamily: "Inter",
+                            fontWeight: "600",
+                            lineHeight: "20px",
+                            color: COLOR.GRAY4,
+                          }}
+                        >
+                          {emp?.name}
+                        </span>
+                        <h4
+                          className="employee-name1"
+                          style={{
+                            fontSize: "12px",
+                            fontFamily: "Inter",
+                            fontWeight: "500",
+                            lineHeight: "16px",
+                            color: COLOR.GRAY2,
+                          }}
+                        >
+                          {emp?.employee_code}
+                        </h4>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-     
-            {activeTab === "Leaves" ? (
-              <div
-                style={{
-                  marginTop: "20px",
-                  width: "100%",
-                  maxHeight: "90vh",
-                  overflowY: "auto",
-                  overflowX: "auto",
-                }}
-              >
-                <Table
-                  className="dotted-border-table"
-                  columns={columns}
-                  dataSource={filteredLeaveData}
-                  pagination={{ pageSize: 5 }}
-                  rowClassName={() => "custom-row"}
-                  bordered={false}
-                  style={{ tableLayout: "fixed" }}
-                  rowKey="key"
-                  locale={{
-                    emptyText: (
-                      <div className="custom-no-data">No Leave Data Found</div>
-                    ),
-                  }}
+            {getEmployeeDetails?.length > 0 && (
+              <>
+                <AddLeaveStatusModal
+                  open={modalOpen}
+                  onClose={() => setModalOpen(false)}
+                  user={getEmployeeDetails[currentEmpIndex]}
                 />
-              </div>
-            ) : (
-              <div
-                style={{
-                  marginTop: "20px",
-                  width: "100%",
-                  maxHeight: "90vh",
-                  overflowY: "auto",
-                  overflowX: "auto",
-                }}
-              >
 
-           
-                <Table
-                  className="dotted-border-table"
-                  columns={columns1}
-                  dataSource={filteredWfhData}
-                  pagination={{ pageSize: 5, position: ["bottomRight"] }}
-                  rowClassName={() => "custom-row"}
-                  bordered={false}
-                  tableLayout="fixed"
-                  rowKey="key"
-                  scroll={{ x: 1000 }} // Ensures proper scrolling behavior
-                  locale={{
-                    emptyText: (
-                      <div className="custom-no-data">No WFH Data Found</div>
-                    ),
-                  }}
+                <WHFComponnent
+                  open={whfmodal}
+                  onClose={() => setWhfModal(false)}
+                  user={getEmployeeDetails[currentEmpIndex]}
                 />
-              </div>
+                <EditWHFComponnent
+                  open={editWHFOpen}
+                  onClose={() => setEditWHFOpen(false)}
+                  user={getEmployeeDetails[currentEmpIndex]}
+                  wdfData={employee}
+                />
+
+                <EditLeaveStatusModal
+                  open={editmodalOpen}
+                  onClose={() => setEditModalOpen(false)}
+                  user={getEmployeeDetails[currentEmpIndex]}
+                  leave={employeeLeave}
+                />
+              </>
             )}
           </div>
         </div>
-        <div
-          style={{
-            width: "24%",
-            justifyContent: "flex-start",
-            maxHeight: "90vh", // Adjust height as needed
-            overflowY: "auto",
-            overflowX: "hidden",
-          }}
-          className=" border-gray-300 px-5 py-5 bg-white rounded-lg shadow-sm"
-        >
-          <h1
-            style={{
-              fontFamily: "Inter",
-              fontWeight: "600",
-              fontSize: "16px",
-              color: COLOR.BLACK,
-              lineHeight: "20px",
-              textAlign: "left",
-              marginBottom: "20px",
-            }}
-          >
-            Employees
-          </h1>
-          <div className="searchBar-2" sty>
-            <div className="searchBar-wrapper">
-              <input
-                type="text"
-                id="search-query"
-                name="query"
-                value={query}
-                onChange={handleInputChange}
-                placeholder="Search..."
-                className="searchBar-input"
-                autoComplete="current-query"
-              />
-
-              <FaSearch className="search-icon" />
-            </div>
-          </div>
-          {filteredCategories?.map((emp, index) => (
-            <div key={index}>
-              <div
-                className={`employee-item ${
-                  getEmployeeDetails.findIndex((e) => e?.id === emp?.id) ===
-                  getEmployeeindex
-                    ? "selected"
-                    : ""
-                }`}
-                onClick={() => handleRowClick(emp?.id)}
-              >
-                <img
-                  key={index}
-                  src={ImagePath + emp?.image}
-                  style={{
-                    width: 45,
-                    height: 45,
-                    marginRight: 10,
-                    borderRadius: "6px",
-                    borderWidth: 2,
-                    borderColor: "#E2E8F099",
-                  }}
-                />
-                <div>
-                  <span
-                    style={{
-                      fontSize: "14px",
-                      fontFamily: "Inter",
-                      fontWeight: "600",
-                      lineHeight: "20px",
-                      color: COLOR.GRAY4,
-                    }}
-                  >
-                    {emp?.name}
-                  </span>
-                  <h4
-                    className="employee-name1"
-                    style={{
-                      fontSize: "12px",
-                      fontFamily: "Inter",
-                      fontWeight: "500",
-                      lineHeight: "16px",
-                      color: COLOR.GRAY2,
-                    }}
-                  >
-                    {emp?.employee_code}
-                  </h4>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
-      {getEmployeeDetails?.length > 0 && (
-        <>
-          <AddLeaveStatusModal
-            open={modalOpen}
-            onClose={() => setModalOpen(false)}
-            user={getEmployeeDetails[getEmployeeindex]}
-          />
-
-          <WHFComponnent
-            open={whfmodal}
-            onClose={() => setWhfModal(false)}
-            user={getEmployeeDetails[getEmployeeindex]}
-          />
-          <EditWHFComponnent
-            open={editWHFOpen}
-            onClose={() => setEditWHFOpen(false)}
-            user={getEmployeeDetails[getEmployeeindex]}
-            wdfData={employee}
-          />
-
-          <EditLeaveStatusModal
-            open={editmodalOpen}
-            onClose={() => setEditModalOpen(false)}
-            user={getEmployeeDetails[getEmployeeindex]}
-            leave={employeeLeave}
-          />
-        </>
-      )}
-    </div>
+    </MainLayout>
   );
 };
 

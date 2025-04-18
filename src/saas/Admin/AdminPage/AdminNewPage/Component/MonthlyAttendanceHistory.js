@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { COLOR, FONT, IMAGE } from "../../../../Config/Color";
 import { FaSearch } from "react-icons/fa";
 import PullToRefresh from "react-simple-pull-to-refresh";
@@ -6,7 +6,7 @@ import { Api, BaseUrl, ImagePath } from "../../../../Config/Api";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Table, Avatar, Select, Button, Pagination } from "antd";
-import { setMonthlyAttendance } from "../../../../Redux/Action";
+// import { setMonthlyAttendance } from "../../../../Redux/Action";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { CSVLink } from "react-csv";
@@ -25,19 +25,12 @@ const months = [
   "December",
 ];
 const MonthlyAttendanceHistory = ({ data }) => {
-  const employeeId = sessionStorage.getItem("employeeId");
-
-  const [test1, setTest1] = useState([]);
-const setLoading = () => { };
   const logout = () => { };
   const token = sessionStorage.getItem("authToken");
-  const getMonthlyAttendance = useSelector(
-    (state) => state.getMonthlyAttendance
-  );
+  const [getMonthlyAttendance ,setMonthlyAttendance] = useState()
   const dispatch = useDispatch();
-  const [filteredCategories, setFilteredCategories] =
-    useState(getMonthlyAttendance);
   const [query, setQuery] = useState("");
+  const [isLoading, setLoading] = useState("");
   const currentYear = new Date().getFullYear();
   const currentMonthIndex = new Date().getMonth();
   const currentDay = new Date().getDate();
@@ -61,6 +54,8 @@ const setLoading = () => { };
   const handleRefresh = async () => {
     // await getAllUserAttendanceData();
   };
+  
+
   const generateYears = () => {
     const years = [];
     for (let year = 2020; year <= currentYear; year++) {
@@ -98,17 +93,8 @@ const setLoading = () => { };
   const [currentMonth, setCurrentMonth] = useState(months[currentMonthIndex]);
   const handleInputChange = (event) => {
     setQuery(event.target.value);
-    updateFilteredCategories(event.target.value);
   };
-  const updateFilteredCategories = (searchTerm) => {
-    const lowerCaseQuery = searchTerm.trim().toLowerCase();
-
-    const filteredItems = getMonthlyAttendance?.filter((item) => {
-      return item.name.toLowerCase().includes(lowerCaseQuery);
-    });
-
-    setFilteredCategories(filteredItems);
-  };
+ 
   const getMonthIndex = (monthName) => months.indexOf(monthName);
   const getCurrentMonthDates = (monthName) => {
     const year = new Date().getFullYear(); // You can modify this to accept dynamic years if needed.
@@ -174,8 +160,8 @@ const setLoading = () => { };
               style={{ fontSize: "13px", lineHeight: "1.5", fontWeight: "500" }}
             >
               {status === "Leave" ||
-              status === "Week Off" ||
-              status === "Holiday" ? (
+                status === "Week Off" ||
+                status === "Holiday" ? (
                 <div></div>
               ) : (
                 <>
@@ -212,14 +198,14 @@ const setLoading = () => { };
                     status == "On Time"
                       ? "#009A20"
                       : status == "Half-Day"
-                      ? "#1E40AF"
-                      : status === "Late"
-                      ? "#FFCC00"
-                      : status == "Paid leave" || status == "Unpaid leave"
-                      ? "#DE232A"
-                      : status == "Week Off"
-                      ? "#8CC4FF"
-                      : status=='Holiday'?"#FEAABC":"#fff",
+                        ? "#1E40AF"
+                        : status === "Late"
+                          ? "#FFCC00"
+                          : status == "Paid leave" || status == "Unpaid leave"
+                            ? "#DE232A"
+                            : status == "Week Off"
+                              ? "#8CC4FF"
+                              : status == 'Holiday' ? "#FEAABC" : "#fff",
                   borderRadius: 6,
                   textAlign: "center",
                   alignItems: "center",
@@ -236,7 +222,7 @@ const setLoading = () => { };
                     fontWeight: "600",
                     fontSize: "12px",
                     lineHeight: "20px",
-                    color: status=='Half-Day'?'#fff':COLOR.GRAY4,
+                    color: status == 'Half-Day' ? '#fff' : COLOR.GRAY4,
                   }}
                 >
                   {status}
@@ -387,6 +373,8 @@ const setLoading = () => { };
 
   const getMonthlyAttendance1 = async (data) => {
     setLoading(true);
+    console.log("run debug");
+    
     try {
       const responseData = await axios.get(
         `${BaseUrl}${Api.GET_MONTHLY_ATTENDANCE}?month=${data}`,
@@ -397,24 +385,18 @@ const setLoading = () => { };
         }
       );
 
+      console.log("responseData" ,responseData);
+      
       if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
+        toast.error(responseData?.data?.mssg[0]);
         logout();
       } else {
         if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
+          toast.error(responseData?.data?.mssg[0]);
           setLoading(false);
         } else {
-          // setAllAttendance(responseData?.data?.data);
-          setFilteredCategories(responseData?.data?.data);
-
-          dispatch(setMonthlyAttendance(responseData?.data?.data));
+          // setFilteredCategories(responseData?.data?.data);
+          setMonthlyAttendance(responseData?.data?.data);
           setLoading(false);
         }
       }
@@ -435,7 +417,14 @@ const setLoading = () => { };
     setQuery(""); // Clear search input
     getMonthlyAttendance1(months[currentMonthIndex]); // Fetch data for the current month
   };
-  const downloadCsvData = filteredCategories.map((employee) => {
+
+  useEffect(()=>{    
+    getMonthlyAttendance1("")
+  },[])
+  console.log("getMonthlyAttendance" ,getMonthlyAttendance);
+  
+
+  const downloadCsvData = getMonthlyAttendance?.map((employee) => {
     const attendanceDays = employee?.attendance || {};
 
     // Flatten attendance data into separate columns with status, login time, and logout time
@@ -443,20 +432,17 @@ const setLoading = () => { };
       (acc, day) => {
         const dayData = attendanceDays[day];
         acc[day] = dayData
-          ? `${dayData.status || "N/A"} (Login: ${
-              dayData.in_time || "N/A"
-            }, Logout: ${dayData.out_time || "N/A"})`
+          ? `${dayData.status || "N/A"} (Login: ${dayData.in_time || "N/A"
+          }, Logout: ${dayData.out_time || "N/A"})`
           : "N/A";
         return acc;
       },
       {}
     );
 
-    const deductionSummary = `Total Late: ${
-      employee?.late_count || 0
-    }\nPaid Leave: ${employee?.paid_Leave || 0}\nUnpaid Leave: ${
-      employee?.unpaid_leave || 0
-    }`;
+    const deductionSummary = `Total Late: ${employee?.late_count || 0
+      }\nPaid Leave: ${employee?.paid_Leave || 0}\nUnpaid Leave: ${employee?.unpaid_leave || 0
+      }`;
     return {
       Name: employee?.name,
       Month: employee?.month,
@@ -582,13 +568,6 @@ const setLoading = () => { };
             >
               Clear Filter
             </button>
-            {/* <CSVLink
-              className="downloadbtn"
-              filename={"employee.csv"}
-              data={downloadCsvData}
-            >
-              Export to CSV
-            </CSVLink> */}
             <CSVLink
               style={{
                 fontSize: "12px",
@@ -614,28 +593,7 @@ const setLoading = () => { };
             // overflowX: "auto",
           }}
         >
-          {/* <table className="employee-table1011">
-            <tbody>
-              <MaterialTable
-                title={null}
-                columns={columns}
-                data={memoizedData}
-                options={{
-                  paging: false,
-                  tableLayout: "auto",
-                  sorting: true,
-                  headerStyle: {
-                    position: "sticky",
-                    top: 0,
-                    backgroundColor: "#f1f1f1",
-                    zIndex: 1,
-                  },
-                  maxBodyHeight: "900px",
-                }}
-                style={{ width: "100%" }}
-              />
-            </tbody>
-          </table> */}
+         
           <div
             style={{
               marginTop: "20px",
@@ -648,7 +606,9 @@ const setLoading = () => { };
             <Table
               className="dotted-border-table"
               columns={columns}
-              dataSource={filteredCategories}
+              dataSource={getMonthlyAttendance?.filter((item) => {
+                return item.name.toLowerCase().includes(query.toLowerCase());
+              })}
               locale={{
                 emptyText: (
                   <div className="custom-no-data">No Attendance Data Found</div>

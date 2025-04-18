@@ -123,3 +123,42 @@ function* getReminderDetailsAction(action) {
 export function* watchGetReminderDetailsAction() {
   yield takeLatest(types.GET_REMINDER_REQUEST, getReminderDetailsAction);
 }
+
+
+
+function* getSalaryAction(action) {
+  try {
+    const response = yield call(
+      callApi,
+      `${Saas_Api.SALARY_CALCULATION}?id=${action.payload}`,
+      "GET",
+      null,
+      userDetails?.token,
+      SAAS_BASE_URL
+    );
+    // console.log("response salary" ,response);
+    if (response?.authenticated) {
+      if (response?.valid) {
+        if (response?.success) {
+          yield put({
+            type: types.GET_SALARY_SUCCESS,
+            payload: response?.data,
+          });
+        } else {
+          toast.error(response?.data?.mssg);
+        }
+      } else {
+        toast.error(response?.data?.mssg[0]);
+      }
+    } else {
+      // sessionStorage.removeItem("userDetails");
+      // window.location.href = "/login";
+    }
+  } catch (error) {
+    yield put({ type: types.GET_SALARY_FAILED, error: error.response });
+  }
+}
+
+export function* watchGetSalaryAction() {
+  yield takeLatest(types.GET_SALARY_REQUEST, getSalaryAction);
+}

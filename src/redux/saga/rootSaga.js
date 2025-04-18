@@ -10,7 +10,7 @@ import {
   watchPlansAction,
 } from "./dashboardSaga";
 import { watchGetCompanyAction, watchGetPlanHistoryAction, watchGetServiceTypeAction } from "./companyDataSaga";
-import { watchGetEmployeeAction, watchGetEmployeeProfileAction, watchGetHolidaysAction, watchGetReminderDetailsAction } from "./employeeSaga";
+import { watchGetEmployeeAction, watchGetEmployeeProfileAction, watchGetHolidaysAction, watchGetReminderDetailsAction, watchGetSalaryAction } from "./employeeSaga";
 import { watchGetEmployeedDataAction, watchGetEmployeeAttendanceAction,watchGetEmployeeLeaveWfhRequestAction} from "./adminSaga";
 
 function* rootSaga() {
@@ -32,6 +32,7 @@ function* rootSaga() {
     watchGetEmployeeProfileAction(),
     watchGetHolidaysAction(),
     watchGetReminderDetailsAction(),
+    watchGetSalaryAction(),
 
     //Admin Saga
     watchGetEmployeedDataAction(),

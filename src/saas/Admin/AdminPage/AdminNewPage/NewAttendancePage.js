@@ -77,14 +77,6 @@ const NewAttendancePage = () => {
                     className="sr-only peer"
                   />
 
-                  {/* <div className="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-600 relative flex items-center">
-         
-              <div
-                className={`absolute top-1/2 left-1 transform -translate-y-1/2 w-5 h-5 bg-white rounded-full transition ${
-                  weekOn ? "translate-x-6" : ""
-                }`}
-              ></div>
-            </div> */}
                   <div className="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-600 relative flex items-center">
                     {/* Toggle Thumb */}
                     <div

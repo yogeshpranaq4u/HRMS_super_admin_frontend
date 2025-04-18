@@ -12,4 +12,8 @@ export const getReminder = (data) => ({
     type: types.GET_REMINDER_REQUEST,
     payload:data
 });
+export const getSalary = (data) => ({
+    type: types.GET_SALARY_REQUEST,
+    payload:data
+});
 

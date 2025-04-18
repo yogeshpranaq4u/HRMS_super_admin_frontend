@@ -70,8 +70,6 @@ const NewDashBoard = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalCardOpen, setModalCardOpen] = useState(false);
   const getEmployeeHoliday = useSelector((state) => state.getEmployeeHoliday);
-  const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
-
   const getGiftCardShow = useSelector((state) => state.getGiftCardShow);
   const [cardType, setCardType] = useState("");
   const [cardData, setCardData] = useState([]);
