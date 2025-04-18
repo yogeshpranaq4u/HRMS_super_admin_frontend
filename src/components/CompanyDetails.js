@@ -21,7 +21,7 @@ function CompanyDetails({ handleData }) {
             style={handleData?.isOpen ? { display: "block" } : {}}
             class={`modal fade ${handleData?.isOpen ? "show" : ""} `}
             id="edit_company" >
-            <div class="modal-dialog modal-dialog-centered shadow modal-lg">
+            <div class="modal-dialog modal-dialog-centered shadow modal-lg  bg-white">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Company Details</h4>

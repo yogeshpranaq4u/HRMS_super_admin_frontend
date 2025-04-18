@@ -8,7 +8,7 @@ const userDetails = sessionStorage.getItem("userDetails")
   ? JSON.parse(sessionStorage.getItem("userDetails"))
   : {};
 
-export function* getHolidayAction(action) {
+function* getHolidayAction(action) {
   try {
     const response = yield call(
       callApi,
@@ -19,8 +19,8 @@ export function* getHolidayAction(action) {
       SAAS_BASE_URL
     );
 
-    console.log("response" ,response);
-    
+    console.log("response", response);
+
     if (response?.authenticated) {
       if (response?.valid) {
         if (response?.success) {
@@ -43,10 +43,11 @@ export function* getHolidayAction(action) {
   }
 }
 
-export function* watchGetEmployeeAction() {
+export function* watchGetHolidaysAction() {
   yield takeLatest(types.GET_HOLIDAY_REQUEST, getHolidayAction);
 }
-export function* getEmployeeProfileAction(action) {
+
+function* getEmployeeProfileAction(action) {
   try {
     const response = yield call(
       callApi,
@@ -80,4 +81,45 @@ export function* getEmployeeProfileAction(action) {
 
 export function* watchGetEmployeeProfileAction() {
   yield takeLatest(types.GET_EMPLOYEEPROFILE_REQUEST, getEmployeeProfileAction);
+}
+
+
+
+function* getReminderDetailsAction(action) {
+  try {
+    const response = yield call(
+      callApi,
+      `${Saas_Api.ADMIN_REMINDER}`,
+      "GET",
+      null,
+      userDetails?.token,
+      SAAS_BASE_URL
+    );
+
+    console.log("response" ,response);
+    
+    if (response?.authenticated) {
+      if (response?.valid) {
+        if (response?.success) {
+          yield put({
+            type: types.GET_REMINDER_SUCCESS,
+            payload: response?.data,
+          });
+        } else {
+          toast.error(response?.data?.mssg);
+        }
+      } else {
+        toast.error(response?.data?.mssg[0]);
+      }
+    } else {
+      // sessionStorage.removeItem("userDetails");
+      // window.location.href = "/login";
+    }
+  } catch (error) {
+    yield put({ type: types.GET_REMINDER_FAILED, error: error.response });
+  }
+}
+
+export function* watchGetReminderDetailsAction() {
+  yield takeLatest(types.GET_REMINDER_REQUEST, getReminderDetailsAction);
 }

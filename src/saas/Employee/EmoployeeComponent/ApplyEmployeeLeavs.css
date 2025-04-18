@@ -134,12 +134,11 @@
 }
 
 .btn {
-    width: 30%;
+    /* width: 30%; */
     padding: 10px;
     border: none;
     font-size: 14px;
     font-weight: bold;
-
     border-radius: 5px;
 }
 

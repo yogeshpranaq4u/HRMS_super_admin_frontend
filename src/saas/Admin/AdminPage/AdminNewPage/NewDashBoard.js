@@ -24,6 +24,7 @@ import Card from "../../../Component/Card";
 import EmployeeLeaveTable from "./Component/EmployeeLeaveTable";
 import debounce from "lodash/debounce";
 import MainLayout from "../../../../layouts/MainLayout";
+import { getReminder } from "../../../../redux/actions/employeeActions";
 const months = [
   "January",
   "February",
@@ -63,14 +64,16 @@ const NewDashBoard = () => {
   const day = currentDate1.getDate();
   const employeeId = sessionStorage.getItem("employeeId");
   const [profileData, setProfileData] = useState();
-  const [reminderData, setReminderData] = useState([]);
   const dispatch = useDispatch();
-
+  const reminderData = useSelector((state) => state.employeeData?.reminder);
+  useEffect(() => {
+    dispatch(getReminder())
+  }, []);
+  
   const fetchAllData = useCallback(
     debounce(() => {
       getAllUserAttendanceData();
       fetchEmployeProfile();
-      getReminderDetails();
       getHolidayList();
       fetchEmployees();
       getManagerList();
@@ -213,32 +216,7 @@ const NewDashBoard = () => {
     }
   };
 
-  const getReminderDetails = async () => {
-    setLoading(true);
 
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.ADMIN_REMINDER}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      {
-      }
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0]);
-        logout();
-      } else {
-        setReminderData(responseData?.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
   const getManagerList = async (data) => {
     setLoading(true);
 
@@ -354,8 +332,8 @@ const NewDashBoard = () => {
           toast.error(responseData?.data?.mssg[0]);
           setLoading(false);
         } else {
-//  console.log("responseData?.data" ,responseData?.data);
- 
+          //  console.log("responseData?.data" ,responseData?.data);
+
           dispatch(setCustomeDetails(responseData?.data?.data));
         }
       }
@@ -531,9 +509,9 @@ const NewDashBoard = () => {
       return acc;
     }, {});
 
-    console.log("getAllUserAttendance" ,getAllUserAttendance);
-    
-  const groupedLateArray =[]
+  console.log("getAllUserAttendance", getAllUserAttendance);
+
+  const groupedLateArray = []
   //  Object.values(groupedLateData).sort(
   //   (a, b) => b.count - a.count
   // )||[];

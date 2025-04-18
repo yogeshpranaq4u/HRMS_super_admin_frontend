@@ -1,54 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "./AdminReminder.css";
 import { useSelector } from "react-redux";
-import axios from "axios";
-import { Api, BaseUrl } from "../../Config/Api";
-import { toast } from "react-toastify";
 import Birthday from "../../Assets/birthday.png";
 import Anniversary from "../../Assets/Anniversary.png";
 import Probation from "../../Assets/Probation.png";
 import Intership from "../../Assets/Intern.png";
 import Performance from "../../Assets/Performance.png";
 import MainLayout from "../../../layouts/MainLayout";
+import { useDispatch } from "react-redux";
+import { getReminder } from "../../../redux/actions/employeeActions";
 
 const AdminReminder = () => {
-  const token = sessionStorage.getItem("authToken");
-  const getEmployeeDetails = useSelector((state) => state.getEmployeeDetails);
-  const setLoading = () => { };
-  const logout = () => { };
-  const [reminderData, setReminderData] = useState([]);
+  const reminderData = useSelector((state) => state.employeeData?.reminder);
+  const dispatch = useDispatch()
   useEffect(() => {
-    getReminderDetails();
-  }, [token]);
+    dispatch(getReminder())
+  }, []);
 
-  const getReminderDetails = async () => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.ADMIN_REMINDER}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else {
-        setReminderData(responseData?.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+ 
   const pastgetText = (item) => {
     if (item?.type === "Birthday") {
       return `Belated, but full of love, ${item?.name}! May your days be filled with joy, laughter, and everything you hope for in the year ahead.`;

@@ -26,6 +26,7 @@ import {
 } from "../../Redux/Action";
 import { useDispatch } from "react-redux";
 import Card from "../../Component/Card";
+import { getHolidayData, getReminder } from "../../../redux/actions/employeeActions";
 
 const months = [
   "January",
@@ -77,22 +78,20 @@ const getCroppedImg = async (imageSrc, crop) => {
 const Dashbord = () => {
   const employeeId = sessionStorage.getItem("employeeId");
   const token = sessionStorage.getItem("authToken");
-  const getEmployeeHoliday = useSelector((state) => state.getEmployeeHoliday);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-const setLoading = () => { };
+  const setLoading = () => { };
   const logout = () => { };
+  const reminderData = useSelector((state) => state.employeeData?.reminder);
   const [profileData, setProfileData] = useState();
   const currentMonth = months[new Date().getMonth()];
   const [leaveData, setLeaveData] = useState([]);
   const [attendanceData, setAttandanceData] = useState([]);
   const [filteredLeaveData, setFilteredLeaveData] = useState([]);
-  const [reminderData, setReminderData] = useState([]);
-  const [holiDayList, setHolidayList] = useState([]);
   const [leaveWfh, SetLeaveWfh] = useState([]);
   const currentYear = new Date().getFullYear();
   const currentMonthIndex = new Date().getMonth();
@@ -104,7 +103,19 @@ const setLoading = () => { };
   const getGiftCardShow = useSelector((state) => state.getGiftCardShow);
   const [cardType, setCardType] = useState("");
   const [cardData, setCardData] = useState([]);
+  const holiDayList = useSelector((state) => state.employeeData?.holidayList)
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (holiDayList.length == 0) {
+      dispatch(getHolidayData())
+    }
+  }, []);
+  useEffect(() => {
+    if (holiDayList.length > 0) {
+      getHolidatData(holiDayList)
+    }
+  }, [holiDayList]);
+
   const currentMonthName = new Date(0, currentMonthIndex).toLocaleString(
     "default",
     { month: "long" }
@@ -177,49 +188,13 @@ const setLoading = () => { };
     }
   }, [token, setLoading, logout]);
 
-  const fetchCustomerDetails = useCallback(async () => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.GET_CUSTOMER}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        // logout();
-      } else {
-        if (responseData?.data?.valid === false) {
-          toast.error(responseData?.data?.mssg[0], {
-            position: "top-center",
-            autoClose: 1000,
-          });
-          setLoading(false);
-        } else {
-          dispatch(setCustomeDetails(responseData?.data?.data));
-
-          setLoading(false);
-        }
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  }, [token, dispatch, setLoading, logout]);
+    useEffect(() => {
+      dispatch(getReminder())
+    }, []);
+ 
   useEffect(() => {
     fetchEmployeProfile();
-    getReminderDetails();
-    getHolidayList();
     getEmployeeLeaveWfhrequest();
-    // fetchCustomerDetails();
     getAllWfhLeaveData();
   }, []);
   useEffect(() => {
@@ -443,65 +418,7 @@ const setLoading = () => { };
     return totalLate;
   };
 
-  const getReminderDetails = async () => {
-    setLoading(true);
-
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.ADMIN_REMINDER}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else {
-        setReminderData(responseData?.data);
-        setLoading(false);
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  const getHolidayList = async () => {
-    setLoading(true);
-    try {
-      const responseData = await axios.get(`${BaseUrl}${Api.GET_HOLIDAY}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseData?.data?.authenticated === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-        logout();
-      } else if (responseData?.data?.valid === false) {
-        toast.error(responseData?.data?.mssg[0], {
-          position: "top-center",
-          autoClose: 1000,
-        });
-      } else {
-        setHolidayList(responseData?.data?.data);
-        getHolidatData(responseData?.data?.data);
-      }
-    } catch (error) {
-      console.error("API call failed:", error);
-      toast.error("An error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+ 
   const getAllWfhLeaveData = async () => {
     setLoading(true);
     try {
@@ -928,7 +845,7 @@ const setLoading = () => { };
               </div>
               <div>
                 {reminderData?.current_events?.length > 0 ||
-                reminderData?.upcoming_events?.length > 0 ? (
+                  reminderData?.upcoming_events?.length > 0 ? (
                   (() => {
                     // Combine current events and upcoming events, then filter for birthdays in the current month
                     const birthdayItems = [
